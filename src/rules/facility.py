@@ -74,7 +74,6 @@ function getAttributeFromLargestArea(feat, set, field) {
 
 var fips = getAttributeFromLargestArea($feature, set, 'FIPS');
 
-
 return iif(isnan(number('490' + fips)), null, number('490' + fips));
 '''
 
@@ -84,7 +83,7 @@ function getAttributeFromLargestArea(feat, set, field) {
     var counts = count(items);
 
     if (counts == 0) {
-        return { 'errorMessage': 'No intersection found' };
+        return null;
     }
 
     if (counts == 1) {
