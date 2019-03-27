@@ -23,3 +23,13 @@ class Constant(object):
         self.rule_name = rule_name
         self.description = 'Calculation Rule. {}'.format(rule_name)
         self.arcade = 'return "{}"'.format(value)
+
+
+class Calculation(object):
+
+    def __init__(self, name, field, rule_name, arcade):
+        self.name = name
+        self.field = field
+        self.rule_name = rule_name
+        self.description = 'Calculation Rule. {}'.format(rule_name)
+        self.arcade = arcade

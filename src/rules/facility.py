@@ -13,6 +13,7 @@ from models.rule import Rule
 class CalculateGuidRule(Rule):
 
     def __init__(self, sde, table, metas):
+        super(CalculateGuidRule, self).__init__()
         self.name = table
         self.table_path = os.path.join(sde, table)
         self.meta_rules = metas
@@ -28,6 +29,8 @@ class CalculateGuidRule(Rule):
 class CalculateConstantRule(Rule):
 
     def __init__(self, sde, table, metas):
+        super(CalculateConstantRule, self).__init__()
+
         self.name = table
         self.table_path = os.path.join(sde, table)
         self.meta_rules = metas
@@ -37,4 +40,17 @@ class CalculateConstantRule(Rule):
         self.error_number = 7501
         self.error_message = 'This value is auto generated and cannot be modified.'
 
-        self.arcade = 'return "UT"'
+
+class CalculateWithArcadeRule(Rule):
+
+    def __init__(self, sde, table, metas):
+        super(CalculateWithArcadeRule, self).__init__()
+
+        self.name = table
+        self.table_path = os.path.join(sde, table)
+        self.meta_rules = metas
+
+        self.tag = 'Calculation'
+
+        self.error_number = 7502
+        self.error_message = 'This value is auto generated and cannot be modified.'

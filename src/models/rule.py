@@ -22,23 +22,30 @@ class Rule(object):
         self.error_number = -1
         self.error_message = None
         self.arcade = None
+        self.editable = config.editable.no
+        self.triggers = config.triggers.insert
 
     def execute(self):
         print('creating rules for {}'.format(self.name))
         for rule in self.meta_rules:
+            print('  creating {} rule'.format(rule.rule_name))
+
+            if not hasattr(rule, 'arcade'):
+                rule.arcade = self.arcade
+
             try:
-                print('  creating {} rule'.format(rule.rule_name))
+                arcpy.management.DeleteAttributeRule(self.table_path, rule.rule_name)
+            except Exception:
+                pass
 
-                if not hasattr(rule, 'arcade'):
-                    rule.arcade = self.arcade
-
+            try:
                 arcpy.management.AddAttributeRule(
                     in_table=self.table_path,
                     name=rule.rule_name,
                     type=config.rule_type.calculation,
                     script_expression=rule.arcade,
-                    is_editable=config.editable.no,
-                    triggering_events=config.triggers.insert,
+                    is_editable=self.editable,
+                    triggering_events=self.triggers,
                     error_number=self.error_number,
                     error_message=self.error_message,
                     description=rule.description,
