@@ -5,9 +5,10 @@ rule.py
 A module that acts as the base class for all rules
 '''
 
-from arcgisscripting import ExecuteError
+import os
 
 import arcpy
+from arcgisscripting import ExecuteError
 from config import config
 
 
@@ -64,3 +65,18 @@ class Rule(object):
                     print('    rule already exists, skipping...')
                 else:
                     raise e
+
+
+class CalculateWithArcadeRule(Rule):
+
+    def __init__(self, sde, table, metas):
+        super(CalculateWithArcadeRule, self).__init__()
+
+        self.name = table
+        self.table_path = os.path.join(sde, table)
+        self.meta_rules = metas
+
+        self.tag = 'Calculation'
+
+        self.error_number = 7502
+        self.error_message = 'This value is auto generated and cannot be modified.'
