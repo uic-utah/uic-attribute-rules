@@ -8,8 +8,8 @@ A module that acts as the base class for all rules
 import os
 
 import arcpy
+# pylint: disable=no-name-in-module
 from arcgisscripting import ExecuteError
-from config import config
 
 
 class Rule(object):
@@ -18,21 +18,11 @@ class Rule(object):
         self.name = None
         self.meta_rules = []
         self.table_path = None
-        self.description = None
-        self.tag = None
-        self.error_number = -1
-        self.error_message = None
-        self.arcade = None
-        self.editable = config.editable.no
-        self.triggers = config.triggers.insert
 
     def execute(self):
         print('creating rules for {}'.format(self.name))
         for rule in self.meta_rules:
             print('  creating {} rule'.format(rule.rule_name))
-
-            if not hasattr(rule, 'arcade'):
-                rule.arcade = self.arcade
 
             try:
                 arcpy.management.DeleteAttributeRule(self.table_path, rule.rule_name)
@@ -43,19 +33,19 @@ class Rule(object):
                 arcpy.management.AddAttributeRule(
                     in_table=self.table_path,
                     name=rule.rule_name,
-                    type=config.rule_type.calculation,
+                    type=rule.type,
                     script_expression=rule.arcade,
-                    is_editable=self.editable,
-                    triggering_events=self.triggers,
-                    error_number=self.error_number,
-                    error_message=self.error_message,
+                    is_editable=rule.editable,
+                    triggering_events=rule.triggers,
+                    error_number=rule.error_number,
+                    error_message=rule.error_message,
                     description=rule.description,
                     subtype='',
                     field=rule.field,
                     exclude_from_client_evaluation='',
                     batch=False,
                     severity='',
-                    tags=self.tag
+                    tags=rule.tag
                 )
                 print('  done')
             except ExecuteError as e:
@@ -75,8 +65,3 @@ class CalculateWithArcadeRule(Rule):
         self.name = table
         self.table_path = os.path.join(sde, table)
         self.meta_rules = metas
-
-        self.tag = 'Calculation'
-
-        self.error_number = 7502
-        self.error_message = 'This value is auto generated and cannot be modified.'
