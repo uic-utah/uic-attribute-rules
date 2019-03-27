@@ -7,9 +7,9 @@ A module that acts as the base class for all rules
 
 import os
 
+from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
+
 import arcpy
-# pylint: disable=no-name-in-module
-from arcgisscripting import ExecuteError
 
 
 class Rule(object):
