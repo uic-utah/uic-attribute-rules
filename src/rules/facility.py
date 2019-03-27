@@ -156,7 +156,7 @@ if (code % 2 == 0) {
 return code >= 49001 && code <= 49057;
 '''
 
-create_id = '''return 'UTU' + $feature.countyfips + upper(mid($feature.guid, 29, 8))'''
+create_id = '''return 'UTU' + right($feature.countyfips, 2) + upper(mid($feature.guid, 29, 8))'''
 
 FACILITY_GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 FACILITY_STATE = Constant('Facility State', 'FacilityState', 'Facility.State', '"UT"')
