@@ -61,11 +61,11 @@ class Calculation(BaseType):
 
 class Constraint(BaseType):
 
+    def __init__(self, name, rule_name, arcade):
         super(Constraint, self).__init__()
 
-    def __init__(self, name, field, rule_name, arcade):
         self.name = name
-        self.field = field
+        self.field = None
         self.rule_name = 'Constraint.' + rule_name
         self.description = 'Constraint Rule. {}'.format(rule_name)
 
