@@ -74,7 +74,8 @@ function getAttributeFromLargestArea(feat, set, field) {
 
 var fips = getAttributeFromLargestArea($feature, set, 'FIPS');
 
-return number('490' + fips);
+
+return iif(isnan(number('490' + fips)), null, number('490' + fips));
 '''
 
 extract_city = '''var set = FeatureSetByName($datastore, 'Municipalities')
