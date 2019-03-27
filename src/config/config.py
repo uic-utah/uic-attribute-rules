@@ -13,7 +13,7 @@ triggers = SimpleNamespace(**{
     'delete': 'DELETE'
 })
 
-rule_type = SimpleNamespace(**{
+rule_types = SimpleNamespace(**{
     'calculation': 'CALCULATION',
     'constraint': 'CONSTRAINT'
 })
