@@ -10,17 +10,17 @@ from types import SimpleNamespace
 triggers = SimpleNamespace(**{
     'update': 'UPDATE',
     'insert': 'INSERT',
-    'delete': 'DELETE'
+    'delete': 'DELETE',
 })
 
 rule_types = SimpleNamespace(**{
     'calculation': 'CALCULATION',
-    'constraint': 'CONSTRAINT'
+    'constraint': 'CONSTRAINT',
 })
 
 editable = SimpleNamespace(**{
     'yes': 'EDITABLE',
-    'no': 'NONEDITABLE'
+    'no': 'NONEDITABLE',
 })
 
 sde = os.path.join(os.path.dirname(__file__), '..', '..', 'pro-project', 'localhost.sde')
