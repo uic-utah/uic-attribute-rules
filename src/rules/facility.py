@@ -45,7 +45,7 @@ var result = getAttributeFromLargestArea($feature, set, field);
 return iif(isnan(number('490' + result)), null, number('490' + result));'''
 
 extract_city = '''var field = 'NAME';
-var set = FeatureSetByName($datastore, 'Municipalities');
+var set = FeatureSetByName($datastore, 'Municipalities', [field], true);
 
 function getAttributeFromLargestArea(feat, set, field) {
     var items = intersects(set, feat);
@@ -80,7 +80,7 @@ return getAttributeFromLargestArea($feature, set, field);
 '''
 
 extract_zip = '''var field = 'ZIP5';
-var set = FeatureSetByName($datastore, 'ZipCodes');
+var set = FeatureSetByName($datastore, 'ZipCodes', [field], true);
 
 function getAttributeFromLargestArea(feat, set, field) {
     var items = intersects(set, feat);
