@@ -8,9 +8,11 @@ A module that creates attribute rules for the UICFacility table
 from config import config
 from models.ruletypes import Calculation, Constant, Constraint
 
-extract_fips = '''var set = FeatureSetByName($datastore, 'Counties')
+extract_fips = '''var field = 'FIPS';
+var set = FeatureSetByName($datastore, 'Counties', [field], true);
+
 function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat)
+    var items = intersects(set, feat);
     var counts = count(items);
 
     if (counts == 0) {
@@ -18,34 +20,35 @@ function getAttributeFromLargestArea(feat, set, field) {
     }
 
     if (counts == 1) {
-        var result = first(items)
+        var result = first(items);
 
-        return result[field]
+        return result[field];
     }
 
-    var largest = -1
-    var result
+    var largest = -1;
+    var result;
 
     for (var item in items) {
-        var size = area(intersection(item, feat))
+        var size = area(intersection(item, feat));
 
         if (size > largest) {
-            largest = size
-            result = item[field]
+            largest = size;
+            result = item[field];
         }
     }
 
-    return result
+    return result;
 }
 
-var fips = getAttributeFromLargestArea($feature, set, 'FIPS');
+var result = getAttributeFromLargestArea($feature, set, field);
 
-return iif(isnan(number('490' + fips)), null, number('490' + fips));
-'''
+return iif(isnan(number('490' + result)), null, number('490' + result));'''
 
-extract_city = '''var set = FeatureSetByName($datastore, 'Municipalities')
+extract_city = '''var field = 'NAME';
+var set = FeatureSetByName($datastore, 'Municipalities');
+
 function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat)
+    var items = intersects(set, feat);
     var counts = count(items);
 
     if (counts == 0) {
@@ -53,32 +56,34 @@ function getAttributeFromLargestArea(feat, set, field) {
     }
 
     if (counts == 1) {
-        var result = first(items)
+        var result = first(items);
 
-        return result[field]
+        return result[field];
     }
 
-    var largest = -1
-    var result
+    var largest = -1;
+    var result;
 
     for (var item in items) {
-        var size = area(intersection(item, feat))
+        var size = area(intersection(item, feat));
 
         if (size > largest) {
-            largest = size
-            result = item[field]
+            largest = size;
+            result = item[field];
         }
     }
 
-    return result
+    return result;
 }
 
-return getAttributeFromLargestArea($feature, set, 'NAME');
+return getAttributeFromLargestArea($feature, set, field);
 '''
 
-extract_zip = '''var set = FeatureSetByName($datastore, 'ZipCodes')
+extract_zip = '''var field = 'ZIP5';
+var set = FeatureSetByName($datastore, 'ZipCodes');
+
 function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat)
+    var items = intersects(set, feat);
     var counts = count(items);
 
     if (counts == 0) {
@@ -86,27 +91,27 @@ function getAttributeFromLargestArea(feat, set, field) {
     }
 
     if (counts == 1) {
-        var result = first(items)
+        var result = first(items);
 
-        return result[field]
+        return result[field];
     }
 
-    var largest = -1
-    var result
+    var largest = -1;
+    var result;
 
     for (var item in items) {
-        var size = area(intersection(item, feat))
+        var size = area(intersection(item, feat));
 
         if (size > largest) {
-            largest = size
-            result = item[field]
+            largest = size;
+            result = item[field];
         }
     }
 
-    return result
+    return result;
 }
 
-return getAttributeFromLargestArea($feature, set, 'ZIP5');
+return getAttributeFromLargestArea($feature, set, field);
 '''
 
 constrain_domain = '''var code = number($feature.countyfips)
