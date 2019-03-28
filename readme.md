@@ -9,6 +9,16 @@
     arcpy.management.EnableEnterpriseGeodatabase(r'...\uic-attribute-rules\pro-project\localhost.sde', r'C:\Program Files\ESRI\License10.6\sysgen\keycodes')
     ```
 
+    _If you receive errors, you may need to execute the following sql_
+
+    ```sql
+    ALTER DATABASE UIC
+    SET ALLOW_SNAPSHOT_ISOLATION ON
+
+    ALTER DATABASE UIC
+    SET READ_COMMITTED_SNAPSHOT ON
+    ```
+
 1. import the XML Workspace for the existing UIC database
 
     ```py
