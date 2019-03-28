@@ -6,6 +6,7 @@
 1. enable as enterprise gdb via pro
 
     ```py
+    import arcpy
     arcpy.management.EnableEnterpriseGeodatabase(r'...\uic-attribute-rules\pro-project\localhost.sde', r'C:\Program Files\ESRI\License10.6\sysgen\keycodes')
     ```
 
