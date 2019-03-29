@@ -12,7 +12,7 @@ class BaseType(object):
 
     def __init__(self):
         self.type = config.rule_types.calculation
-        self.editable = config.editable.no
+        self.editable = config.editable.yes
         self.triggers = config.triggers.insert
 
         self.description = None
