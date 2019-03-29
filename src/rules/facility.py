@@ -116,14 +116,18 @@ return getAttributeFromLargestArea($feature, set, field);
 
 constrain_domain = '''var code = number($feature.countyfips)
 if (isnan(code)) {
-    return false
+    return { 'errorMessage': 'The fips code is empty' };
 }
 
 if (code % 2 == 0) {
-    return false
+    return { 'errorMessage': 'The fips code is should be odd: ' + code };
 }
 
-return code >= 49001 && code <= 49057;
+if (code >= 49001 && code <= 49057) {
+    return true;
+}
+
+return { 'errorMessage': 'The code does not fall within the valid ranges: ' + code };
 '''
 
 create_id = '''return 'UTU' + right($feature.countyfips, 2) + upper(mid($feature.guid, 29, 8))'''
