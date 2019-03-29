@@ -41,6 +41,7 @@ function getAttributeFromLargestArea(feat, set, field) {
 }
 
 var result = getAttributeFromLargestArea($feature, set, field);
+result = text(result, '00')
 
 return iif(isnan(number('490' + result)), null, number('490' + result));'''
 
