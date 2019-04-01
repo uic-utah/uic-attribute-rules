@@ -137,7 +137,7 @@ return {
 };
 '''
 
-create_id = '''return 'UTU' + right($feature.countyfips, 2) + upper(mid($feature.guid, 29, 8))'''
+create_id = '''return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
 
 FACILITY_GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 FACILITY_STATE = Constant('Facility State', 'FacilityState', 'Facility.State', '"UT"')
