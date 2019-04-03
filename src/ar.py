@@ -10,9 +10,9 @@ import os
 import arcpy
 from config import config
 from models.rule import CalculateWithArcadeRule
-from rules import facility
+from rules import facility, well
 
-tables = {'facility': 'UICFacility'}
+tables = {'facility': 'UICFacility', 'well': 'UICWell'}
 
 facility_rules = CalculateWithArcadeRule(
     config.sde, tables['facility'], [
@@ -26,9 +26,16 @@ facility_rules = CalculateWithArcadeRule(
     ]
 )
 
-id_rule = CalculateWithArcadeRule(config.sde, tables['facility'], [])
+well_rules = CalculateWithArcadeRule(config.sde, tables['well'], [
+    well.WELL_GUID,
+    well.WELL_ID,
+    well.WELL_FACILITY,
+])
 
-rules = [facility_rules]
+rules = [
+    # facility_rules,
+    well_rules,
+]
 
 if not arcpy.TestSchemaLock(os.path.join(config.sde, tables['facility'])):
     print('Unable to acquire the necessary schema lock to add rules')
