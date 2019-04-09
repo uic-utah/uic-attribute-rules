@@ -26,11 +26,19 @@ facility_rules = CalculateWithArcadeRule(
     ]
 )
 
-well_rules = CalculateWithArcadeRule(config.sde, tables['well'], [
-    well.WELL_GUID,
-    well.WELL_ID,
-    well.WELL_FACILITY,
-])
+well_rules = CalculateWithArcadeRule(
+    config.sde,
+    tables['well'],
+    [
+        well.WELL_GUID,
+        well.WELL_ID,
+        well.WELL_FACILITY,
+        well.WELL_CLASS,
+        # well.,
+        well.WELL_HIGHPRIORITY,
+        well.WELL_INJECTION_AQUIFER_EXEMPT,
+    ]
+)
 
 rules = [
     # facility_rules,
