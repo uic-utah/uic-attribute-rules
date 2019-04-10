@@ -159,7 +159,21 @@ for table_name in tables:
         edit_to_base='NO_EDITS_TO_BASE',
     )
 print('done')
+
 print('creating contingent field group for well class')
+try:
+    arcpy.management.DeleteFieldGroup(
+        target_table='UICWell',
+        name='Well Class',
+    )
+except ExecuteError as e:
+    message, = e.args
+
+    if 'ERROR 002585' in message:
+        pass
+    else:
+        print(e)
+
 try:
     arcpy.management.CreateFieldGroup(
         target_table='UICWell',
