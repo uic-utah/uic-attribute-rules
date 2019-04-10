@@ -137,7 +137,7 @@ for dataset in arcpy.ListDatasets('', 'Feature'):
 
 skip_tables = ['Counties', 'ZipCodes', 'Municipalities']
 
-print('updating editor tracking for {} tables'.format(len(tables) - len(skip_tables)))
+print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
 
 for table_name in tables:
     parts = table_name.split('.')
@@ -154,6 +154,11 @@ for table_name in tables:
         # record_dates_in='UTC',
     )
 
+    arcpy.management.RegisterAsVersioned(
+        in_dataset=os.path.join(config.sde, table_name),
+        edit_to_base='NO_EDITS_TO_BASE',
+    )
+print('done')
 print('creating contingent field group for well class')
 try:
     arcpy.management.CreateFieldGroup(
