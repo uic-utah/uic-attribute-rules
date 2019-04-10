@@ -141,11 +141,11 @@ return {
 
 create_id = '''return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
 
-FACILITY_GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
-FACILITY_STATE = Constant('Facility State', 'FacilityState', 'Facility.State', '"UT"')
-FACILITY_FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
-FACILITY_ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
-FACILITY_CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
-FACILITY_ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
-FACILITY_FIPS_DOMAIN = Constraint('County Fips', 'Facility.FIPS', constrain_domain)
-FACILITY_FIPS_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
+STATE = Constant('Facility State', 'FacilityState', 'Facility.State', '"UT"')
+FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
+ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
+CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
+ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
+FIPS_DOMAIN = Constraint('County Fips', 'Facility.FIPS', constrain_domain)
+FIPS_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]

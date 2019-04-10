@@ -113,23 +113,23 @@ var counts = count(items);
 return counts;
 '''
 
-WELL_GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
-WELL_ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
-WELL_ID.triggers = [config.triggers.update]
-WELL_FACILITY = Calculation('Facility Fk', 'Facility_Fk', 'Well.Facility_FK', extract_facility)
-WELL_AUTHORIZATION = None
+GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
+ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
+ID.triggers = [config.triggers.update]
+FACILITY = Calculation('Facility Fk', 'Facility_Fk', 'Well.Facility_FK', extract_facility)
+AUTHORIZATION = None
 
-WELL_CLASS = Constraint('Well Class', 'Well.Class', constrain_wellclass)
-WELL_CLASS.triggers = [config.triggers.insert, config.triggers.update]
+CLASS = Constraint('Well Class', 'Well.Class', constrain_wellclass)
+CLASS.triggers = [config.triggers.insert, config.triggers.update]
 
-WELL_SUBCLASS = None
+SUBCLASS = None
 # TODO: rasters are not supported
-# WELL_ELEVATION = Calculation('Well Elevation', 'SurfaceElevation', 'Well.SurfaceElevation', extract_elevation)
+# ELEVATION = Calculation('Well Elevation', 'SurfaceElevation', 'Well.SurfaceElevation', extract_elevation)
 
-WELL_HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_yes_no_unknown.format('$feature.highpriority'))
-WELL_HIGHPRIORITY.triggers = [config.triggers.insert, config.triggers.update]
+HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_yes_no_unknown.format('$feature.highpriority'))
+HIGHPRIORITY.triggers = [config.triggers.update]
 
-WELL_INJECTION_AQUIFER_EXEMPT = Constraint(
+INJECTION_AQUIFER_EXEMPT = Constraint(
     'Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('$feature.InjectionAquiferExempt')
 )
-WELL_INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.insert, config.triggers.update]
+INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.update]

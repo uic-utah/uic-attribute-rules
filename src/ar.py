@@ -14,29 +14,28 @@ from rules import facility, well
 
 
 facility_rules = CalculateWithArcadeRule(
-        facility.FACILITY_GUID,
-        facility.FACILITY_STATE,
-        facility.FACILITY_FIPS_DOMAIN,
-        facility.FACILITY_FIPS,
-        facility.FACILITY_ID,
-        facility.FACILITY_CITY,
-        facility.FACILITY_ZIP,
     config.sde, facility.TABLE, [
+        facility.GUID,
+        facility.STATE,
+        facility.FIPS_DOMAIN,
+        facility.FIPS,
+        facility.ID,
+        facility.CITY,
+        facility.ZIP,
     ]
 )
 
 well_rules = CalculateWithArcadeRule(
     config.sde, well.TABLE, [
+        well.GUID,
+        well.ID,
+        well.FACILITY,
+        well.CLASS,
+        well.HIGHPRIORITY,
+        well.INJECTION_AQUIFER_EXEMPT,
+    ]
     config.sde,
     [
-        well.WELL_GUID,
-        well.WELL_ID,
-        well.WELL_FACILITY,
-        well.WELL_CLASS,
-        # well.,
-        well.WELL_HIGHPRIORITY,
-        well.WELL_INJECTION_AQUIFER_EXEMPT,
-    ]
 )
 
 rules = [
