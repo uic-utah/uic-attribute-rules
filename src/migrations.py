@@ -7,6 +7,8 @@ A module that migrates uic database
 
 import os
 
+from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
+
 import arcpy
 from config import config
 
@@ -116,8 +118,13 @@ for table_name in table_modifications:
                 field_scale=add['field_scale'],
                 field_is_nullable=add['field_is_nullable']
             )
-    except Exception as ex:
-        print(ex)
+    except ExecuteError as e:
+        message, = e.args
+
+        if 'ERROR 002557' in message:
+            print('  field likely upgraded already')
+        else:
+            print(e)
 
 print('done')
 
@@ -125,8 +132,13 @@ print('removing {} domains'.format(len(delete_domains)))
 for domain in delete_domains:
     try:
         arcpy.management.DeleteDomain(config.sde, domain)
-    except Exception:
-        pass
+    except ExecuteError as e:
+        message, = e.args
+
+        if 'ERROR 000800' in message:
+            print('  domain already removed')
+        else:
+            print(e)
 print('done')
 
 tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
@@ -180,8 +192,8 @@ try:
         name='Well Class',
         fields=['WellClass', 'WellSubclass'],
     )
-except Exception:
-    pass
+except ExecuteError as e:
+    print(e)
 
 print('done')
 
@@ -220,3 +232,4 @@ for well_class, code in codes:
         field_group_name='Well Class',
         values=[['WellClass', 'CODED_VALUE', well_class], ['WellSubclass', 'CODED_VALUE', code]],
     )
+print('done')
