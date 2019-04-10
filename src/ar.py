@@ -10,8 +10,9 @@ import os
 import arcpy
 from config import config
 from models.rule import CalculateWithArcadeRule
-from rules import facility, well
-
+from rules import (
+    area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
+)
 
 facility_rules = CalculateWithArcadeRule(
     config.sde, facility.TABLE, [
@@ -34,13 +35,110 @@ well_rules = CalculateWithArcadeRule(
         well.HIGHPRIORITY,
         well.INJECTION_AQUIFER_EXEMPT,
     ]
+)
+
+aor_rules = CalculateWithArcadeRule(
     config.sde,
+    area_of_review.TABLE,
     [
+        area_of_review.GUID,
+    ],
+)
+
+art_pen_rules = CalculateWithArcadeRule(
+    config.sde,
+    art_pen.TABLE,
+    [
+        art_pen.GUID,
+    ],
+)
+
+authorization_rules = CalculateWithArcadeRule(
+    config.sde,
+    authorization.TABLE,
+    [
+        authorization.GUID,
+    ],
+)
+
+auth_action_rules = CalculateWithArcadeRule(
+    config.sde,
+    authorization_action.TABLE,
+    [
+        authorization_action.GUID,
+    ],
+)
+
+contact_rules = CalculateWithArcadeRule(
+    config.sde,
+    contact.TABLE,
+    [
+        contact.GUID,
+    ],
+)
+
+correction_rules = CalculateWithArcadeRule(
+    config.sde,
+    correction.TABLE,
+    [
+        correction.GUID,
+    ],
+)
+
+enforcement_rules = CalculateWithArcadeRule(
+    config.sde,
+    enforcement.TABLE,
+    [
+        enforcement.GUID,
+    ],
+)
+
+inspection_rules = CalculateWithArcadeRule(
+    config.sde,
+    inspection.TABLE,
+    [
+        inspection.GUID,
+    ],
+)
+
+mit_rules = CalculateWithArcadeRule(
+    config.sde,
+    mit.TABLE,
+    [
+        mit.GUID,
+    ],
+)
+
+operating_status_rules = CalculateWithArcadeRule(
+    config.sde,
+    operating_status.TABLE,
+    [
+        operating_status.GUID,
+    ],
+)
+
+violation_rules = CalculateWithArcadeRule(
+    config.sde,
+    violation.TABLE,
+    [
+        violation.GUID,
+    ],
 )
 
 rules = [
     # facility_rules,
     well_rules,
+    aor_rules,
+    art_pen_rules,
+    auth_action_rules,
+    authorization_rules,
+    contact_rules,
+    correction_rules,
+    enforcement_rules,
+    inspection_rules,
+    mit_rules,
+    operating_status_rules,
+    violation_rules,
 ]
 
 if not arcpy.TestSchemaLock(os.path.join(config.sde, facility.TABLE)):
