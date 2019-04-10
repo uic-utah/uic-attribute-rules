@@ -75,22 +75,6 @@ table_modifications = {
     }
 }
 
-
-def to_roman(number):
-    roman_numerals = {'I': 1, 'IV': 4, 'V': 5}
-    if number == 1:
-        return 'I'
-    elif number == 5:
-        return 'V'
-    numeral = ''
-    while number > 0:
-        for symbol, value in roman_numerals.items():
-            while number >= value:
-                numeral = numeral + symbol
-                number = number - value
-    return numeral
-
-
 arcpy.env.workspace = config.sde
 
 print('removing {} tables'.format(len(delete_tables)))
