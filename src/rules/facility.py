@@ -8,6 +8,8 @@ A module that creates attribute rules for the UICFacility table
 from config import config
 from models.ruletypes import Calculation, Constant, Constraint
 
+TABLE = 'UICFacility'
+
 extract_fips = '''var field = 'FIPS';
 var set = FeatureSetByName($datastore, 'Counties', [field], true);
 

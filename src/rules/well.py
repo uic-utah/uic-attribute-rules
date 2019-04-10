@@ -8,6 +8,8 @@ A module that holds the rules for uicwells
 from config import config
 from models.ruletypes import Calculation, Constant, Constraint
 
+TABLE = 'UICWell'
+
 create_id = '''function getAttributeFromLargestArea(feat, set, field) {
     var items = intersects(set, feat);
     var counts = count(items);
