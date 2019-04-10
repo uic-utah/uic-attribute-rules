@@ -11,7 +11,7 @@ import arcpy
 from config import config
 
 delete_tables = [
-    'UICAlternativeDisposal',
+    'UICAlternateDisposal',
     'UICAquiferRemediation',
     'UICBMPElement',
     'UICClassIConstituent',
@@ -33,11 +33,9 @@ delete_domains = [
     'UICZoningCategoryDomain',
     'UICLocationMethodDomain',
     'UICLocationalAccuracyDomain',
-    'ICISCompMonActReason',
-    'ICISCompMonType',
-    'ICISCompActType',
-    'ICISMOAPriority',
-    'ICISRegionalPriority',
+    'UICICISCompActTypeDomain',
+    'UICICISCompMonActReasonDomain',
+    'UICICISMonitoringTypeDomain',
 ]
 
 table_modifications = {
