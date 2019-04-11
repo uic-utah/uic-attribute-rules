@@ -21,6 +21,9 @@ delete_tables = [
     'UICConstructionElement',
     'UICDeepWellOperation',
     'UICVerticalWellEvent',
+    'DEQFacilities',
+    'UICSCHEMATRONERRORCODES',
+    'UICToolbox',
 ]
 
 delete_domains = [
