@@ -90,7 +90,7 @@ return getAttributeFromLargestArea($feature, set, field);
 '''
 
 constrain_wellclass = '''if (isempty($feature.wellclass)) {
-    return null;
+    return true;
 }
 
 iif (indexof([1,3,4,5,6], $feature.wellclass) > -1, true, {
@@ -98,7 +98,7 @@ iif (indexof([1,3,4,5,6], $feature.wellclass) > -1, true, {
 })'''
 
 constrain_yes_no_unknown = '''if (isempty({0})) {{
-    return null;
+    return true;
 }}
 iif (indexof(['Y', 'N', 'U'], {0}) > -1, true, {{
     'errorMessage': 'Acceptable values are Y, N, U. Input: ' + {0}
