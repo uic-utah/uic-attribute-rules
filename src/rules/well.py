@@ -115,7 +115,7 @@ return counts;
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
-ID.triggers = [config.triggers.update]
+ID.triggers = [config.triggers.insert, config.triggers.update]
 FACILITY = Calculation('Facility Fk', 'Facility_Fk', 'Well.Facility_FK', extract_facility)
 AUTHORIZATION = None
 
