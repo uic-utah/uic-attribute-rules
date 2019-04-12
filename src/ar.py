@@ -17,7 +17,6 @@ from rules import (
 facility_rules = CalculateWithArcadeRule(
     config.sde, facility.TABLE, [
         facility.GUID,
-        facility.STATE,
         facility.FIPS_DOMAIN,
         facility.FIPS,
         facility.ID,

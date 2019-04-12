@@ -142,7 +142,6 @@ return {
 create_id = '''return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
 
 GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
-STATE = Constant('Facility State', 'FacilityState', 'Facility.State', '"UT"')
 FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
 ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
 CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)

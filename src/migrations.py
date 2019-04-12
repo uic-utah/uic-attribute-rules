@@ -46,7 +46,7 @@ delete_domains = [
 table_modifications = {
     'UICFacility': {
         'add': [],
-        'delete': ['FRSID']
+        'delete': ['FRSID', 'FacilityState']
     },
     'UICWell': {
         'add': [{
