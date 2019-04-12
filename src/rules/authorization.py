@@ -21,6 +21,10 @@ create_id = '''function generateId(code, fk) {
 
     var facility = first(facilities);
 
+    if (lower(code) == 'no') {
+        code = 'UA';
+    }
+
     return 'UTU' + right(facility[field], 2) + code + upper(mid($feature.guid, 29, 7));
 }
 
