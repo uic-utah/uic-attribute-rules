@@ -58,6 +58,7 @@ authorization_rules = CalculateWithArcadeRule(
     authorization.TABLE,
     [
         authorization.GUID,
+        authorization.ID,
     ],
 )
 
@@ -126,7 +127,7 @@ violation_rules = CalculateWithArcadeRule(
 )
 
 rules = [
-    # facility_rules,
+    facility_rules,
     well_rules,
     aor_rules,
     art_pen_rules,
