@@ -117,7 +117,11 @@ function getAttributeFromLargestArea(feat, set, field) {
 return getAttributeFromLargestArea($feature, set, field);
 '''
 
-constrain_domain = '''var code = number($feature.countyfips)
+constrain_domain = '''if (!haskey($feature, 'countyfips')) {
+    return true;
+}
+
+var code = number($feature.countyfips)
 if (isnan(code)) {
     return {
         'errorMessage': 'The fips code is empty'
@@ -139,7 +143,15 @@ return {
 };
 '''
 
-create_id = '''return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
+create_id = '''var keys = ['countyfips', 'guid'];
+
+for (var key in keys) {
+    if (!haskey($feature, keys[key])) {
+        return null;
+    }
+}
+
+return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
 
 GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)

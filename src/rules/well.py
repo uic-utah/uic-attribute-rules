@@ -51,6 +51,14 @@ function generateId(class) {
     return 'UTU' + fips + class + upper(mid($feature.guid, 29, 8));
 }
 
+var keys = ['wellclass', 'guid'];
+
+for (var key in keys) {
+    if (!haskey($feature, keys[key])) {
+        return null;
+    }
+}
+
 return iif(isempty($feature.wellclass), null, generateId($feature.wellclass));
 '''
 
@@ -86,10 +94,14 @@ extract_facility = '''function getAttributeFromLargestArea(feat, set, field) {
 var field = 'Guid';
 var set = FeatureSetByName($datastore, 'UICFacility', [field], true);
 
+if (!haskey($feature, field)) {
+    return null;
+}
+
 return getAttributeFromLargestArea($feature, set, field);
 '''
 
-constrain_wellclass = '''if (isempty($feature.wellclass)) {
+constrain_wellclass = '''if (isempty($feature.wellclass) || !haskey($feature, 'wellclass')) {
     return true;
 }
 
