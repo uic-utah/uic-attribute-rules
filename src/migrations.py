@@ -53,6 +53,7 @@ table_modifications = {
             'in_table': 'UICWell',
             'field_name': 'WellDepth',
             'field_type': 'LONG',
+            'field_length': '#',
             'field_precision': 10,
             'field_scale': 0,
             'field_alias': 'Well Depth in Feet',
@@ -65,15 +66,28 @@ table_modifications = {
         'delete': ['ICISCompMonActReason', 'ICISCompMonType', 'ICISCompActType', 'ICISMOAPriority', 'ICISRegionalPriority']
     },
     'UICArtPen': {
-        'add': [{
-            'in_table': 'UICArtPen',
-            'field_name': 'EditedBy',
-            'field_type': 'TEXT',
-            'field_precision': 40,
-            'field_scale': '#',
-            'field_alias': 'EditedBy',
-            'field_is_nullable': 'NULLABLE'
-        }],
+        'add': [
+            {
+                'in_table': 'UICArtPen',
+                'field_name': 'EditedBy',
+                'field_type': 'TEXT',
+                'field_length': 40,
+                'field_precision': '#',
+                'field_scale': '#',
+                'field_alias': 'EditedBy',
+                'field_is_nullable': 'NULLABLE'
+            },
+            {
+                'in_table': 'UICArtPen',
+                'field_name': 'ArtPenWellDepth',
+                'field_type': 'LONG',
+                'field_length': '#',
+                'field_precision': 10,
+                'field_scale': 0,
+                'field_alias': 'ArtPenWellDepth',
+                'field_is_nullable': 'NULLABLE'
+            },
+        ],
         'delete': ['EditedBy']
     }
 }
@@ -103,6 +117,8 @@ for table_name in table_modifications:
                 field_type=add['field_type'],
                 field_precision=add['field_precision'],
                 field_scale=add['field_scale'],
+                field_length=add['field_length'],
+                field_alias=add['field_alias'],
                 field_is_nullable=add['field_is_nullable']
             )
     except ExecuteError as e:
@@ -112,7 +128,6 @@ for table_name in table_modifications:
             print('  field likely upgraded already')
         else:
             print(e)
-
 print('done')
 
 print('removing {} domains'.format(len(delete_domains)))
