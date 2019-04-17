@@ -94,6 +94,17 @@ table_modifications = {
 
 arcpy.env.workspace = config.sde
 
+print('compressing db')
+arcpy.management.Compress(config.sde)
+
+print('analyzing db')
+arcpy.management.AnalyzeDatasets(
+    input_database=config.sde,
+    include_system='SYSTEM',
+    analyze_base='ANALYZE_BASE',
+    analyze_delta='ANALYZE_DELTA',
+    analyze_archive='ANALYZE_ARCHIVE',
+)
 print('removing {} tables'.format(len(delete_tables)))
 for table in delete_tables:
     arcpy.management.Delete(os.path.join(config.sde, table))
