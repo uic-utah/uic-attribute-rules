@@ -190,7 +190,7 @@ from_table = 'UICFacility'
 to_table = 'UICWell'
 
 migration_pet_status = False
-if len(arcpy.ListFields(to_table, from_table)) < 1:
+if len(arcpy.ListFields(from_table, move_field)) == 0:
     migration_pet_status = True
     print('  migration likely completed')
 
@@ -224,6 +224,53 @@ if not migration_pet_status:
 
             try:
                 cursor.updateRow((fk, status_cache[fk]))
+            except Exception as e:
+                ok = False
+                print('update failed ' + str(e))
+    print('done')
+
+    if ok:
+        print('removing field')
+        arcpy.management.DeleteField(from_table, move_field)
+
+move_field = 'FacilityType'
+new_name = 'ClassIFacilityType'
+
+facility_type = False
+if len(arcpy.ListFields(from_table, move_field)) < 1:
+    facility_type = True
+    print('  migration likely completed')
+
+if not facility_type:
+    if len(arcpy.ListFields(to_table, new_name)) < 1:
+        arcpy.management.AddField(
+            in_table=to_table,
+            field_name=new_name,
+            field_type='TEXT',
+            field_alias='Facility Type for Class I Wells',
+            field_domain='UICFacilityTypeDomain',
+            field_is_nullable='NULLABLE',
+            field_length=1,
+        )
+
+        arcpy.management.AssignDefaultToField(in_table=to_table, field_name=new_name)
+
+    print('building data cache')
+    type_cache = {}
+    with arcpy.da.SearchCursor(in_table=from_table, field_names=['GUID', move_field], where_clause='1=1') as cursor:
+        for pk, status in cursor:
+            type_cache[pk] = status
+    print('done')
+
+    print('updating new field data')
+    ok = True
+    with arcpy.da.UpdateCursor(in_table=to_table, field_names=['Facility_FK', new_name]) as cursor:
+        for fk, _ in cursor:
+            if fk not in type_cache:
+                continue
+
+            try:
+                cursor.updateRow((fk, type_cache[fk]))
             except Exception as e:
                 ok = False
                 print('update failed ' + str(e))
