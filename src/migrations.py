@@ -119,6 +119,27 @@ for table in delete_tables:
     arcpy.management.Delete(os.path.join(config.sde, table))
 print('done')
 
+print('unversioning {} tables'.format(len(tables) - len(skip_tables)))
+for table_name in tables:
+    parts = table_name.split('.')
+    if parts[2] in skip_tables:
+        continue
+
+    print('  ' + table_name)
+    arcpy.management.UnregisterAsVersioned(
+        in_dataset=os.path.join(config.sde, table_name),
+        keep_edit='NO_KEEP_EDIT',
+    )
+
+    arcpy.management.DisableEditorTracking(
+        in_dataset=os.path.join(config.sde, table_name),
+        creator='DISABLE_CREATOR',
+        creation_date='DISABLE_CREATION_DATE',
+        last_editor='DISABLE_LAST_EDITOR',
+        last_edit_date='DISABLE_LAST_EDIT_DATE',
+    )
+print('done')
+
 print('applying table modifications')
 for table_name in table_modifications:
     changes = table_modifications[table_name]
@@ -270,5 +291,28 @@ for well_class, code in codes:
         target_table='UICWell',
         field_group_name='Well Class',
         values=[['WellClass', 'CODED_VALUE', well_class], ['WellSubclass', 'CODED_VALUE', code]],
+    )
+print('done')
+
+print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
+for table_name in tables:
+    parts = table_name.split('.')
+    if parts[2] in skip_tables:
+        continue
+
+    print('  ' + table_name)
+    arcpy.management.EnableEditorTracking(
+        in_dataset=os.path.join(config.sde, table_name),
+        creator_field='CreatedBy',
+        creation_date_field='CreatedOn',
+        last_editor_field='EditedBy',
+        last_edit_date_field='ModifiedOn',
+        add_fields='ADD_FIELDS',
+        # record_dates_in='UTC',
+    )
+
+    arcpy.management.RegisterAsVersioned(
+        in_dataset=os.path.join(config.sde, table_name),
+        edit_to_base='NO_EDITS_TO_BASE',
     )
 print('done')
