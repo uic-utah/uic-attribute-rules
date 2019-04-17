@@ -3,3 +3,6 @@ __pycache__/
 index/
 *.gdb/
 .pyHistory
+data/UIC_DEV_DATA.xml
+pro-project/stage.sde
+data/UIC_STAGING.XML
