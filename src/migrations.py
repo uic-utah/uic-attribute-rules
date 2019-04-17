@@ -105,6 +105,15 @@ arcpy.management.AnalyzeDatasets(
     analyze_delta='ANALYZE_DELTA',
     analyze_archive='ANALYZE_ARCHIVE',
 )
+
+tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
+
+for dataset in arcpy.ListDatasets('', 'Feature'):
+    arcpy.env.workspace = os.path.join(config.sde, dataset)
+    tables += arcpy.ListFeatureClasses()
+
+skip_tables = ['Counties', 'ZipCodes', 'Municipalities', 'SDE_compress_log']
+
 print('removing {} tables'.format(len(delete_tables)))
 for table in delete_tables:
     arcpy.management.Delete(os.path.join(config.sde, table))
@@ -154,13 +163,30 @@ for domain in delete_domains:
             print(e)
 print('done')
 
-tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
+print('moving fields')
+move_field = 'NoMigrationPetStatus'
+from_table = 'UICFacility'
+to_table = 'UICWell'
 
-for dataset in arcpy.ListDatasets('', 'Feature'):
-    arcpy.env.workspace = os.path.join(config.sde, dataset)
-    tables += arcpy.ListFeatureClasses()
+if len(arcpy.ListFields(to_table, move_field)) < 1:
+    arcpy.management.AddField(
+        in_table=to_table,
+        field_name=move_field,
+        field_type='TEXT',
+        field_alias=move_field,
+        field_domain='UICNoMigrationPetStatusDomain',
+        field_is_nullable='NULLABLE',
+        field_length=2,
+    )
 
-skip_tables = ['Counties', 'ZipCodes', 'Municipalities']
+    arcpy.management.AssignDefaultToField(in_table=to_table, field_name=move_field, default_value='NA')
+
+print('building data cache')
+status_cache = {}
+with arcpy.da.SearchCursor(in_table=from_table, field_names=['GUID', move_field], where_clause='1=1') as cursor:
+    for pk, status in cursor:
+        status_cache[pk] = status
+print('done')
 
 print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
 
