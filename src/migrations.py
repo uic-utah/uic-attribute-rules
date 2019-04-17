@@ -168,65 +168,49 @@ move_field = 'NoMigrationPetStatus'
 from_table = 'UICFacility'
 to_table = 'UICWell'
 
-if len(arcpy.ListFields(to_table, move_field)) < 1:
-    arcpy.management.AddField(
-        in_table=to_table,
-        field_name=move_field,
-        field_type='TEXT',
-        field_alias=move_field,
-        field_domain='UICNoMigrationPetStatusDomain',
-        field_is_nullable='NULLABLE',
-        field_length=2,
-    )
+migration_pet_status = False
+if len(arcpy.ListFields(to_table, from_table)) < 1:
+    migration_pet_status = True
+    print('  migration likely completed')
 
-    arcpy.management.AssignDefaultToField(in_table=to_table, field_name=move_field, default_value='NA')
+if not migration_pet_status:
+    if len(arcpy.ListFields(to_table, move_field)) < 1:
+        arcpy.management.AddField(
+            in_table=to_table,
+            field_name=move_field,
+            field_type='TEXT',
+            field_alias=move_field,
+            field_domain='UICNoMigrationPetStatusDomain',
+            field_is_nullable='NULLABLE',
+            field_length=2,
+        )
 
-print('building data cache')
-status_cache = {}
-with arcpy.da.SearchCursor(in_table=from_table, field_names=['GUID', move_field], where_clause='1=1') as cursor:
-    for pk, status in cursor:
-        status_cache[pk] = status
-print('done')
+        arcpy.management.AssignDefaultToField(in_table=to_table, field_name=move_field, default_value='NA')
 
-print('updating new field data')
-ok = True
-with arcpy.da.UpdateCursor(in_table=to_table, field_names=['Facility_FK', move_field]) as cursor:
-    for fk, _ in cursor:
-        if fk not in status_cache:
-            continue
+    print('building data cache')
+    status_cache = {}
+    with arcpy.da.SearchCursor(in_table=from_table, field_names=['GUID', move_field], where_clause='1=1') as cursor:
+        for pk, status in cursor:
+            status_cache[pk] = status
+    print('done')
 
-        try:
-            cursor.updateRow((fk, status_cache[fk]))
-        except Exception as e:
-            ok = False
-            print('update failed ' + str(e))
-print('done')
+    print('updating new field data')
+    ok = True
+    with arcpy.da.UpdateCursor(in_table=to_table, field_names=['Facility_FK', move_field]) as cursor:
+        for fk, _ in cursor:
+            if fk not in status_cache:
+                continue
 
-if ok:
-    print('removing field')
-    arcpy.management.DeleteField(from_table, move_field)
+            try:
+                cursor.updateRow((fk, status_cache[fk]))
+            except Exception as e:
+                ok = False
+                print('update failed ' + str(e))
+    print('done')
 
-print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
-for table_name in tables:
-    parts = table_name.split('.')
-    if parts[2] in skip_tables:
-        continue
-
-    arcpy.management.EnableEditorTracking(
-        in_dataset=os.path.join(config.sde, table_name),
-        creator_field='CreatedBy',
-        creation_date_field='CreatedOn',
-        last_editor_field='EditedBy',
-        last_edit_date_field='ModifiedOn',
-        add_fields='ADD_FIELDS',
-        # record_dates_in='UTC',
-    )
-
-    arcpy.management.RegisterAsVersioned(
-        in_dataset=os.path.join(config.sde, table_name),
-        edit_to_base='NO_EDITS_TO_BASE',
-    )
-print('done')
+    if ok:
+        print('removing field')
+        arcpy.management.DeleteField(from_table, move_field)
 
 print('creating contingent field group for well class')
 try:
@@ -250,7 +234,6 @@ try:
     )
 except ExecuteError as e:
     print(e)
-
 print('done')
 
 well_classes = [
