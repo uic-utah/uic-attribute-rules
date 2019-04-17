@@ -188,8 +188,25 @@ with arcpy.da.SearchCursor(in_table=from_table, field_names=['GUID', move_field]
         status_cache[pk] = status
 print('done')
 
-print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
+print('updating new field data')
+ok = True
+with arcpy.da.UpdateCursor(in_table=to_table, field_names=['Facility_FK', move_field]) as cursor:
+    for fk, _ in cursor:
+        if fk not in status_cache:
+            continue
 
+        try:
+            cursor.updateRow((fk, status_cache[fk]))
+        except Exception as e:
+            ok = False
+            print('update failed ' + str(e))
+print('done')
+
+if ok:
+    print('removing field')
+    arcpy.management.DeleteField(from_table, move_field)
+
+print('updating editor tracking and versioning for {} tables'.format(len(tables) - len(skip_tables)))
 for table_name in tables:
     parts = table_name.split('.')
     if parts[2] in skip_tables:
