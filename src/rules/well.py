@@ -125,6 +125,25 @@ var counts = count(items);
 return counts;
 '''
 
+#: if well class = 1, NMPS needs a value
+constrain_class_one_wells = '''var keys = ['wellsubclass'];
+// if well class is empty, no worries
+for (var index in keys) {
+    if (!haskey($feature, keys[index]) || isempty($feature[keys[index]])) {
+        return true;
+    }
+}
+
+// if well class is not 1001 or 1003, no worries
+if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
+    return true;
+}
+
+iif(isempty($feature.nomigrationpetstatus), {
+    'errorMessage': 'Class I wells require a NoMigrationPetStatus'
+}, true);
+'''
+
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
 ID.triggers = [config.triggers.insert, config.triggers.update]
@@ -145,3 +164,6 @@ INJECTION_AQUIFER_EXEMPT = Constraint(
     'Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('$feature.InjectionAquiferExempt')
 )
 INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.update]
+
+NO_MIGRATION_PET_STATUS = Constraint('No Migration Pet Status', 'Well.NoMigrationPetStatus', constrain_class_one_wells)
+NO_MIGRATION_PET_STATUS.triggers = [config.triggers.insert, config.triggers.update]
