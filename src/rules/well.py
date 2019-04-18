@@ -212,6 +212,14 @@ return {
     'errorMessage': 'Acceptable values for remediation project type are 1-8 and 999. Input: ' + $feature.remediationprojecttype
 };'''
 
+constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellswpz)) {
+    return true;
+}
+
+iif (indexof(['Y', 'S', 'N', 'U'], $feature.wellswpz) < 0), {
+        'errorMessage': 'Acceptable values for SWPZ types are Y, S, N, U. Input: ' + $feature.wellswpz
+}, true);'''
+
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
 ID.triggers = [config.triggers.insert, config.triggers.update]
@@ -243,3 +251,6 @@ FACILITY_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 REMEDIATION_TYPE = Constraint('Remediation Project Type', 'Well.RemediationProjectType', constrain_remediation)
 REMEDIATION_TYPE.triggers = [config.triggers.insert, config.triggers.update]
+
+SWPZ = Constraint('Well SWPZ', 'Well.WellSQPZ', constrain_swpz)
+SWPZ.triggers = [config.triggers.insert, config.triggers.update]
