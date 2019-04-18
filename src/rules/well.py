@@ -156,7 +156,7 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
 
 iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
-}, true); '''
+}, true);'''
 
 constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($feature, 'wellclass')) {
     return true;
@@ -175,11 +175,9 @@ if (isempty($feature.highpriority)) {
     return true;
 }
 
-if (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0) {
-    return {
-        'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
-    };
-}'''
+iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0), {
+    'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
+}, true);'''
 
 constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !haskey($feature, 'wellclass')) {
     return true;
@@ -198,11 +196,9 @@ if (isempty($feature.classifacilitytype)) {
     return true;
 }
 
-if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
-    return {
-        'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
-    };
-}'''
+iif (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0), {
+    'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
+}, true);'''
 
 constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype) || isempty($feature.remediationprojecttype)) {
     return true;
@@ -213,7 +209,7 @@ if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9)
 }
 
 return {
-        'errorMessage': 'Acceptable values for remediation project type are 1-8 and 999. Input: ' + $feature.remediationprojecttype
+    'errorMessage': 'Acceptable values for remediation project type are 1-8 and 999. Input: ' + $feature.remediationprojecttype
 };'''
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
