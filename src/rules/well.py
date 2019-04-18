@@ -204,6 +204,18 @@ if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
     };
 }'''
 
+constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype) || isempty($feature.remediationprojecttype)) {
+    return true;
+}
+
+if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9)) || $feature.remediationprojecttype == 999){
+    reeturn true;
+}
+
+return {
+        'errorMessage': 'Acceptable values for remediation project type are 1-8 and 999. Input: ' + $feature.remediationprojecttype
+};'''
+
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
 ID.triggers = [config.triggers.insert, config.triggers.update]
@@ -232,3 +244,6 @@ NO_MIGRATION_PET_STATUS.triggers = [config.triggers.insert, config.triggers.upda
 
 FACILITY_TYPE = Constraint('Class I Facility Type', 'Well.ClassIFacilityType', constrain_facility_type)
 FACILITY_TYPE.triggers = [config.triggers.insert, config.triggers.update]
+
+REMEDIATION_TYPE = Constraint('Remediation Project Type', 'Well.RemediationProjectType', constrain_remediation)
+REMEDIATION_TYPE.triggers = [config.triggers.insert, config.triggers.update]

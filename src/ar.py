@@ -34,6 +34,7 @@ well_rules = ArcadeRule(
         well.INJECTION_AQUIFER_EXEMPT,
         well.NO_MIGRATION_PET_STATUS,
         well.FACILITY_TYPE,
+        well.REMEDIATION_TYPE,
     ]
 )
 
