@@ -163,19 +163,16 @@ constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($fe
 }
 
 if ($feature.wellclass == 5) {
-    if (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0) {
-        return {
+    iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0, {
             'errorMessage': 'Class V wells require a high priority value'
-    }
-
-    return true;
+        }, true);
 }
 
 if (isempty($feature.highpriority)) {
     return true;
 }
 
-iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0), {
+iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0, {
     'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
 }, true);'''
 
@@ -187,6 +184,7 @@ if ($feature.wellclass == 1) {
     if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
         return {
             'errorMessage': 'Class I wells require a facility type value'
+        }
     }
 
     return true;
@@ -196,27 +194,27 @@ if (isempty($feature.classifacilitytype)) {
     return true;
 }
 
-iif (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0), {
+iif (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0, {
     'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
 }, true);'''
 
-constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype) || isempty($feature.remediationprojecttype)) {
+constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype') || isempty($feature.remediationprojecttype)) {
     return true;
 }
 
-if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9)) || $feature.remediationprojecttype == 999){
-    reeturn true;
+if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9) || $feature.remediationprojecttype == 999){
+    return true;
 }
 
 return {
     'errorMessage': 'Acceptable values for remediation project type are 1-8 and 999. Input: ' + $feature.remediationprojecttype
-};'''
+}'''
 
 constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellswpz)) {
     return true;
 }
 
-iif (indexof(['Y', 'S', 'N', 'U'], $feature.wellswpz) < 0), {
+iif (indexof(['Y', 'S', 'N', 'U'], $feature.wellswpz) < 0, {
         'errorMessage': 'Acceptable values for SWPZ types are Y, S, N, U. Input: ' + $feature.wellswpz
 }, true);'''
 
