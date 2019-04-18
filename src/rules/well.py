@@ -156,7 +156,8 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
 
 iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
-}, true);'''
+}, true); '''
+
 constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($feature, 'wellclass')) {
     return true;
 }
