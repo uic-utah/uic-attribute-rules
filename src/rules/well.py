@@ -157,6 +157,28 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
 iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
 }, true);'''
+constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !haskey($feature, 'wellclass')) {
+    return true;
+}
+
+if ($feature.wellclass == 1) {
+    if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
+        return {
+            'errorMessage': 'Class I wells require a facility type value'
+    }
+
+    return true;
+}
+
+if (isempty($feature.classifacilitytype)) {
+    return true;
+}
+
+if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
+    return {
+        'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
+    };
+}'''
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
@@ -169,11 +191,12 @@ CLASS.triggers = [config.triggers.insert, config.triggers.update]
 
 SUBCLASS = Constraint('Well Subclass', 'Well.Subclass', constrain_subclass)
 SUBCLASS.triggers = [config.triggers.insert, config.triggers.update]
+
 # TODO: rasters are not supported
 # ELEVATION = Calculation('Well Elevation', 'SurfaceElevation', 'Well.SurfaceElevation', extract_elevation)
 
-HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_yes_no_unknown.format('$feature.highpriority'))
-HIGHPRIORITY.triggers = [config.triggers.update]
+HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_highpriority)
+HIGHPRIORITY.triggers = [config.triggers.insert, config.triggers.update]
 
 INJECTION_AQUIFER_EXEMPT = Constraint(
     'Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('$feature.InjectionAquiferExempt')
@@ -182,3 +205,6 @@ INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.update]
 
 NO_MIGRATION_PET_STATUS = Constraint('No Migration Pet Status', 'Well.NoMigrationPetStatus', constrain_class_one_wells)
 NO_MIGRATION_PET_STATUS.triggers = [config.triggers.insert, config.triggers.update]
+
+FACILITY_TYPE = Constraint('Class I Facility Type', 'Well.ClassIFacilityType', constrain_facility_type)
+FACILITY_TYPE.triggers = [config.triggers.insert, config.triggers.update]
