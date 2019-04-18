@@ -59,8 +59,7 @@ for (var key in keys) {
     }
 }
 
-return iif(isempty($feature.wellclass), null, generateId($feature.wellclass));
-'''
+return iif(isempty($feature.wellclass), null, generateId($feature.wellclass));'''
 
 extract_facility = '''function getAttributeFromLargestArea(feat, set, field) {
     var items = intersects(set, feat);
@@ -98,8 +97,7 @@ if (!haskey($feature, field)) {
     return null;
 }
 
-return getAttributeFromLargestArea($feature, set, field);
-'''
+return getAttributeFromLargestArea($feature, set, field);'''
 
 constrain_wellclass = '''if (!haskey($feature, 'wellclass') || isempty($feature.wellclass)) {
     return true;
@@ -140,8 +138,7 @@ var items = intersects(set, $feature);
 
 var counts = count(items);
 
-return counts;
-'''
+return counts;'''
 
 #: if well class = 1, NMPS needs a value
 constrain_class_one_wells = '''var keys = ['wellsubclass'];
@@ -157,10 +154,9 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
     return true;
 }
 
-iif(isempty($feature.nomigrationpetstatus), {
+iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
-}, true);
-'''
+}, true);'''
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
 ID = Calculation('Well Id', 'WellId', 'Well.Id', create_id)
