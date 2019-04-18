@@ -109,6 +109,24 @@ iif (indexof([1,3,4,5,6], $feature.wellclass) > -1, true, {
     'errorMessage': 'Acceptable well classes are 1, 3, 4, 5, or 6. Input: ' + $feature.wellclass
 })'''
 
+constrain_subclass = '''if (!haskey($feature, 'wellsubclass') || !haskey($feature, 'wellclass')) {
+    return true;
+}
+
+if (isempty($feature.wellclass)) {
+    return true;
+}
+
+if (isempty($feature.wellsubclass)) {
+    return {
+        'errorMessage': 'Well subclass is required'
+    }
+}
+
+iif (left($feature.wellsubclass, 1) == text($feature.wellclass), true, {
+    'errorMessage': 'Well sub class (' + text($feature.wellsubclass) + ') is not associated with the well class (' + text($feature.wellclass) + ')'
+})'''
+
 constrain_yes_no_unknown = '''if (isempty({0})) {{
     return true;
 }}
@@ -153,7 +171,8 @@ AUTHORIZATION = None
 CLASS = Constraint('Well Class', 'Well.Class', constrain_wellclass)
 CLASS.triggers = [config.triggers.insert, config.triggers.update]
 
-SUBCLASS = None
+SUBCLASS = Constraint('Well Subclass', 'Well.Subclass', constrain_subclass)
+SUBCLASS.triggers = [config.triggers.insert, config.triggers.update]
 # TODO: rasters are not supported
 # ELEVATION = Calculation('Well Elevation', 'SurfaceElevation', 'Well.SurfaceElevation', extract_elevation)
 

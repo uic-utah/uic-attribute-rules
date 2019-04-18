@@ -31,6 +31,7 @@ well_rules = CalculateWithArcadeRule(
         well.ID,
         well.FACILITY,
         well.CLASS,
+        well.SUBCLASS,
         well.HIGHPRIORITY,
         well.INJECTION_AQUIFER_EXEMPT,
         well.NO_MIGRATION_PET_STATUS,
