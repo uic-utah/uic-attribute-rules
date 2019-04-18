@@ -157,6 +157,29 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
 iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
 }, true);'''
+constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($feature, 'wellclass')) {
+    return true;
+}
+
+if ($feature.wellclass == 5) {
+    if (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0) {
+        return {
+            'errorMessage': 'Class V wells require a high priority value'
+    }
+
+    return true;
+}
+
+if (isempty($feature.highpriority)) {
+    return true;
+}
+
+if (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0) {
+    return {
+        'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
+    };
+}'''
+
 constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !haskey($feature, 'wellclass')) {
     return true;
 }
