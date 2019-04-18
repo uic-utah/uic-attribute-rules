@@ -101,7 +101,7 @@ if (!haskey($feature, field)) {
 return getAttributeFromLargestArea($feature, set, field);
 '''
 
-constrain_wellclass = '''if (isempty($feature.wellclass) || !haskey($feature, 'wellclass')) {
+constrain_wellclass = '''if (!haskey($feature, 'wellclass') || isempty($feature.wellclass)) {
     return true;
 }
 
