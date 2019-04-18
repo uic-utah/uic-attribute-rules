@@ -9,13 +9,11 @@ import os
 
 import arcpy
 from config import config
-from models.rule import CalculateWithArcadeRule
+from models.rule import ArcadeRule
 from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
 
-facility_rules = CalculateWithArcadeRule(
-    config.sde, facility.TABLE, [
         facility.GUID,
         facility.FIPS_DOMAIN,
         facility.FIPS,
@@ -24,8 +22,9 @@ facility_rules = CalculateWithArcadeRule(
         facility.ZIP,
     ]
 )
+facility_rules = ArcadeRule(config.sde, facility.TABLE, [
 
-well_rules = CalculateWithArcadeRule(
+well_rules = ArcadeRule(
     config.sde, well.TABLE, [
         well.GUID,
         well.ID,
@@ -38,7 +37,7 @@ well_rules = CalculateWithArcadeRule(
     ]
 )
 
-aor_rules = CalculateWithArcadeRule(
+aor_rules = ArcadeRule(
     config.sde,
     area_of_review.TABLE,
     [
@@ -46,7 +45,7 @@ aor_rules = CalculateWithArcadeRule(
     ],
 )
 
-art_pen_rules = CalculateWithArcadeRule(
+art_pen_rules = ArcadeRule(
     config.sde,
     art_pen.TABLE,
     [
@@ -54,7 +53,7 @@ art_pen_rules = CalculateWithArcadeRule(
     ],
 )
 
-authorization_rules = CalculateWithArcadeRule(
+authorization_rules = ArcadeRule(
     config.sde,
     authorization.TABLE,
     [
@@ -63,7 +62,7 @@ authorization_rules = CalculateWithArcadeRule(
     ],
 )
 
-auth_action_rules = CalculateWithArcadeRule(
+auth_action_rules = ArcadeRule(
     config.sde,
     authorization_action.TABLE,
     [
@@ -71,7 +70,7 @@ auth_action_rules = CalculateWithArcadeRule(
     ],
 )
 
-contact_rules = CalculateWithArcadeRule(
+contact_rules = ArcadeRule(
     config.sde,
     contact.TABLE,
     [
@@ -79,7 +78,7 @@ contact_rules = CalculateWithArcadeRule(
     ],
 )
 
-correction_rules = CalculateWithArcadeRule(
+correction_rules = ArcadeRule(
     config.sde,
     correction.TABLE,
     [
@@ -87,7 +86,7 @@ correction_rules = CalculateWithArcadeRule(
     ],
 )
 
-enforcement_rules = CalculateWithArcadeRule(
+enforcement_rules = ArcadeRule(
     config.sde,
     enforcement.TABLE,
     [
@@ -95,7 +94,7 @@ enforcement_rules = CalculateWithArcadeRule(
     ],
 )
 
-inspection_rules = CalculateWithArcadeRule(
+inspection_rules = ArcadeRule(
     config.sde,
     inspection.TABLE,
     [
@@ -103,7 +102,7 @@ inspection_rules = CalculateWithArcadeRule(
     ],
 )
 
-mit_rules = CalculateWithArcadeRule(
+mit_rules = ArcadeRule(
     config.sde,
     mit.TABLE,
     [
@@ -111,7 +110,7 @@ mit_rules = CalculateWithArcadeRule(
     ],
 )
 
-operating_status_rules = CalculateWithArcadeRule(
+operating_status_rules = ArcadeRule(
     config.sde,
     operating_status.TABLE,
     [
@@ -119,7 +118,7 @@ operating_status_rules = CalculateWithArcadeRule(
     ],
 )
 
-violation_rules = CalculateWithArcadeRule(
+violation_rules = ArcadeRule(
     config.sde,
     violation.TABLE,
     [

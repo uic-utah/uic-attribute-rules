@@ -57,10 +57,10 @@ class Rule(object):
                     raise e
 
 
-class CalculateWithArcadeRule(Rule):
+class ArcadeRule(Rule):
 
     def __init__(self, sde, table, metas):
-        super(CalculateWithArcadeRule, self).__init__()
+        super(ArcadeRule, self).__init__()
 
         self.name = table
         self.table_path = os.path.join(sde, table)
