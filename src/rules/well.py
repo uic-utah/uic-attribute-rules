@@ -103,9 +103,9 @@ constrain_wellclass = '''if (!haskey($feature, 'wellclass') || isempty($feature.
     return true;
 }
 
-iif (indexof([1,3,4,5,6], $feature.wellclass) > -1, true, {
+return iif (isempty(domainname($feature, 'wellclass', $feature.wellclass)), {
     'errorMessage': 'Acceptable well classes are 1, 3, 4, 5, or 6. Input: ' + $feature.wellclass
-})'''
+}, true)'''
 
 constrain_subclass = '''if (!haskey($feature, 'wellsubclass') || !haskey($feature, 'wellclass')) {
     return true;
@@ -121,16 +121,17 @@ if (isempty($feature.wellsubclass)) {
     }
 }
 
-iif (left($feature.wellsubclass, 1) == text($feature.wellclass), true, {
+return iif (left($feature.wellsubclass, 1) == text($feature.wellclass), true, {
     'errorMessage': 'Well sub class (' + text($feature.wellsubclass) + ') is not associated with the well class (' + text($feature.wellclass) + ')'
 })'''
 
-constrain_yes_no_unknown = '''if (isempty({0})) {{
+constrain_yes_no_unknown = '''if (!haskey($feature, '{0}') || isempty($feature.{0})) {{
     return true;
 }}
-iif (indexof(['Y', 'N', 'U'], {0}) > -1, true, {{
-    'errorMessage': 'Acceptable values are Y, N, U. Input: ' + {0}
-}})'''
+
+return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
+    'errorMessage': 'Acceptable values are Y, N, U. Input: ' + $feature.{0}
+}}, true)'''
 
 extract_elevation = '''var set = FeatureSetByName($datastore, 'DEM', ['Feet'], true);
 
@@ -154,7 +155,7 @@ if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
     return true;
 }
 
-iif (isempty($feature.nomigrationpetstatus), {
+return iif (isempty($feature.nomigrationpetstatus), {
     'errorMessage': 'Class I wells require a NoMigrationPetStatus'
 }, true);'''
 
@@ -163,7 +164,7 @@ constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($fe
 }
 
 if ($feature.wellclass == 5) {
-    iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0, {
+    return iif (isempty(domainname($feature, 'highpriority', $feature.highpriority)), {
             'errorMessage': 'Class V wells require a high priority value'
         }, true);
 }
@@ -172,7 +173,7 @@ if (isempty($feature.highpriority)) {
     return true;
 }
 
-iif (indexof(['Y', 'N', 'U'], $feature.highpriority) < 0, {
+return iif (isempty(domainname($feature, 'highpriority', $feature.highpriority)), {
     'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
 }, true);'''
 
@@ -181,20 +182,16 @@ constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !has
 }
 
 if ($feature.wellclass == 1) {
-    if (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0) {
-        return {
+    return iif (isempty(domainname($feature, 'classifacilitytype', $feature.classifacilitytype)), {
             'errorMessage': 'Class I wells require a facility type value'
-        }
-    }
-
-    return true;
+        }, true);
 }
 
 if (isempty($feature.classifacilitytype)) {
     return true;
 }
 
-iif (indexof(['C', 'N', 'U'], $feature.classifacilitytype) < 0, {
+return iif (isempty(domainname($feature, 'classifacilitytype', $feature.classifacilitytype)), {
     'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
 }, true);'''
 
@@ -214,8 +211,8 @@ constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellsw
     return true;
 }
 
-iif (indexof(['Y', 'S', 'N', 'U'], $feature.wellswpz) < 0, {
-        'errorMessage': 'Acceptable values for SWPZ types are Y, S, N, U. Input: ' + $feature.wellswpz
+return iif (isempty(domainname($feature, 'wellswpz', $feature.wellswpz)), {
+    'errorMessage': 'Acceptable values for SWPZ types are Y, S, N, U. Input: ' + $feature.wellswpz
 }, true);'''
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
@@ -236,9 +233,7 @@ SUBCLASS.triggers = [config.triggers.insert, config.triggers.update]
 HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_highpriority)
 HIGHPRIORITY.triggers = [config.triggers.insert, config.triggers.update]
 
-INJECTION_AQUIFER_EXEMPT = Constraint(
-    'Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('$feature.InjectionAquiferExempt')
-)
+INJECTION_AQUIFER_EXEMPT = Constraint('Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('InjectionAquiferExempt'))
 INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.update]
 
 NO_MIGRATION_PET_STATUS = Constraint('No Migration Pet Status', 'Well.NoMigrationPetStatus', constrain_class_one_wells)
