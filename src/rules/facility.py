@@ -163,6 +163,9 @@ FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
 ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
 CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
 ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
+
 ZIP_DOMAIN = Constraint('Facility Zip', 'Facility.ZipCode', constrain_zip)
+ZIP_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+
 FIPS_DOMAIN = Constraint('County Fips', 'Facility.FIPS', constrain_domain)
 FIPS_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
