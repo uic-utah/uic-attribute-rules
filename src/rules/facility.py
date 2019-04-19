@@ -79,8 +79,7 @@ function getAttributeFromLargestArea(feat, set, field) {
     return result;
 }
 
-return getAttributeFromLargestArea($feature, set, field);
-'''
+return getAttributeFromLargestArea($feature, set, field);'''
 
 extract_zip = '''var field = 'ZIP5';
 var set = FeatureSetByName($datastore, 'ZipCodes', [field], true);
@@ -114,8 +113,7 @@ function getAttributeFromLargestArea(feat, set, field) {
     return result;
 }
 
-return getAttributeFromLargestArea($feature, set, field);
-'''
+return getAttributeFromLargestArea($feature, set, field);'''
 
 constrain_domain = '''if (!haskey($feature, 'countyfips')) {
     return true;
@@ -140,8 +138,7 @@ if (code >= 49001 && code <= 49057) {
 
 return {
     'errorMessage': 'The code does not fall within the valid ranges: ' + code
-};
-'''
+};'''
 
 create_id = '''var keys = ['countyfips', 'guid'];
 
