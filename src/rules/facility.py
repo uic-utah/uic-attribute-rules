@@ -153,10 +153,19 @@ for (var key in keys) {
 
 return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
 
+constrain_zip = '''if (!haskey($feature, 'facilityzip') || isempty($feature.facilityzip)) {
+    return true;
+}
+
+return iif (isempty(domainname($feature, 'facilityzip', $feature.facilityzip)), {
+    'errorMessage': 'Zip code is not in the domain. Input: ' + $feature.facilityzip
+    }, true);'''
+
 GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
 ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
 CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
 ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
+ZIP_DOMAIN = Constraint('Facility Zip', 'Facility.ZipCode', constrain_zip)
 FIPS_DOMAIN = Constraint('County Fips', 'Facility.FIPS', constrain_domain)
 FIPS_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]

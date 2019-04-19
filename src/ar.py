@@ -22,6 +22,17 @@ facility_rules = ArcadeRule(config.sde, facility.TABLE, [
     facility.CITY,
     facility.ZIP,
 ])
+facility_rules = ArcadeRule(
+    config.sde, facility.TABLE, [
+        facility.GUID,
+        facility.FIPS_DOMAIN,
+        facility.FIPS,
+        facility.ID,
+        facility.CITY,
+        facility.ZIP,
+        facility.ZIP_DOMAIN,
+    ]
+)
 
 well_rules = ArcadeRule(
     config.sde, well.TABLE, [
