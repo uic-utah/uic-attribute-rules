@@ -63,6 +63,10 @@ art_pen_rules = ArcadeRule(
     art_pen.TABLE,
     [
         art_pen.GUID,
+        art_pen.WELL_TYPE,
+        art_pen.CA_DOMAIN,
+        art_pen.CA_TYPE_DOMAIN,
+        art_pen.CA_DATE,
     ],
 )
 
