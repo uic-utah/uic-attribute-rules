@@ -136,6 +136,8 @@ mit_rules = ArcadeRule(
     mit.TABLE,
     [
         mit.GUID,
+        mit.TYPE,
+        mit.ACTION,
     ],
 )
 
