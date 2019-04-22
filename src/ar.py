@@ -76,6 +76,8 @@ authorization_rules = ArcadeRule(
     [
         authorization.GUID,
         authorization.ID,
+        authorization.TYPE,
+        authorization.SECTOR_TYPE,
     ],
 )
 

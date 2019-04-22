@@ -5,8 +5,9 @@ authorization.py
 A module that has the UICAuthorization rules
 '''
 
+from . import common
 from config import config
-from models.ruletypes import Constant, Calculation
+from models.ruletypes import Constant, Calculation, Constraint
 
 create_id = '''function generateId(code, fk) {
     var field = 'CountyFIPS';
@@ -41,3 +42,9 @@ GUID = Constant('Authorization Guid', 'GUID', 'Authorization.Guid', 'GUID()')
 #: AA = 2 digit AuthorizationType code (https://github.com/agrc/uic-attribute-rules/issues/5)
 ID = Calculation('Authorization Id', 'AuthorizationID', 'Authorization.Id', create_id)
 ID.triggers = [config.triggers.insert, config.triggers.update]
+
+TYPE = Constraint('Authorization Type', 'Authorization.AuthorizationType', common.constrain_to_domain('AuthorizationType'))
+TYPE.triggers = [config.triggers.insert, config.triggers.update]
+
+SECTOR_TYPE = Constraint('Owner Sector Type', 'Authorization.OwnerSectorType', common.constrain_to_domain('OwnerSectorType'))
+SECTOR_TYPE.triggers = [config.triggers.insert, config.triggers.update]
