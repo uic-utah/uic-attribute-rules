@@ -115,6 +115,8 @@ enforcement_rules = ArcadeRule(
     enforcement.TABLE,
     [
         enforcement.GUID,
+        enforcement.TYPE,
+        enforcement.COMMENT,
     ],
 )
 
