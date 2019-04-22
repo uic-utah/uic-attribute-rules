@@ -125,6 +125,9 @@ inspection_rules = ArcadeRule(
     inspection.TABLE,
     [
         inspection.GUID,
+        inspection.TYPE,
+        inspection.ASSISTANCE,
+        inspection.DEFICIENCY,
     ],
 )
 
