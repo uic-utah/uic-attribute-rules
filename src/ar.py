@@ -105,6 +105,8 @@ correction_rules = ArcadeRule(
     correction.TABLE,
     [
         correction.GUID,
+        correction.TYPE,
+        correction.COMMENT,
     ],
 )
 
@@ -113,8 +115,6 @@ enforcement_rules = ArcadeRule(
     enforcement.TABLE,
     [
         enforcement.GUID,
-        enforcement.TYPE,
-        enforcement.COMMENT,
     ],
 )
 
