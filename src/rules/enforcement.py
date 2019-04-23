@@ -13,7 +13,7 @@ constrain_other_comment = '''if (!haskey($feature, 'EnforcementType') || !haskey
     return true;
 }
 
-if (isempty($feature.EnforcementType) || lower(domainname($feature, 'EnforcementType')) != 'otr') {
+if (isempty($feature.EnforcementType) || lower(domaincode($feature, 'EnforcementType')) != 'otr') {
     return true;
 }
 
