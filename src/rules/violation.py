@@ -29,7 +29,7 @@ if (lower(domainname($feature, 'USDWContamination')) != 'yes') {
     return;
 }
 
-$feature.significantnoncompliance = 'Y';
+return 'Y';
 '''
 
 TABLE = 'UICViolation'
@@ -42,7 +42,7 @@ TYPE.triggers = [config.triggers.insert, config.triggers.update]
 CONTAMINATION = Constraint('Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination'))
 CONTAMINATION.triggers = [config.triggers.insert, config.triggers.update]
 
-CONTAMINATION_CALC = Calculation('Significant Non Compliance', 'USDWContaminiation', 'Violation.SignificantNonCompliance', set_yes_if_yes)
+CONTAMINATION_CALC = Calculation('Significant Non Compliance', 'SignificantNonCompliance', 'Violation.SignificantNonCompliance', set_yes_if_yes)
 CONTAMINATION_CALC.triggers = [config.triggers.insert, config.triggers.update]
 
 ENDANGER = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger'))
