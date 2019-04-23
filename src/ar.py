@@ -146,6 +146,8 @@ operating_status_rules = ArcadeRule(
     operating_status.TABLE,
     [
         operating_status.GUID,
+        operating_status.TYPE,
+        operating_status.DATE,
     ],
 )
 
