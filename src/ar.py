@@ -154,6 +154,12 @@ violation_rules = ArcadeRule(
     violation.TABLE,
     [
         violation.GUID,
+        violation.TYPE,
+        violation.CONTAMINATION,
+        violation.CONTAMINATION_CALC,
+        violation.ENDANGER,
+        violation.NONCOMPLIANCE,
+        violation.COMMENT,
     ],
 )
 
