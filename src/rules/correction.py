@@ -15,7 +15,7 @@ constrain_other_comment = '''if (!haskey($feature, 'correctiveaction') || !haske
     return true;
 }
 
-if (isempty($feature.correctiveaction) || lower(domaincode($feature, 'correctiveaction')) != 'ot') {
+if (isempty($feature.correctiveaction) || lower(domaincode($feature, 'correctiveaction', $feature.correctiveaction)) != 'ot') {
     return true;
 }
 
