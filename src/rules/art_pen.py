@@ -23,7 +23,7 @@ return iif (isempty($feature.artpen_catype), {
     'errorMessage': 'ArtPen_CAType cannot be empty when Ident4CA has a value'
 }, true);'''
 
-constrain_ca_type = '''if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'ident4ca')) {
+constrain_ca_date = '''if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'ident4ca')) {
     return true;
 }
 
@@ -46,5 +46,5 @@ CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 CA_TYPE_DOMAIN = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
 CA_TYPE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
-CA_DATE = Constraint('CA Date', 'ArtPen.ArtPen_CADate', constrain_ca_type)
+CA_DATE = Constraint('CA Date', 'ArtPen.ArtPen_CADate', constrain_ca_date)
 CA_DATE.triggers = [config.triggers.insert, config.triggers.update]
