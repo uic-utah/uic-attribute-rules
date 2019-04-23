@@ -37,10 +37,10 @@ return iif (isempty($feature.artpen_cadate), {
 
 GUID = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
 
-WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constain_to_domain('artpen_wellname'))
+WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname'))
 WELL_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constain_to_domain('ident4ca'))
+CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constrain_to_domain('ident4ca'))
 CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
 CA_TYPE_DOMAIN = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
