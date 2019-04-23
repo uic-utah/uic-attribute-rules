@@ -14,14 +14,6 @@ from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
 
-facility_rules = ArcadeRule(config.sde, facility.TABLE, [
-    facility.GUID,
-    facility.FIPS_DOMAIN,
-    facility.FIPS,
-    facility.ID,
-    facility.CITY,
-    facility.ZIP,
-])
 facility_rules = ArcadeRule(
     config.sde, facility.TABLE, [
         facility.GUID,
