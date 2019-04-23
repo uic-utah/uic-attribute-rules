@@ -65,6 +65,10 @@ table_modifications = {
         'add': [],
         'delete': ['ICISCompMonActReason', 'ICISCompMonType', 'ICISCompActType', 'ICISMOAPriority', 'ICISRegionalPriority']
     },
+    'UICContact': {
+        'add': [],
+        'delete': ['ContactFax']
+    },
     'UICArtPen': {
         'add': [
             {
