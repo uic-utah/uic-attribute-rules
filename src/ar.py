@@ -123,6 +123,7 @@ inspection_rules = ArcadeRule(
         inspection.ASSISTANCE,
         inspection.DEFICIENCY,
         inspection.FOREIGN_KEY,
+        inspection.FACILITY_ONLY,
     ],
 )
 
