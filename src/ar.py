@@ -90,6 +90,7 @@ contact_rules = ArcadeRule(
         contact.GUID,
         contact.TYPE,
         contact.STATE,
+        # contact.CONTACT_TYPE,
     ],
 )
 
