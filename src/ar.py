@@ -124,6 +124,7 @@ inspection_rules = ArcadeRule(
         inspection.DEFICIENCY_DOMAIN,
         inspection.FOREIGN_KEY,
         inspection.FACILITY_ONLY,
+        inspection.INSPECTION_DATE,
     ],
 )
 

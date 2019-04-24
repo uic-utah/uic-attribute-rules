@@ -30,6 +30,35 @@ return iif (isempty($feature.facility_fk), {
     'errorMessage': 'If InspectionType coded value is NW, then there must be a Facility_FK but no Well_FK'
 }, true);'''
 
+constrain_inspection_date = '''if (!haskey($feature, 'inspectiondate') || !haskey($feature, 'well_fk') || isempty($feature.inspectiondate)) {
+    return true;
+}
+
+if (isempty($feature.well_fk)) {
+    return true;
+}
+
+var well = $feature.well_fk;
+var statusset = featuresetbyname($datastore, 'UICWellOperatingStatus', ['OperatingStatusDate'], false);
+
+var statuses = filter(statusset, 'well_fk=@well');
+
+if (isempty(status)) {
+    return true;
+}
+
+var earliestDate = date();
+
+for (var status in statuses) {
+    if (status.operatingstatusdate < earliestDate) {
+        earliestDate = status.operatingstatusdate;
+    }
+}
+
+return iif ($feature.inspectiondate < earliestDate, {
+    'errorMessage': 'If the Inspection record is associated with a Well, the InspectionDate must be equal to or later than the earliest OperatingStatusDate associated with the Well.'
+}, true);'''
+
 TABLE = 'UICInspection'
 
 GUID = Constant('Inspection Guid', 'GUID', 'Inspection.Guid', 'GUID()')
@@ -48,3 +77,6 @@ FOREIGN_KEY.triggers = [config.triggers.insert, config.triggers.update]
 
 FACILITY_ONLY = Constraint('NW for facility only', 'FacilityOnly.InspectionType', constrain_to_facility)
 FACILITY_ONLY.triggers = [config.triggers.insert, config.triggers.update]
+
+INSPECTION_DATE = Constraint('Well operating status date', 'Inspection.InspectionDate', constrain_inspection_date)
+INSPECTION_DATE.triggers = [config.triggers.insert, config.triggers.update]
