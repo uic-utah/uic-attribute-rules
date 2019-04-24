@@ -21,7 +21,8 @@ constrain_to_facility = '''if (!haskey($feature, 'inspectiontype') || !haskey($f
     return true;
 }
 
-if (lower(domaincode($feature, 'inspectiontype', $feature.inspectiontype)) != 'nw') {
+var code = lower(domaincode($feature, 'inspectiontype', $feature.inspectiontype));
+if (code != 'nw' && code != 'fi') {
     return true;
 }
 
