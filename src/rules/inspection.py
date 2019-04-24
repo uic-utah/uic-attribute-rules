@@ -33,14 +33,14 @@ TABLE = 'UICInspection'
 
 GUID = Constant('Inspection Guid', 'GUID', 'Inspection.Guid', 'GUID()')
 
-TYPE = Constraint('Inspection Type', 'Inspection.Type', common.constrain_to_domain('InspectionType'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+TYPE_DOMAIN = Constraint('Inspection Type', 'Inspection.Type', common.constrain_to_domain('InspectionType'))
+TYPE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
-ASSISTANCE = Constraint('Inspection Assistance', 'Inspection.Assistance', common.constrain_to_domain('InspectionAssistance'))
-ASSISTANCE.triggers = [config.triggers.insert, config.triggers.update]
+ASSISTANCE_DOMAIN = Constraint('Inspection Assistance', 'Inspection.Assistance', common.constrain_to_domain('InspectionAssistance'))
+ASSISTANCE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
-DEFICIENCY = Constraint('Inspection Deficiency', 'Inspection.Deficiency', common.constrain_to_domain('InspectionDeficiency'))
-DEFICIENCY.triggers = [config.triggers.insert, config.triggers.update]
+DEFICIENCY_DOMAIN = Constraint('Inspection Deficiency', 'Inspection.Deficiency', common.constrain_to_domain('InspectionDeficiency'))
+DEFICIENCY_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
 FOREIGN_KEY = Constraint('One parent relation', 'FacilityFk.WellFk', constrain_to_one_parent)
 FOREIGN_KEY.triggers = [config.triggers.insert, config.triggers.update]
