@@ -43,7 +43,7 @@ var statusset = featuresetbyname($datastore, 'UICWellOperatingStatus', ['Operati
 
 var statuses = filter(statusset, 'well_fk=@well');
 
-if (isempty(status)) {
+if (isempty(statuses)) {
     return true;
 }
 
@@ -70,7 +70,7 @@ if (indexof(['NO', 'OS'], code) > -1) {
     return true;
 }
 
-var correctionset = featuresetbyname($datasource, 'uiccorrection', ['inspection_fk'], false);
+var correctionset = featuresetbyname($datastore, 'uiccorrection', ['inspection_fk'], false);
 
 var pk = $feature.guid;
 var corrections = filter(correctionset, 'inspection_fk=@pk');
