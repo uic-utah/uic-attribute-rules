@@ -56,7 +56,28 @@ for (var status in statuses) {
 }
 
 return iif ($feature.inspectiondate < earliestDate, {
-    'errorMessage': 'If the Inspection record is associated with a Well, the InspectionDate must be equal to or later than the earliest OperatingStatusDate associated with the Well.'
+    'errorMessage': 'If the Inspection record is associated with a Well, the InspectionDate must be equal' +
+                    'to or later than the earliest OperatingStatusDate associated with the Well.'
+}, true);'''
+
+constrain_correction = '''if (!haskey($feature, 'inspectiondeficiency') || isempty($feature.inspectiondeficiency)) {
+    return true;
+}
+
+var code = domaincode($feature, 'inspectiondeficiency', $feature.inspectiondeficiency);
+
+if (indexof(['NO', 'OS'], code) > -1) {
+    return true;
+}
+
+var correctionset = featuresetbyname($datasource, 'uiccorrection', ['inspection_fk'], false);
+
+var pk = $feature.guid;
+var corrections = filter(correctionset, 'inspection_fk=@pk');
+
+return iif (isempty(corrections), {
+    'errorMessage': "If InspectionDeficiency is anything other than 'No Deficiency' or 'Deficiency Not Observed'" +
+                    'there must be a Correction record associated with the Inspection record.'
 }, true);'''
 
 TABLE = 'UICInspection'
@@ -80,3 +101,6 @@ FACILITY_ONLY.triggers = [config.triggers.insert, config.triggers.update]
 
 INSPECTION_DATE = Constraint('Well operating status date', 'Inspection.InspectionDate', constrain_inspection_date)
 INSPECTION_DATE.triggers = [config.triggers.insert, config.triggers.update]
+
+CORRECTION = Constraint('No Deficiency', 'Inspection.InspectionDeficiency', constrain_correction)
+CORRECTION.triggers = [config.triggers.insert, config.triggers.update]
