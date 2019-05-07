@@ -247,5 +247,5 @@ FACILITY_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 REMEDIATION_TYPE = Constraint('Remediation Project Type', 'Well.RemediationProjectType', constrain_remediation)
 REMEDIATION_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-SWPZ = Constraint('Well SWPZ', 'Well.WellSQPZ', constrain_swpz)
+SWPZ = Constraint('Well SWPZ', 'Well.WellSWPZ', constrain_swpz)
 SWPZ.triggers = [config.triggers.insert, config.triggers.update]
