@@ -39,16 +39,13 @@ create_id = '''function getAttributeFromLargestArea(feat, set, field) {
     return result;
 }
 
-function generateId(class) {
+function generateId(class, guid, geom) {
     var field = 'FIPS';
     var set = FeatureSetByName($datastore, 'Counties', [field], true);
 
-    // there is a bug so the $feature can't be used.
-    // TODO: replace with $feature when bug is resolved
-    var geom = point({"x" : 423117, "y" : 4393267.15, "spatialReference" : {"wkid" : 26912}});
     var fips = getAttributeFromLargestArea(geom, set, field);
 
-    return 'UTU' + fips + class + upper(mid($feature.guid, 29, 8));
+    return 'UTU' + fips + class + upper(mid(guid, 29, 8));
 }
 
 var keys = ['wellclass', 'guid'];
@@ -59,7 +56,7 @@ for (var key in keys) {
     }
 }
 
-return iif(isempty($feature.wellclass), null, generateId($feature.wellclass));'''
+return iif(isempty($feature.wellclass), null, generateId($feature.wellclass, $feature.guid, geometry($feature)));'''
 
 extract_facility = '''function getAttributeFromLargestArea(feat, set, field) {
     var items = intersects(set, feat);
