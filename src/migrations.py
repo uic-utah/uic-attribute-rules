@@ -99,22 +99,28 @@ table_modifications = {
 arcpy.env.workspace = config.sde
 
 print('compressing db')
-arcpy.management.Compress(config.sde)
+try:
+    arcpy.management.Compress(config.sde)
+except Exception:
+    print('skipping compress, insufficient permissions')
 
 print('analyzing db')
-arcpy.management.AnalyzeDatasets(
-    input_database=config.sde,
-    include_system='SYSTEM',
-    analyze_base='ANALYZE_BASE',
-    analyze_delta='ANALYZE_DELTA',
-    analyze_archive='ANALYZE_ARCHIVE',
-)
 
 tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
 
 for dataset in arcpy.ListDatasets('', 'Feature'):
     arcpy.env.workspace = os.path.join(config.sde, dataset)
     tables += arcpy.ListFeatureClasses()
+try:
+    arcpy.management.AnalyzeDatasets(
+        input_database=config.sde,
+        include_system='SYSTEM',
+        analyze_base='ANALYZE_BASE',
+        analyze_delta='ANALYZE_DELTA',
+        analyze_archive='ANALYZE_ARCHIVE',
+    )
+except Exception:
+    print('skipping analyze, insufficient permissions')
 
 skip_tables = ['Counties', 'ZipCodes', 'Municipalities', 'SDE_compress_log']
 
