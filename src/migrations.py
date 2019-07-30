@@ -105,12 +105,6 @@ except Exception:
     print('skipping compress, insufficient permissions')
 
 print('analyzing db')
-
-tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
-
-for dataset in arcpy.ListDatasets('', 'Feature'):
-    arcpy.env.workspace = os.path.join(config.sde, dataset)
-    tables += arcpy.ListFeatureClasses()
 try:
     arcpy.management.AnalyzeDatasets(
         input_database=config.sde,
@@ -128,6 +122,12 @@ print('removing {} tables'.format(len(delete_tables)))
 for table in delete_tables:
     arcpy.management.Delete(os.path.join(config.sde, table))
 print('done')
+
+tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
+
+for dataset in arcpy.ListDatasets('', 'Feature'):
+    arcpy.env.workspace = os.path.join(config.sde, dataset)
+    tables += arcpy.ListFeatureClasses()
 
 print('unversioning {} tables'.format(len(tables) - len(skip_tables)))
 for table_name in tables:
