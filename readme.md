@@ -37,3 +37,28 @@
     ```sh
     pip install -r requirements.dev.txt
     ```
+
+## Database Migrations
+
+### Remove feature dataset
+
+1. Import the individual feature classes contained within the feature datasets
+1. Import everything outside the feature dataset
+
+### python migrations
+
+1. update config.py to set correct source
+1. run migration code
+   - `python migrations.py`
+
+#### What happens
+
+1. removes unused tables
+1. unversions tables
+1. disables editor tracking
+1. adds and removes table fields
+1. removes unused domains
+1. moves fields from one table to another
+1. creates well contingency
+1. adds editor tracking
+1. versions tables
