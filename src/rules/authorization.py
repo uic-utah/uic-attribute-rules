@@ -26,7 +26,7 @@ create_id = '''function generateId(code, fk) {
         code = 'UA';
     }
 
-    return 'UTU' + right(facility[field], 2) + code + upper(mid($feature.guid, 29, 7));
+    return 'UTU' + right(facility[field], 2) + code + upper(mid($feature.guid, 29, 8));
 }
 
 var missingRequiredItems = isempty($feature.authorizationtype) || isempty($feature.facility_fk);
