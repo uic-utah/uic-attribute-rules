@@ -38,20 +38,22 @@
     pip install -r requirements.dev.txt
     ```
 
-## Database Migrations
+## Installation
 
-### Remove feature dataset
+### Database Migrations
+
+#### Remove feature dataset
 
 1. Import the individual feature classes contained within the feature datasets
 1. Import everything outside the feature dataset
 
-### python migrations
+#### python migrations
 
-1. update config.py to set correct source
+1. update `config.py` to set correct source
 1. run migration code
    - `python migrations.py`
 
-#### What happens
+##### What happens
 
 1. removes unused tables
 1. unversions tables
@@ -62,3 +64,9 @@
 1. creates well contingency
 1. adds editor tracking
 1. versions tables
+
+### Attribute Rules
+
+1. update `config.py` to set correct source
+1. Install attribute rules
+   - `python ar.py`
