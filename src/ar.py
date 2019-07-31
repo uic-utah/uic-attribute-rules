@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 # * coding: utf8 *
 '''
-ar.py
-A module that runs attribute rules
+ar
+
+Usage:
+    ar update
+    ar delete
 '''
 
 import os
+
+from docopt import docopt
 
 import arcpy
 from config import config
@@ -179,11 +184,20 @@ rules = [
     violation_rules,
 ]
 
-if not arcpy.TestSchemaLock(os.path.join(config.sde, facility.TABLE)):
-    print('Unable to acquire the necessary schema lock to add rules')
-    exit(0)
+if __name__ == '__main__':
+    '''Main entry point for program. Parse arguments and pass to engine module
+    '''
+    args = docopt(__doc__, version='1.0.0')
 
-for rule in rules:
-    rule.execute()
+    if not arcpy.TestSchemaLock(os.path.join(config.sde, facility.TABLE)):
+        print('Unable to acquire the necessary schema lock to add rules')
+        exit(0)
 
-arcpy.management.ClearWorkspaceCache(config.sde)
+    if args['update']:
+        for rule in rules:
+            rule.execute()
+    elif args['delete']:
+        for rule in rules:
+            rule.delete()
+
+    arcpy.management.ClearWorkspaceCache(config.sde)

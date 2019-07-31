@@ -65,6 +65,16 @@ class Rule(object):
                     else:
                         raise e
 
+    def delete(self):
+        for rule in self.meta_rules:
+            print('  deleting {} rule'.format(rule.rule_name))
+            arcpy.management.DeleteAttributeRule(
+                in_table=self.table_path,
+                names=rule.rule_name,
+                type=rule.type,
+            )
+            print('    deleted')
+
 
 class ArcadeRule(Rule):
 
