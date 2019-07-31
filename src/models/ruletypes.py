@@ -32,6 +32,7 @@ class Constant(BaseType):
         self.field = field
         self.rule_name = 'Constant.' + rule_name
         self.description = 'Calculation Rule. {}'.format(rule_name)
+        self.editable = config.editable.no
 
         self.arcade = 'return {};'.format(value)
 
