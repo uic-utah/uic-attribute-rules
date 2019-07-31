@@ -24,37 +24,46 @@ class Rule(object):
         for rule in self.meta_rules:
             print('  creating {} rule'.format(rule.rule_name))
 
-            try:
-                arcpy.management.DeleteAttributeRule(self.table_path, rule.rule_name)
-            except Exception:
-                pass
+            exists = True
 
             try:
-                arcpy.management.AddAttributeRule(
+                arcpy.management.AlterAttributeRule(
                     in_table=self.table_path,
                     name=rule.rule_name,
-                    type=rule.type,
                     script_expression=rule.arcade,
-                    is_editable=rule.editable,
                     triggering_events=rule.triggers,
-                    error_number=rule.error_number,
-                    error_message=rule.error_message,
-                    description=rule.description,
-                    subtype='',
-                    field=rule.field,
-                    exclude_from_client_evaluation='',
-                    batch=False,
-                    severity='',
-                    tags=rule.tag
                 )
-                print('  done')
-            except ExecuteError as e:
-                message, = e.args
+                print('    updated')
+            except Exception:
+                exists = False
 
-                if message.startswith('ERROR 002541'):
-                    print('    rule already exists, skipping...')
-                else:
-                    raise e
+            if not exists:
+                try:
+                    arcpy.management.AddAttributeRule(
+                        in_table=self.table_path,
+                        name=rule.rule_name,
+                        type=rule.type,
+                        script_expression=rule.arcade,
+                        is_editable=rule.editable,
+                        triggering_events=rule.triggers,
+                        error_number=rule.error_number,
+                        error_message=rule.error_message,
+                        description=rule.description,
+                        subtype='',
+                        field=rule.field,
+                        exclude_from_client_evaluation='',
+                        batch=False,
+                        severity='',
+                        tags=rule.tag
+                    )
+                    print('    created')
+                except ExecuteError as e:
+                    message, = e.args
+
+                    if message.startswith('ERROR 002541'):
+                        print('    rule already exists, skipping...')
+                    else:
+                        raise e
 
 
 class ArcadeRule(Rule):
