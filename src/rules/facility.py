@@ -128,7 +128,7 @@ if (isnan(code)) {
 
 if (code % 2 == 0) {
     return {
-        'errorMessage': 'The fips code is should be odd: ' + code
+        'errorMessage': 'The fips code should be odd: ' + code
     };
 }
 
