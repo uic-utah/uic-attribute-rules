@@ -161,6 +161,7 @@ return iif (isempty(domainname($feature, 'facilityzip', $feature.facilityzip)), 
 GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
 ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
+ID.triggers = [config.triggers.insert, config.triggers.update]
 CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
 ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
 
