@@ -4,8 +4,17 @@
 ar
 
 Usage:
-    ar update
+    ar update [--rule=<rule>]
     ar delete
+    ar --version
+    ar (-h | --help)
+
+Options:
+    --rule=<rule>   The allowable rules.
+                        area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit,
+                        operating_status, violation, well
+    -h --help       Shows this screen
+    -v --version    Shows the version
 '''
 
 import os
@@ -168,21 +177,43 @@ violation_rules = ArcadeRule(
     ],
 )
 
-rules = [
-    facility_rules,
-    well_rules,
-    aor_rules,
-    art_pen_rules,
-    auth_action_rules,
-    authorization_rules,
-    contact_rules,
-    correction_rules,
-    enforcement_rules,
-    inspection_rules,
-    mit_rules,
-    operating_status_rules,
-    violation_rules,
-]
+
+def get_rules(rule=None):
+    if rule is None:
+        return [
+            facility_rules,
+            well_rules,
+            aor_rules,
+            art_pen_rules,
+            auth_action_rules,
+            authorization_rules,
+            contact_rules,
+            correction_rules,
+            enforcement_rules,
+            inspection_rules,
+            mit_rules,
+            operating_status_rules,
+            violation_rules,
+        ]
+
+    rules = {
+        'area_of_review': aor_rules,
+        'art_pen': art_pen_rules,
+        'authorization': authorization_rules,
+        'authorization_action': auth_action_rules,
+        'contact': contact_rules,
+        'correction': correction_rules,
+        'enforcement': enforcement_rules,
+        'facility': facility_rules,
+        'inspection': inspection_rules,
+        'mit': mit_rules,
+        'operating_status': operating_status_rules,
+        'violation': violation_rules,
+        'well': well_rules
+    }
+
+    return [rules[rule]]
+
 
 if __name__ == '__main__':
     '''Main entry point for program. Parse arguments and pass to engine module
@@ -194,10 +225,10 @@ if __name__ == '__main__':
         exit(0)
 
     if args['update']:
-        for rule in rules:
+        for rule in get_rules(args['--rule']):
             rule.execute()
     elif args['delete']:
-        for rule in rules:
+        for rule in get_rules(args['--rule']):
             rule.delete()
 
     arcpy.management.ClearWorkspaceCache(config.sde)
