@@ -13,8 +13,8 @@ TABLE = 'UICMIT'
 
 GUID = Constant('MIT Guid', 'GUID', 'MIT.Guid', 'GUID()')
 
-TYPE = Constraint('MIT Type', 'MIT.Type', common.constrain_to_domain('MITType'))
+TYPE = Constraint('MIT Type', 'MIT.Type', common.constrain_to_domain('MITType', 'UICMITTypeDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-ACTION = Constraint('MIT Remediation Action', 'MIT.Remediation Action', common.constrain_to_domain('MITRemediationAction'))
+ACTION = Constraint('MIT Remediation Action', 'MIT.Remediation Action', common.constrain_to_domain('MITRemediationAction', 'UICMITRemediationActionDomain'))
 ACTION.triggers = [config.triggers.insert, config.triggers.update]
