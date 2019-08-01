@@ -101,7 +101,7 @@ constrain_wellclass = '''if (!haskey($feature, 'wellclass') || isempty($feature.
 }
 
 return iif (isempty(domainname($feature, 'wellclass', $feature.wellclass)), {
-    'errorMessage': 'Acceptable well classes are 1, 3, 4, 5, or 6. Input: ' + $feature.wellclass
+    'errorMessage': 'WellClass may not be <null>; select the appropriate value from the UICWellClassDomain (dropdown menu). Input: ' + $feature.wellclass
 }, true)'''
 
 constrain_subclass = '''if (!haskey($feature, 'wellsubclass') || !haskey($feature, 'wellclass')) {
@@ -114,7 +114,7 @@ if (isempty($feature.wellclass)) {
 
 if (isempty($feature.wellsubclass)) {
     return {
-        'errorMessage': 'Well subclass is required'
+        'errorMessage': 'WellSubClass may not be <null>; select the appropriate value from the UICWellSubClassDomain (dropdown menu).'
     }
 }
 
@@ -127,7 +127,7 @@ constrain_yes_no_unknown = '''if (!haskey($feature, '{0}') || isempty($feature.{
 }}
 
 return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
-    'errorMessage': 'Acceptable values are Y, N, U. Input: ' + $feature.{0}
+    'errorMessage': '{0} may not be <null>; select the appropriate value from the UICYesNoUnknownDomain (dropdown menu). Input: ' + $feature.{0}
 }}, true)'''
 
 extract_elevation = '''var set = FeatureSetByName($datastore, 'DEM', ['Feet'], true);
@@ -153,7 +153,7 @@ if ($feature.wellsubclass != 1001) {
 }
 
 return iif (isempty($feature.nomigrationpetstatus), {
-    'errorMessage': 'Class I wells require a NoMigrationPetStatus'
+    'errorMessage': 'Class I Hazardous wells require a NoMigrationPetStatus.'
 }, true);'''
 
 constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($feature, 'wellclass')) {
@@ -162,8 +162,8 @@ constrain_highpriority = '''if (!haskey($feature, 'highpriority') || !haskey($fe
 
 if ($feature.wellclass == 5) {
     return iif (isempty(domainname($feature, 'highpriority', $feature.highpriority)), {
-            'errorMessage': 'Class V wells require a high priority value'
-        }, true);
+        'errorMessage': 'HighPriority may not be <null> for Class V wells; select the appropriate value from the UICYesNoUnknownDomain (dropdown menu).'
+    }, true);
 }
 
 if (isempty($feature.highpriority)) {
@@ -171,7 +171,7 @@ if (isempty($feature.highpriority)) {
 }
 
 return iif (isempty(domainname($feature, 'highpriority', $feature.highpriority)), {
-    'errorMessage': 'Acceptable values for high priority are C, N, U. Input: ' + $feature.highpriority
+    'errorMessage': 'Acceptable values for high priority are Y, N, U. Input: ' + $feature.highpriority
 }, true);'''
 
 constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !haskey($feature, 'wellclass')) {
@@ -180,8 +180,8 @@ constrain_facility_type = '''if (!haskey($feature, 'classifacilitytype') || !has
 
 if ($feature.wellclass == 1) {
     return iif (isempty(domainname($feature, 'classifacilitytype', $feature.classifacilitytype)), {
-            'errorMessage': 'Class I wells require a facility type value'
-        }, true);
+        'errorMessage': 'ClassIFacilityType may not be <null> for Class 1 wells; select the appropriate value from the UICFacilityTypeDomain (dropdown menu).'
+    }, true);
 }
 
 if (isempty($feature.classifacilitytype)) {
@@ -209,7 +209,7 @@ constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellsw
 }
 
 return iif (isempty(domainname($feature, 'wellswpz', $feature.wellswpz)), {
-    'errorMessage': 'Acceptable values for SWPZ types are Y, S, N, U. Input: ' + $feature.wellswpz
+    'errorMessage': 'WellSWPZ may not be <null>; select the appropriate value from the UICGWProtectionDomain (dropdown menu). Input: ' + $feature.wellswpz
 }, true);'''
 
 GUID = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
