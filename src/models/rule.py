@@ -78,12 +78,20 @@ class Rule(object):
     def delete(self):
         for rule in self.meta_rules:
             print('  deleting {} rule'.format(rule.rule_name))
-            arcpy.management.DeleteAttributeRule(
-                in_table=self.table_path,
-                names=rule.rule_name,
-                type=rule.type,
-            )
-            print('    deleted')
+            try:
+                arcpy.management.DeleteAttributeRule(
+                    in_table=self.table_path,
+                    names=rule.rule_name,
+                    type=rule.type,
+                )
+                print('    deleted')
+            except ExecuteError as e:
+                message, = e.args
+
+                if message.startswith('ERROR 002556'):
+                    print('    rule already deleted, skipping...')
+                else:
+                    raise e
 
 
 class ArcadeRule(Rule):
