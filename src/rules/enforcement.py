@@ -18,14 +18,14 @@ if (isempty($feature.EnforcementType) || lower(domaincode($feature, 'Enforcement
 }
 
 return iif (isempty($feature.comments), {
-    'errorMessage': 'When Enforcement Type is OTR, a comment is required'
+    'errorMessage': 'When EnforcementType is OTR, enter a description of the other type of enforcement action taken in the Comment field. This is required.'
 }, true);'''
 
 TABLE = 'UICEnforcement'
 
 GUID = Constant('Enforcement Guid', 'GUID', 'Enforcement.Guid', 'GUID()')
 
-TYPE = Constraint('Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType'))
+TYPE = Constraint('Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType', 'UICEnforcementTypeDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 COMMENT = Constraint('Comment', 'Enforcement.Comment', constrain_other_comment)
