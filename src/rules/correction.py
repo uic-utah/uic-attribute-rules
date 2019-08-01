@@ -20,12 +20,12 @@ if (isempty($feature.correctiveaction) || lower(domaincode($feature, 'corrective
 }
 
 return iif (isempty($feature.comments), {
-    'errorMessage': 'When Corrective action is OT, a comment is required'
+    'errorMessage': 'When CorrectiveAction is OT, enter a description of the other type of corrective action to be taken in the Comment field. This is required.'
 }, true);'''
 
 GUID = Constant('Correction Guid', 'GUID', 'Correction.Guid', 'GUID()')
 
-TYPE = Constraint('Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction'))
+TYPE = Constraint('Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction', 'UICCorrectiveActionDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 COMMENT = Constraint('Comment', 'Correction.Comment', constrain_other_comment)
