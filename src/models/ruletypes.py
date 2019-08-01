@@ -38,9 +38,6 @@ class Constant(BaseType):
 
         self.tag = 'Constant'
 
-        self.error_number += 1
-        self.error_message = 'This value is auto generated and cannot be modified.'
-
 
 class Calculation(BaseType):
 
@@ -55,9 +52,6 @@ class Calculation(BaseType):
         self.arcade = arcade
 
         self.tag = 'Calculation'
-
-        self.error_number += 2
-        self.error_message = 'This value is auto generated and cannot be modified.'
 
 
 class Constraint(BaseType):
