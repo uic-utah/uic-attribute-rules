@@ -17,10 +17,8 @@ class BaseType(object):
 
         self.description = None
         self.tag = None
-        self.error_number = -1
-        self.error_message = None
+
         self.arcade = None
-        self.error_number = 7500
 
 
 class Constant(BaseType):
@@ -70,5 +68,5 @@ class Constraint(BaseType):
 
         self.tag = 'Constraint'
 
-        self.error_number += 3
-        self.error_message = 'The data entered does not fall within the allowable values.'
+        self.error_message = ' '
+        self.error_number = 0

@@ -26,36 +26,46 @@ class Rule(object):
 
             exists = True
 
+            args = {
+                'in_table': self.table_path,
+                'name': rule.rule_name,
+                'script_expression': rule.arcade,
+                'triggering_events': rule.triggers,
+            }
+
+            if hasattr(rule, 'error_number'):
+                args['error_number'] = rule.error_number
+                args['error_message'] = rule.error_message
+
             try:
-                arcpy.management.AlterAttributeRule(
-                    in_table=self.table_path,
-                    name=rule.rule_name,
-                    script_expression=rule.arcade,
-                    triggering_events=rule.triggers,
-                )
+                arcpy.management.AlterAttributeRule(**args)
                 print('    updated')
             except Exception:
                 exists = False
 
             if not exists:
+                args = {
+                    'in_table': self.table_path,
+                    'name': rule.rule_name,
+                    'type': rule.type,
+                    'script_expression': rule.arcade,
+                    'is_editable': rule.editable,
+                    'triggering_events': rule.triggers,
+                    'description': rule.description,
+                    'subtype': '',
+                    'field': rule.field,
+                    'exclude_from_client_evaluation': '',
+                    'batch': False,
+                    'severity': '',
+                    'tags': rule.tag
+                }
+
+                if hasattr(rule, 'error_number'):
+                    args['error_number'] = rule.error_number
+                    args['error_message'] = rule.error_message
+
                 try:
-                    arcpy.management.AddAttributeRule(
-                        in_table=self.table_path,
-                        name=rule.rule_name,
-                        type=rule.type,
-                        script_expression=rule.arcade,
-                        is_editable=rule.editable,
-                        triggering_events=rule.triggers,
-                        error_number=rule.error_number,
-                        error_message=rule.error_message,
-                        description=rule.description,
-                        subtype='',
-                        field=rule.field,
-                        exclude_from_client_evaluation='',
-                        batch=False,
-                        severity='',
-                        tags=rule.tag
-                    )
+                    arcpy.management.AddAttributeRule(**args)
                     print('    created')
                 except ExecuteError as e:
                     message, = e.args
