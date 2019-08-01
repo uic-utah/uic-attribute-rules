@@ -55,8 +55,8 @@ WELL_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constrain_to_domain('ident4ca'))
 CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
-CA_TYPE_DOMAIN = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
-CA_TYPE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+CA_TYPE = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
+CA_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 CA_DATE = Constraint('CA Date', 'ArtPen.ArtPen_CADate', constrain_ca_date)
 CA_DATE.triggers = [config.triggers.insert, config.triggers.update]
