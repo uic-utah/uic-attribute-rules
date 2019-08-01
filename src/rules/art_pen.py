@@ -49,14 +49,15 @@ return iif (isempty($feature.artpen_cadate), {
 
 GUID = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
 
-WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname'))
+WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname', UICArtPenWellType))
 WELL_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constrain_to_domain('ident4ca'))
-CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+#: these have been removed, but I suspect they will be back
+# CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constrain_to_domain('ident4ca'))
+# CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
-CA_TYPE = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
-CA_TYPE.triggers = [config.triggers.insert, config.triggers.update]
+# CA_TYPE = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
+# CA_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 CA_DATE = Constraint('CA Date', 'ArtPen.ArtPen_CADate', constrain_ca_date)
 CA_DATE.triggers = [config.triggers.insert, config.triggers.update]
