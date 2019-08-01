@@ -25,7 +25,7 @@ var relations = filter(xref, 'contactguid=@pk');
 
 if (isempty(relations)) {
     return {
-        'errorMessage': 'There are no facilities related to this contact'
+        'errorMessage': 'There are no facilities related to this contact.'
     };
 }
 
@@ -46,7 +46,7 @@ for (var contact in contacts) {
 }
 
 return {
-    'errorMessage': 'There is no owner or operator contact type for this facility'
+    'errorMessage': 'There is no owner or operator contact type for this facility.'
 };
 '''
 
@@ -54,10 +54,10 @@ TABLE = 'UICContact'
 
 GUID = Constant('Contact Guid', 'GUID', 'Contact.Guid', 'GUID()')
 
-TYPE = Constraint('Contact Type', 'Contact.Type', common.constrain_to_domain('ContactType'))
+TYPE = Constraint('Contact Type', 'Contact.Type', common.constrain_to_domain('ContactType', 'UICContactTypeDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-STATE = Constraint('Mail State', 'Contact.MailState', common.constrain_to_domain('ContactMailState'))
+STATE = Constraint('Mail State', 'Contact.MailState', common.constrain_to_domain('ContactMailState', 'UICStateDomain'))
 STATE.triggers = [config.triggers.insert, config.triggers.update]
 
 CONTACT_TYPE = Constraint('Owner Operator', 'Contact.OwnerType', constrain_contact_type)
