@@ -25,7 +25,7 @@ TABLE = 'UICWellOperatingStatus'
 
 GUID = Constant('Well operating status Guid', 'GUID', 'WellOperatingStatus.Guid', 'GUID()')
 
-TYPE = Constraint('Operating Status Type', 'OperatingStatus.Type', common.constrain_to_domain('OperatingStatusType'))
+TYPE = Constraint('Operating Status Type', 'OperatingStatus.Type', common.constrain_to_domain('OperatingStatusType', 'UICOperatingStatusTypeDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 DATE = Constraint('Operating Status Date', 'OperatingStatus.Date', constrain_date)
