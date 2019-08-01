@@ -19,6 +19,12 @@ if (isempty($feature.ident4ca)) {
     return true;
 }
 
+if ($feature.ident4ca == 2) { // no
+    return iif (!isempty($feature.artpen_catype), {
+        'errorMessage': 'ArtPen_CAType cannot have a value when Ident4CA is no'
+    }, true);
+}
+
 return iif (isempty($feature.artpen_catype), {
     'errorMessage': 'ArtPen_CAType cannot be empty when Ident4CA has a value'
 }, true);'''
@@ -29,6 +35,12 @@ constrain_ca_date = '''if (!haskey($feature, 'artpen_cadate') || !haskey($featur
 
 if (isempty($feature.ident4ca)) {
     return true;
+}
+
+if ($feature.ident4ca == 2) { // no
+    return iif (!isempty($feature.artpen_cadate), {
+        'errorMessage': 'ArtPen_CADate cannot have a value when Ident4CA is no'
+    }, true);
 }
 
 return iif (isempty($feature.artpen_cadate), {
