@@ -18,7 +18,7 @@ if (isempty($feature.ViolationType) || lower(domaincode($feature, 'ViolationType
 }
 
 return iif (isempty($feature.comments), {
-    'errorMessage': 'When Violation Type is OT, a comment is required'
+    'errorMessage': 'When ViolationType is OT, enter a description of the other type of violation in the Comment field. This is required.'
 }, true);'''
 
 set_yes_if_yes = '''if (!haskey($feature, 'USDWContamination') || isempty($feature.USDWContamination)) {
@@ -54,19 +54,21 @@ TABLE = 'UICViolation'
 
 GUID = Constant('Violation Guid', 'GUID', 'Violation.Guid', 'GUID()')
 
-TYPE = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType'))
+TYPE = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType', 'UICViolationTypeDomain'))
 TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
-CONTAMINATION = Constraint('Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination'))
+CONTAMINATION = Constraint('Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination', 'UICYesNoUnknownDomain'))
 CONTAMINATION.triggers = [config.triggers.insert, config.triggers.update]
 
 CONTAMINATION_CALC = Calculation('Significant Non Compliance', 'SignificantNonCompliance', 'Violation.SignificantNonCompliance', set_yes_if_yes)
 CONTAMINATION_CALC.triggers = [config.triggers.insert, config.triggers.update]
 
-ENDANGER = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger'))
+ENDANGER = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger', 'UICYesNoUnknownDomain'))
 ENDANGER.triggers = [config.triggers.insert, config.triggers.update]
 
-NONCOMPLIANCE = Constraint('SignificantNonCompliance', 'Violation.SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance'))
+NONCOMPLIANCE = Constraint(
+    'SignificantNonCompliance', 'Violation.SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance', 'UICYesNoUnknownDomain')
+)
 NONCOMPLIANCE.triggers = [config.triggers.insert, config.triggers.update]
 
 COMMENT = Constraint('Comments', 'Violation.Comments', constrain_other_comment)
