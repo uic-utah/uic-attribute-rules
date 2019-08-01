@@ -31,12 +31,27 @@ return iif ($feature.AuthorizationActionDate < authorization.startdate, {
     'errorMessage': 'AuthorizationActionDate must be no earlier than the StartDate of the associated Authorization record'
 }, true);'''
 
+constrain_date_must_have_value_if_type = '''if (!haskey($feature, 'AuthorizationActionType') || !haskey($feature, 'AuthorizationActionDate')) {
+    return true;
+}
+
+if (isempty($feature.authorizationactiontype)) {
+    return true;
+}
+
+return iif (isempty($feature.authorizationactiondate), {
+    'errorMessage': 'AuthorizationActionDate may not be null when AuthorizationActionType has a value'
+}, true);'''
+
 TABLE = 'UICAuthorizationAction'
 
 GUID = Constant('Authorization Action Guid', 'GUID', 'AuthorizationAction.Guid', 'GUID()')
 
-TYPE = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', common.constrain_to_domain('AuthorizationActionType'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+TYPE_DOMAIN = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', common.constrain_to_domain('AuthorizationActionType'))
+TYPE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
 
 ACTION_DATE = Constraint('Authorization Action Date', 'AuthorizationAction.AuthorizationActionDate', constrain_to_parent_start_date)
 ACTION_DATE.triggers = [config.triggers.insert, config.triggers.update]
+
+ACTION_TYPE = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', constrain_date_must_have_value_if_type)
+ACTION_TYPE.triggers = [config.triggers.insert, config.triggers.update]

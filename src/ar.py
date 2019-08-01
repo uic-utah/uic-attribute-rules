@@ -90,7 +90,7 @@ auth_action_rules = ArcadeRule(
     authorization_action.TABLE,
     [
         authorization_action.GUID,
-        authorization_action.TYPE,
+        authorization_action.TYPE_DOMAIN,
         authorization_action.ACTION_DATE,
     ],
 )
