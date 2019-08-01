@@ -147,8 +147,8 @@ for (var index in keys) {
     }
 }
 
-// if well class is not 1001 or 1003, no worries
-if (indexof([1001, 1003], $feature.wellsubclass) == -1) {
+// if well class is not 1001, no worries
+if ($feature.wellsubclass != 1001) {
     return true;
 }
 
