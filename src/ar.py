@@ -174,6 +174,7 @@ violation_rules = ArcadeRule(
         violation.ENDANGER,
         violation.NONCOMPLIANCE,
         violation.COMMENT,
+        violation.VIOLATIONS,
     ],
 )
 
