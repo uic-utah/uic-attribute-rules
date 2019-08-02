@@ -80,6 +80,7 @@ authorization_rules = ArcadeRule(
     [
         authorization.GUID,
         authorization.ID,
+        authorization.TYPE_DOMAIN,
         authorization.TYPE,
         authorization.SECTOR_TYPE,
     ],
