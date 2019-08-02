@@ -201,7 +201,8 @@ if (haskey($feature, 'wellsubclass') &&
     $feature.wellsubclass == 5002 &&
     isempty($feature.remediationprojecttype)) {
     return {
-        'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu).'
+        'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; ' +
+                        'select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu).'
     }
 }
 
