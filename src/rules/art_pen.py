@@ -49,7 +49,7 @@ return iif (isempty($feature.artpen_cadate), {
 
 GUID = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
 
-WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname', UICArtPenWellType))
+WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname', 'UICArtPenWellType'))
 WELL_TYPE.triggers = [config.triggers.insert, config.triggers.update]
 
 #: these have been removed, but I suspect they will be back
