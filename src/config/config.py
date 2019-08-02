@@ -4,7 +4,6 @@
 config.py
 A module that stores common items for attribute rules
 '''
-import os
 from types import SimpleNamespace
 
 triggers = SimpleNamespace(**{
@@ -22,5 +21,3 @@ editable = SimpleNamespace(**{
     'yes': 'EDITABLE',
     'no': 'NONEDITABLE',
 })
-
-sde = os.path.join(os.path.dirname(__file__), '..', '..', 'pro-project', 'localhost.sde')

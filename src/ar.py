@@ -4,8 +4,8 @@
 ar
 
 Usage:
-    ar update [--rule=<rule>]
-    ar delete
+    ar update [--rule=<rule> --env=<env>]
+    ar delete [--env=<env>]
     ar --version
     ar (-h | --help)
 
@@ -13,6 +13,7 @@ Options:
     --rule=<rule>   The allowable rules.
                         area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit,
                         operating_status, violation, well
+    --env=<env>     local, dev, prod
     -h --help       Shows this screen
     -v --version    Shows the version
 '''
@@ -22,163 +23,178 @@ import os
 from docopt import docopt
 
 import arcpy
-from config import config
 from models.rule import ArcadeRule
 from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
 
-facility_rules = ArcadeRule(
-    config.sde, facility.TABLE, [
-        facility.GUID,
-        facility.FIPS_DOMAIN,
-        facility.FIPS,
-        facility.ID,
-        facility.CITY,
-        facility.ZIP,
-        facility.ZIP_DOMAIN,
-    ]
-)
 
-well_rules = ArcadeRule(
-    config.sde, well.TABLE, [
-        well.GUID,
-        well.ID,
-        well.FACILITY,
-        well.CLASS,
-        well.SUBCLASS,
-        well.HIGHPRIORITY,
-        well.INJECTION_AQUIFER_EXEMPT,
-        well.NO_MIGRATION_PET_STATUS,
-        well.FACILITY_TYPE,
-        well.REMEDIATION_TYPE,
-        well.SWPZ,
-    ]
-)
+def get_sde_path_for(env=None):
+    sde = os.path.join(os.path.dirname(__file__), '..', 'pro-project')
 
-aor_rules = ArcadeRule(
-    config.sde,
-    area_of_review.TABLE,
-    [
-        area_of_review.GUID,
-    ],
-)
+    if env is None:
+        return os.path.join(sde, 'localhost.sde')
 
-art_pen_rules = ArcadeRule(
-    config.sde,
-    art_pen.TABLE,
-    [
-        art_pen.GUID,
-        art_pen.WELL_TYPE,
-        art_pen.CA_DATE,
-    ],
-)
+    if env == 'local':
+        return os.path.join(sde, 'localhost.sde')
 
-authorization_rules = ArcadeRule(
-    config.sde,
-    authorization.TABLE,
-    [
-        authorization.GUID,
-        authorization.ID,
-        authorization.TYPE_DOMAIN,
-        authorization.TYPE,
-        authorization.SECTOR_TYPE,
-    ],
-)
+    if env == 'dev':
+        return os.path.join(sde, 'stage.sde')
 
-auth_action_rules = ArcadeRule(
-    config.sde,
-    authorization_action.TABLE,
-    [
-        authorization_action.GUID,
-        authorization_action.TYPE_DOMAIN,
-        authorization_action.ACTION_DATE,
-    ],
-)
+    if env == 'prod':
+        return os.path.join(sde, 'prod.sde')
 
-contact_rules = ArcadeRule(
-    config.sde,
-    contact.TABLE,
-    [
-        contact.GUID,
-        contact.TYPE,
-        contact.STATE,
-        # contact.CONTACT_TYPE,
-    ],
-)
-
-correction_rules = ArcadeRule(
-    config.sde,
-    correction.TABLE,
-    [
-        correction.GUID,
-        correction.TYPE,
-        correction.COMMENT,
-    ],
-)
-
-enforcement_rules = ArcadeRule(
-    config.sde,
-    enforcement.TABLE,
-    [
-        enforcement.GUID,
-        enforcement.TYPE,
-        enforcement.COMMENT,
-    ],
-)
-
-inspection_rules = ArcadeRule(
-    config.sde,
-    inspection.TABLE,
-    [
-        inspection.GUID,
-        inspection.TYPE_DOMAIN,
-        inspection.ASSISTANCE_DOMAIN,
-        inspection.DEFICIENCY_DOMAIN,
-        inspection.FOREIGN_KEY,
-        inspection.FACILITY_ONLY,
-        inspection.INSPECTION_DATE,
-        inspection.CORRECTION,
-    ],
-)
-
-mit_rules = ArcadeRule(
-    config.sde,
-    mit.TABLE,
-    [
-        mit.GUID,
-        mit.TYPE,
-        mit.ACTION,
-    ],
-)
-
-operating_status_rules = ArcadeRule(
-    config.sde,
-    operating_status.TABLE,
-    [
-        operating_status.GUID,
-        operating_status.TYPE,
-        operating_status.DATE,
-    ],
-)
-
-violation_rules = ArcadeRule(
-    config.sde,
-    violation.TABLE,
-    [
-        violation.GUID,
-        violation.TYPE,
-        violation.CONTAMINATION,
-        violation.CONTAMINATION_CALC,
-        violation.ENDANGER,
-        violation.NONCOMPLIANCE,
-        violation.COMMENT,
-        violation.VIOLATIONS,
-    ],
-)
+    raise Exception('{} env not found'.format(env))
 
 
-def get_rules(rule=None):
+def get_rules(sde, rule=None):
+    facility_rules = ArcadeRule(
+        sde, facility.TABLE, [
+            facility.GUID,
+            facility.FIPS_DOMAIN,
+            facility.FIPS,
+            facility.ID,
+            facility.CITY,
+            facility.ZIP,
+            facility.ZIP_DOMAIN,
+        ]
+    )
+
+    well_rules = ArcadeRule(
+        sde, well.TABLE, [
+            well.GUID,
+            well.ID,
+            well.FACILITY,
+            well.CLASS,
+            well.SUBCLASS,
+            well.HIGHPRIORITY,
+            well.INJECTION_AQUIFER_EXEMPT,
+            well.NO_MIGRATION_PET_STATUS,
+            well.FACILITY_TYPE,
+            well.REMEDIATION_TYPE,
+            well.SWPZ,
+        ]
+    )
+
+    aor_rules = ArcadeRule(
+        sde,
+        area_of_review.TABLE,
+        [
+            area_of_review.GUID,
+        ],
+    )
+
+    art_pen_rules = ArcadeRule(
+        sde,
+        art_pen.TABLE,
+        [
+            art_pen.GUID,
+            art_pen.WELL_TYPE,
+            art_pen.CA_DATE,
+        ],
+    )
+
+    authorization_rules = ArcadeRule(
+        sde,
+        authorization.TABLE,
+        [
+            authorization.GUID,
+            authorization.ID,
+            authorization.TYPE_DOMAIN,
+            authorization.TYPE,
+            authorization.SECTOR_TYPE,
+        ],
+    )
+
+    auth_action_rules = ArcadeRule(
+        sde,
+        authorization_action.TABLE,
+        [
+            authorization_action.GUID,
+            authorization_action.TYPE_DOMAIN,
+            authorization_action.ACTION_DATE,
+        ],
+    )
+
+    contact_rules = ArcadeRule(
+        sde,
+        contact.TABLE,
+        [
+            contact.GUID,
+            contact.TYPE,
+            contact.STATE,
+            # contact.CONTACT_TYPE,
+        ],
+    )
+
+    correction_rules = ArcadeRule(
+        sde,
+        correction.TABLE,
+        [
+            correction.GUID,
+            correction.TYPE,
+            correction.COMMENT,
+        ],
+    )
+
+    enforcement_rules = ArcadeRule(
+        sde,
+        enforcement.TABLE,
+        [
+            enforcement.GUID,
+            enforcement.TYPE,
+            enforcement.COMMENT,
+        ],
+    )
+
+    inspection_rules = ArcadeRule(
+        sde,
+        inspection.TABLE,
+        [
+            inspection.GUID,
+            inspection.TYPE_DOMAIN,
+            inspection.ASSISTANCE_DOMAIN,
+            inspection.DEFICIENCY_DOMAIN,
+            inspection.FOREIGN_KEY,
+            inspection.FACILITY_ONLY,
+            inspection.INSPECTION_DATE,
+            inspection.CORRECTION,
+        ],
+    )
+
+    mit_rules = ArcadeRule(
+        sde,
+        mit.TABLE,
+        [
+            mit.GUID,
+            mit.TYPE,
+            mit.ACTION,
+        ],
+    )
+
+    operating_status_rules = ArcadeRule(
+        sde,
+        operating_status.TABLE,
+        [
+            operating_status.GUID,
+            operating_status.TYPE,
+            operating_status.DATE,
+        ],
+    )
+
+    violation_rules = ArcadeRule(
+        sde, violation.TABLE, [
+            violation.GUID,
+            violation.TYPE,
+            violation.CONTAMINATION,
+            violation.CONTAMINATION_CALC,
+            violation.ENDANGER,
+            violation.NONCOMPLIANCE,
+            violation.COMMENT,
+            violation.VIOLATIONS,
+        ]
+    )
+
     if rule is None:
         return [
             facility_rules,
@@ -220,15 +236,18 @@ if __name__ == '__main__':
     '''
     args = docopt(__doc__, version='1.0.0')
 
-    if not arcpy.TestSchemaLock(os.path.join(config.sde, facility.TABLE)):
+    sde = get_sde_path_for(args['--env'])
+    print('acting on {}'.format(sde))
+
+    if not arcpy.TestSchemaLock(os.path.join(sde, facility.TABLE)):
         print('Unable to acquire the necessary schema lock to add rules')
         exit(0)
 
     if args['update']:
-        for rule in get_rules(args['--rule']):
+        for rule in get_rules(sde, args['--rule']):
             rule.execute()
     elif args['delete']:
-        for rule in get_rules(args['--rule']):
+        for rule in get_rules(sde, args['--rule']):
             rule.delete()
 
-    arcpy.management.ClearWorkspaceCache(config.sde)
+    arcpy.management.ClearWorkspaceCache(sde)
