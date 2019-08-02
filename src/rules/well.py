@@ -196,12 +196,23 @@ constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype') || is
     return true;
 }
 
+if (haskey($feature, 'wellsubclass') &&
+    !isempty($feature.wellsubclass) &&
+    $feature.wellsubclass == 5002 &&
+    isempty($feature.remediationprojecttype)) {
+    return {
+        'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu).'
+    }
+}
+
+
 if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9) || $feature.remediationprojecttype == 999){
     return true;
 }
 
 return {
-    'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu). Input: ' + $feature.remediationprojecttype
+    'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; ' +
+                    'select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu). Input: ' + $feature.remediationprojecttype
 }'''
 
 constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellswpz)) {
