@@ -215,7 +215,7 @@ return {
                     'select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu). Input: ' + $feature.remediationprojecttype
 }'''
 
-constrain_swpz = '''if (!haskey($feature, 'wellswpz') || isempty($feature.wellswpz)) {
+constrain_swpz = '''if (!haskey($feature, 'wellswpz')) {
     return true;
 }
 
