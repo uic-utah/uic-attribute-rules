@@ -9,7 +9,7 @@ from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
 
-constrain_date = '''if (!haskey($feature, 'OperatingStatusDate') || isempty($feature.OperatingStatusDate)) {
+constrain_date = '''if (!haskey($feature, 'OperatingStatusDate')) {
     return true;
 }
 
