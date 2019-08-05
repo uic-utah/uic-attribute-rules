@@ -122,7 +122,7 @@ return iif (left($feature.wellsubclass, 1) == text($feature.wellclass), true, {
     'errorMessage': 'Well sub class (' + text($feature.wellsubclass) + ') is not associated with the well class (' + text($feature.wellclass) + ')'
 })'''
 
-constrain_yes_no_unknown = '''if (!haskey($feature, '{0}') || isempty($feature.{0})) {{
+constrain_yes_no_unknown = '''if (!haskey($feature, '{0}')) {{
     return true;
 }}
 
