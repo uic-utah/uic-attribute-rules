@@ -168,7 +168,6 @@ def get_rules(sde, rule=None):
         [
             mit.GUID,
             mit.TYPE,
-            mit.ACTION,
         ],
     )
 
