@@ -185,7 +185,7 @@ return iif (isempty(domainname($feature, 'classifacilitytype', $feature.classifa
     'errorMessage': 'Acceptable values for facility type are C, N, U. Input: ' + $feature.classifacilitytype
 }, true);'''
 
-constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype') || isempty($feature.remediationprojecttype)) {
+constrain_remediation = '''if (!haskey($feature, 'remediationprojecttype')) {
     return true;
 }
 
@@ -194,11 +194,10 @@ if (haskey($feature, 'wellsubclass') &&
     $feature.wellsubclass == 5002 &&
     isempty($feature.remediationprojecttype)) {
     return {
-        'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002, RemediationProjectType may not be <null>; ' +
+        'errorMessage': 'If WellSubClass is Subsurface Environmental Remediation well (coded value 5002), RemediationProjectType may not be <null>; ' +
                         'select the appropriate value from the UICRemediationProjectTypeDomain (dropdown menu).'
     }
 }
-
 
 if (($feature.remediationprojecttype > 0 && $feature.remediationprojecttype < 9) || $feature.remediationprojecttype == 999){
     return true;
