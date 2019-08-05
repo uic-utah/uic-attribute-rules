@@ -5,7 +5,7 @@ common.py
 A module that holds common arcade expressions
 '''
 
-__constain_to_domain = '''if (!haskey($feature, '{0}') || isempty($feature.{0})) {{
+__constain_to_domain = '''if (!haskey($feature, '{0}')) {{
     return true;
 }}
 

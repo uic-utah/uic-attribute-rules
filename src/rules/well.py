@@ -5,6 +5,7 @@ well.py
 A module that holds the rules for uicwells
 '''
 
+from . import common
 from config import config
 from models.ruletypes import Calculation, Constant, Constraint
 
@@ -122,14 +123,6 @@ return iif (left($feature.wellsubclass, 1) == text($feature.wellclass), true, {
     'errorMessage': 'Well sub class (' + text($feature.wellsubclass) + ') is not associated with the well class (' + text($feature.wellclass) + ')'
 })'''
 
-constrain_yes_no_unknown = '''if (!haskey($feature, '{0}')) {{
-    return true;
-}}
-
-return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
-    'errorMessage': '{0} may not be <null>; select the appropriate value from the UICYesNoUnknownDomain (dropdown menu). Input: ' + $feature.{0}
-}}, true)'''
-
 extract_elevation = '''var set = FeatureSetByName($datastore, 'DEM', ['Feet'], true);
 
 var items = intersects(set, $feature);
@@ -244,7 +237,9 @@ SUBCLASS.triggers = [config.triggers.insert, config.triggers.update]
 HIGHPRIORITY = Constraint('High Priority', 'Well.HighPriority', constrain_highpriority)
 HIGHPRIORITY.triggers = [config.triggers.insert, config.triggers.update]
 
-INJECTION_AQUIFER_EXEMPT = Constraint('Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', constrain_yes_no_unknown.format('InjectionAquiferExempt'))
+INJECTION_AQUIFER_EXEMPT = Constraint(
+    'Injection Aquifer Exempt', 'Well.InjectionAquiferExempt', common.constrain_to_domain('InjectionAquiferExempt', 'UICYesNoUnknownDomain')
+)
 INJECTION_AQUIFER_EXEMPT.triggers = [config.triggers.update]
 
 NO_MIGRATION_PET_STATUS = Constraint('No Migration Pet Status', 'Well.NoMigrationPetStatus', constrain_class_one_wells)
