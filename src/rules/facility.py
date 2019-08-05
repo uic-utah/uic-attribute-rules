@@ -119,16 +119,17 @@ constrain_domain = '''if (!haskey($feature, 'countyfips')) {
     return true;
 }
 
+
 var code = number($feature.countyfips)
-if (isnan(code)) {
+if (isnan(code) || isempty($feature.countyfips)) {
     return {
-        'errorMessage': 'The fips code is empty'
+        'errorMessage': 'The fips code is empty.'
     };
 }
 
 if (code % 2 == 0) {
     return {
-        'errorMessage': 'The fips code should be odd: ' + code
+        'errorMessage': 'The fips code should be odd. Input: ' + code
     };
 }
 
