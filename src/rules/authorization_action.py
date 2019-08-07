@@ -5,53 +5,38 @@ authorization_action.py
 A module that has the UICAuthorizationAction rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
 
-constrain_to_parent_start_date = '''if (!haskey($feature, 'AuthorizationActionDate') || isempty($feature.AuthorizationActionDate)) {
-    return true;
-}
-
-var field = 'StartDate';
-var set = FeatureSetByName($datastore, 'UICAuthorization', [field], false);
-
-var fk = $feature.authorization_fk;
-
-// TODO: One day there will be a relationship traversal operation
-var authorizations = filter(set, 'GUID=@fk');
-
-if (isempty(authorizations)) {
-    return true;
-}
-
-var authorization = first(authorizations);
-
-return iif ($feature.AuthorizationActionDate < authorization.startdate, {
-    'errorMessage': 'AuthorizationActionDate must be no earlier than the StartDate of the associated Authorization record'
-}, true);'''
-
-constrain_date_must_have_value_if_type = '''if (!haskey($feature, 'AuthorizationActionType') || !haskey($feature, 'AuthorizationActionDate')) {
-    return true;
-}
-
-if (isempty($feature.authorizationactiontype)) {
-    return true;
-}
-
-return iif (isempty($feature.authorizationactiondate), {
-    'errorMessage': 'AuthorizationActionDate may not be null when AuthorizationActionType has a value'
-}, true);'''
+from . import common
 
 TABLE = 'UICAuthorizationAction'
+FOLDER = 'authorizationAction'
 
-GUID = Constant('Authorization Action Guid', 'GUID', 'AuthorizationAction.Guid', 'GUID()')
+guid_constant = Constant('Authorization Action Guid', 'GUID', 'AuthorizationAction.Guid', 'GUID()')
 
-TYPE_DOMAIN = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', common.constrain_to_domain('AuthorizationActionType'))
-TYPE_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+action_type_domain_constraint = Constraint(
+    'Authorization Action Type', 'AuthorizationAction.AuthorizationActionType',
+    common.constrain_to_domain('AuthorizationActionType', allow_null=True, domain='UICAuthorizeActionTypeDomain')
+)
 
-ACTION_DATE = Constraint('Authorization Action Date', 'AuthorizationAction.AuthorizationActionDate', constrain_to_parent_start_date)
-ACTION_DATE.triggers = [config.triggers.insert, config.triggers.update]
+action_type_domain_constraint_update = Constraint(
+    'Authorization Action Type', 'AuthorizationAction.AuthorizationActionType.update',
+    common.constrain_to_domain('AuthorizationActionType', allow_null=False, domain='UICAuthorizeActionTypeDomain')
+)
+action_type_domain_constraint_update.triggers = [config.triggers.update]
 
-ACTION_TYPE = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', constrain_date_must_have_value_if_type)
-ACTION_TYPE.triggers = [config.triggers.insert, config.triggers.update]
+action_date_constraint = Constraint('Authorization Action Date', 'AuthorizationAction.AuthorizationActionDate', load_rule_for(FOLDER, 'dateConstraint'))
+action_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+action_type_constraint = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', load_rule_for(FOLDER, 'typeConstraint'))
+action_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+RULES = [
+    guid_constant,
+    action_type_domain_constraint,
+    action_type_domain_constraint_update,
+    action_date_constraint,
+    action_type_constraint,
+]

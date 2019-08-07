@@ -106,16 +106,8 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    auth_action_rules = ArcadeRule(
-        sde,
-        authorization_action.TABLE,
-        [
-            authorization_action.GUID,
-            authorization_action.TYPE_DOMAIN,
-            authorization_action.ACTION_DATE,
-        ],
-    )
-
+    well_rules = RuleGroup(sde, well.TABLE, well.RULES)
+    auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
     contact_rules = ArcadeRule(
         sde,
         contact.TABLE,
