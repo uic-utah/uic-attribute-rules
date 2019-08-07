@@ -16,7 +16,7 @@ FOLDER = 'artPen'
 
 guid_constraint = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
 
-name_constraint = Constraint('Art Pen Well Name', 'ArtPen.ArtPen_WellName', load_rule_for(FOLDER, 'wellName'))
+name_constraint = Constraint('Art Pen Well Name', 'ArtPen.ArtPen_WellName', load_rule_for(FOLDER, 'wellNameConstraint'))
 name_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 well_type_constraint = Constraint('Art Pen Well Type', 'ArtPen.WellType', common.constrain_to_domain('welltype', allow_null=False, domain='UICArtPenWellType'))
