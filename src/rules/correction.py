@@ -5,29 +5,33 @@ correction.py
 A module that has the UICCorrection rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
+
+from . import common
 
 TABLE = 'UICCorrection'
+FOLDER = 'correction'
 
-constrain_other_comment = '''if (!haskey($feature, 'correctiveaction') || !haskey($feature, 'comments')) {
-    return true;
-}
+guid_constant = Constant('Correction Guid', 'GUID', 'Correction.Guid', 'GUID()')
 
-if (isempty($feature.correctiveaction) || lower(domaincode($feature, 'correctiveaction', $feature.correctiveaction)) != 'ot') {
-    return true;
-}
+type_constraint = Constraint(
+    'Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction', allow_null=True, domain='UICCorrectiveActionDomain')
+)
 
-return iif (isempty($feature.comments), {
-    'errorMessage': 'When CorrectiveAction is OT, enter a description of the other type of corrective action to be taken in the Comment field. '
-                    + 'This is required.'
-}, true);'''
+type_constraint_update = Constraint(
+    'Corrective Action', 'Correction.CorrectiveAction.update',
+    common.constrain_to_domain('CorrectiveAction', allow_null=False, domain='UICCorrectiveActionDomain')
+)
+type_constraint_update.triggers = [config.triggers.update]
 
-GUID = Constant('Correction Guid', 'GUID', 'Correction.Guid', 'GUID()')
+comment_constraint = Constraint('Comment', 'Correction.Comment', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-TYPE = Constraint('Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction', 'UICCorrectiveActionDomain'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
-
-COMMENT = Constraint('Comment', 'Correction.Comment', constrain_other_comment)
-COMMENT.triggers = [config.triggers.insert, config.triggers.update]
+RULES = [
+    guid_constant,
+    type_constraint,
+    comment_constraint,
+    type_constraint_update,
+]

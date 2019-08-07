@@ -66,15 +66,6 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    correction_rules = RuleGroup(
-        sde,
-        correction.TABLE,
-        [
-            correction.GUID,
-            correction.TYPE,
-            correction.COMMENT,
-        ],
-    )
 
     enforcement_rules = RuleGroup(
         sde,
@@ -85,6 +76,7 @@ def get_rules(sde, rule=None):
             enforcement.COMMENT,
         ],
     )
+    correction_rules = RuleGroup(sde, correction.TABLE, correction.RULES)
 
     inspection_rules = RuleGroup(
         sde,
