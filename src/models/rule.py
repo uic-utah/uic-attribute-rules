@@ -12,12 +12,12 @@ from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
 import arcpy
 
 
-class Rule(object):
+class RuleGroup(object):
 
-    def __init__(self):
-        self.name = None
-        self.meta_rules = []
-        self.table_path = None
+    def __init__(self, sde, table, metas):
+        self.name = table
+        self.table_path = os.path.join(sde, table)
+        self.meta_rules = metas
 
     def execute(self):
         print('creating rules for {}'.format(self.name))
@@ -92,13 +92,3 @@ class Rule(object):
                     print('    rule already deleted, skipping...')
                 else:
                     raise e
-
-
-class ArcadeRule(Rule):
-
-    def __init__(self, sde, table, metas):
-        super(ArcadeRule, self).__init__()
-
-        self.name = table
-        self.table_path = os.path.join(sde, table)
-        self.meta_rules = metas

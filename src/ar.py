@@ -23,7 +23,7 @@ import os
 from docopt import docopt
 
 import arcpy
-from models.rule import ArcadeRule
+from models.rule import RuleGroup
 from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
@@ -60,21 +60,6 @@ def get_rules(sde, rule=None):
         ]
     )
 
-    well_rules = ArcadeRule(
-        sde, well.TABLE, [
-            well.GUID,
-            well.ID,
-            well.FACILITY,
-            well.CLASS,
-            well.SUBCLASS,
-            well.HIGHPRIORITY,
-            well.INJECTION_AQUIFER_EXEMPT,
-            well.NO_MIGRATION_PET_STATUS,
-            well.FACILITY_TYPE,
-            well.REMEDIATION_TYPE,
-            well.SWPZ,
-        ]
-    )
 
     aor_rules = ArcadeRule(
         sde,
@@ -109,6 +94,7 @@ def get_rules(sde, rule=None):
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
     contact_rules = ArcadeRule(
+    well_rules = RuleGroup(sde, well.TABLE, well.RULES)
         sde,
         contact.TABLE,
         [
