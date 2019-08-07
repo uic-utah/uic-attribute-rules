@@ -57,21 +57,7 @@ def get_rules(sde, rule=None):
     contact_rules = RuleGroup(sde, contact.TABLE, contact.RULES)
     correction_rules = RuleGroup(sde, correction.TABLE, correction.RULES)
     enforcement_rules = RuleGroup(sde, enforcement.TABLE, enforcement.RULES)
-
-    inspection_rules = RuleGroup(
-        sde,
-        inspection.TABLE,
-        [
-            inspection.GUID,
-            inspection.TYPE_DOMAIN,
-            inspection.ASSISTANCE_DOMAIN,
-            inspection.DEFICIENCY_DOMAIN,
-            inspection.FOREIGN_KEY,
-            inspection.FACILITY_ONLY,
-            inspection.INSPECTION_DATE,
-            inspection.CORRECTION,
-        ],
-    )
+    inspection_rules = RuleGroup(sde, inspection.TABLE, inspection.RULES)
 
     mit_rules = RuleGroup(
         sde,
