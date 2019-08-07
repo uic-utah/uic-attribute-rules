@@ -5,74 +5,53 @@ violation.py
 A module that has the UICViolation rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Calculation, Constant, Constraint
+from services.loader import load_rule_for
 
-constrain_other_comment = '''if (!haskey($feature, 'ViolationType') || !haskey($feature, 'comments')) {
-    return true;
-}
-
-if (isempty($feature.ViolationType) || lower(domaincode($feature, 'ViolationType', $feature.violationtype)) != 'ot') {
-    return true;
-}
-
-return iif (isempty($feature.comments), {
-    'errorMessage': 'When ViolationType is OT, enter a description of the other type of violation in the Comment field. This is required.'
-}, true);'''
-
-set_yes_if_yes = '''if (!haskey($feature, 'USDWContamination') || isempty($feature.USDWContamination)) {
-    return;
-}
-
-if (lower(domainname($feature, 'USDWContamination')) != 'yes') {
-    return;
-}
-
-return 'Y'; '''
-
-constrain_facility_and_well_types = '''if (!haskey($feature, 'ViolationType') || !haskey($feature, 'Well_FK') || !haskey($feature, 'Facility_FK')) {
-    return true;
-}
-
-var facilityViolations = ['OM', 'MR', 'FO', 'FA', 'FI', 'FR', 'OT'];
-var wellViolations = ['UI', 'OM', 'PA', 'MR', 'IP', 'FO', 'FA', 'FR', 'MI', 'MO', 'OT'];
-
-if (!isempty($feature.well_fk)) {
-    return iif (indexof(wellViolations, $feature.violationtype) == -1, {
-        'errorMessage': 'Acceptable well violation types: ' + wellViolations
-    }, true);
-}
-
-if (!isempty($feature.facility_fk)) {
-    return iif (indexof(facilityViolations, $feature.violationtype) == -1, {
-        'errorMessage': 'Acceptable facility violation types: ' + facilityViolations
-    }, true);
-}'''
+from . import common
 
 TABLE = 'UICViolation'
+FOLDER = 'violation'
 
-GUID = Constant('Violation Guid', 'GUID', 'Violation.Guid', 'GUID()')
+guid_constant = Constant('Violation Guid', 'GUID', 'Violation.Guid', 'GUID()')
 
-TYPE = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType', 'UICViolationTypeDomain'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+type_domain_constraint = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType', domain='UICViolationTypeDomain'))
+type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-CONTAMINATION = Constraint('Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination', 'UICYesNoUnknownDomain'))
-CONTAMINATION.triggers = [config.triggers.insert, config.triggers.update]
-
-CONTAMINATION_CALC = Calculation('Significant Non Compliance', 'SignificantNonCompliance', 'Violation.SignificantNonCompliance', set_yes_if_yes)
-CONTAMINATION_CALC.triggers = [config.triggers.insert, config.triggers.update]
-
-ENDANGER = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger', 'UICYesNoUnknownDomain'))
-ENDANGER.triggers = [config.triggers.insert, config.triggers.update]
-
-NONCOMPLIANCE = Constraint(
-    'SignificantNonCompliance', 'Violation.SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance', 'UICYesNoUnknownDomain')
+contamination_domain_constraint = Constraint(
+    'Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination', domain='UICYesNoUnknownDomain')
 )
-NONCOMPLIANCE.triggers = [config.triggers.insert, config.triggers.update]
+contamination_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-COMMENT = Constraint('Comments', 'Violation.Comments', constrain_other_comment)
-COMMENT.triggers = [config.triggers.insert, config.triggers.update]
+contamination_calculation = Calculation(
+    'Significant Non Compliance', 'SignificantNonCompliance', 'Violation.SignificantNonCompliance',
+    load_rule_for(FOLDER, 'significantNonComplianceCalculation')
+)
+contamination_calculation.editable = config.editable.no
+contamination_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
-VIOLATIONS = Constraint('Violation Type For Facility vs Well', 'Violation.FacilityWellTypes', constrain_facility_and_well_types)
-VIOLATIONS.triggers = [config.triggers.insert, config.triggers.update]
+endanger_domain_constraint = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger', domain='UICYesNoUnknownDomain'))
+endanger_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+noncompliance_domain_constraint = Constraint(
+    'SignificantNonCompliance', 'Violation.SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance', domain='UICYesNoUnknownDomain')
+)
+noncompliance_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+comment_constraint = Constraint('Comments', 'Violation.Comments', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+violation_constraint = Constraint('Violation Type For Facility vs Well', 'Violation.FacilityWellTypes', load_rule_for(FOLDER, 'facilityWellTypesConstraint'))
+violation_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+RULES = [
+    guid_constant,
+    type_domain_constraint,
+    contamination_domain_constraint,
+    contamination_calculation,
+    endanger_domain_constraint,
+    noncompliance_domain_constraint,
+    comment_constraint,
+    violation_constraint,
+]

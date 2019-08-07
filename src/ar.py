@@ -60,19 +60,7 @@ def get_rules(sde, rule=None):
     inspection_rules = RuleGroup(sde, inspection.TABLE, inspection.RULES)
     mit_rules = RuleGroup(sde, mit.TABLE, mit.RULES)
     operating_status_rules = RuleGroup(sde, operating_status.TABLE, operating_status.RULES)
-
-    violation_rules = RuleGroup(
-        sde, violation.TABLE, [
-            violation.GUID,
-            violation.TYPE,
-            violation.CONTAMINATION,
-            violation.CONTAMINATION_CALC,
-            violation.ENDANGER,
-            violation.NONCOMPLIANCE,
-            violation.COMMENT,
-            violation.VIOLATIONS,
-        ]
-    )
+    violation_rules = RuleGroup(sde, violation.TABLE, violation.RULES)
 
     if rule is None:
         return [
