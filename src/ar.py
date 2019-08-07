@@ -55,17 +55,6 @@ def get_rules(sde, rule=None):
     authorization_rules = RuleGroup(sde, authorization.TABLE, authorization.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
 
-    contact_rules = RuleGroup(
-        sde,
-        contact.TABLE,
-        [
-            contact.GUID,
-            contact.TYPE,
-            contact.STATE,
-            # contact.CONTACT_TYPE,
-        ],
-    )
-
 
     enforcement_rules = RuleGroup(
         sde,
@@ -76,6 +65,7 @@ def get_rules(sde, rule=None):
             enforcement.COMMENT,
         ],
     )
+    contact_rules = RuleGroup(sde, contact.TABLE, contact.RULES)
     correction_rules = RuleGroup(sde, correction.TABLE, correction.RULES)
 
     inspection_rules = RuleGroup(

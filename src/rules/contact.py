@@ -5,60 +5,39 @@ contact.py
 A module that has the UICContact rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
 
-#: can't featureset by name a m*m relationship table
-constrain_contact_type = '''if (!haskey($feature, 'guid') || isempty($feature.guid)) {
-    return true;
-}
-
-var fields = ['facilityguid', 'contactguid'];
-var xref = FeatureSetByName($datastore, 'UICFacilityToContact', fields, false);
-var contactSet = FeatureSetByName($datastore, 'UICContact', ['guid', 'contacttype'], false);
-
-var pk = $feature.guid;
-
-// TODO: One day there will be a relationship traversal operation
-var relations = filter(xref, 'contactguid=@pk');
-
-if (isempty(relations)) {
-    return {
-        'errorMessage': 'There are no facilities related to this contact.'
-    };
-}
-
-var querystring = 'guid in (';
-
-for (var relation in relations) {
-    querystring += "'" + relation.contactguid + "',";
-}
-
-querystring = left(querystring, count(querystring) - 1) + ')';
-
-var contacts = filter(contactSet, querystring);
-
-for (var contact in contacts) {
-    if (indexof([1, 3], contact.contacttype) > -1) {
-        return true;
-    }
-}
-
-return {
-    'errorMessage': 'There is no owner or operator contact type for this facility.'
-};
-'''
+from . import common
 
 TABLE = 'UICContact'
+FOLDER = 'contact'
 
-GUID = Constant('Contact Guid', 'GUID', 'Contact.Guid', 'GUID()')
+guid_constant = Constant('Contact Guid', 'GUID', 'Contact.Guid', 'GUID()')
 
-TYPE = Constraint('Contact Type', 'Contact.Type', common.constrain_to_domain('ContactType', 'UICContactTypeDomain'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+type_constraint = Constraint('Contact Type', 'Contact.Type', common.constrain_to_domain('ContactType', allow_null=True, domain='UICContactTypeDomain'))
 
-STATE = Constraint('Mail State', 'Contact.MailState', common.constrain_to_domain('ContactMailState', 'UICStateDomain'))
-STATE.triggers = [config.triggers.insert, config.triggers.update]
+type_constraint_update = Constraint(
+    'Contact Type', 'Contact.Type.update', common.constrain_to_domain('ContactType', allow_null=False, domain='UICContactTypeDomain')
+)
+type_constraint_update.triggers = [config.triggers.update]
 
-CONTACT_TYPE = Constraint('Owner Operator', 'Contact.OwnerType', constrain_contact_type)
-CONTACT_TYPE.triggers = [config.triggers.insert, config.triggers.update]
+state_constraint = Constraint('Mail State', 'Contact.MailState', common.constrain_to_domain('ContactMailState', allow_null=True, domain='UICStateDomain'))
+
+state_constraint_update = Constraint(
+    'Mail State', 'Contact.MailState.update', common.constrain_to_domain('ContactMailState', allow_null=False, domain='UICStateDomain')
+)
+state_constraint_update.triggers = [config.triggers.update]
+
+contact_type_constraint = Constraint('Owner Operator', 'Contact.OwnerType', load_rule_for(FOLDER, 'contactType'))
+contact_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+RULES = [
+    guid_constant,
+    type_constraint,
+    state_constraint,
+    contact_type_constraint,
+    type_constraint_update,
+    state_constraint_update,
+]
