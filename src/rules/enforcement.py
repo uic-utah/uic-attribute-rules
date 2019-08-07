@@ -26,6 +26,9 @@ type_constraint_update = Constraint(
 )
 type_constraint_update.triggers = [config.triggers.update]
 
+date_constraint = Constraint('Enforcement Date', 'Enforcement.EnforcementDate', load_rule_for(FOLDER, 'dateConstraint'))
+date_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
 comment_constraint = Constraint('Comment', 'Enforcement.Comment', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
@@ -33,5 +36,6 @@ RULES = [
     guid_constant,
     type_constraint,
     type_constraint_update,
+    date_constraint,
     comment_constraint,
 ]
