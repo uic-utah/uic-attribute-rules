@@ -18,6 +18,7 @@ guid_constant = Constant('Authorization Guid', 'GUID', 'Authorization.Guid', 'GU
 
 id_calculation = Calculation('Authorization Id', 'AuthorizationID', 'Authorization.Id', load_rule_for(FOLDER, 'idCalculation'))
 id_calculation.triggers = [config.triggers.insert, config.triggers.update]
+id_calculation.editable = config.editable.no
 
 start_date_constraint_update = Constraint('Start Date', 'Authorization.StartDate.update', load_rule_for(FOLDER, 'startDateConstraint_update'))
 start_date_constraint_update.triggers = [config.triggers.update]
@@ -28,7 +29,7 @@ type_domain_constraint = Constraint(
 )
 
 type_domain_constraint_update = Constraint(
-    'Authorization Type', 'Authorization.AuthorizationType,update',
+    'Authorization Type', 'Authorization.AuthorizationType.update',
     common.constrain_to_domain('AuthorizationType', allow_null=False, domain='UICAuthorizeActionTypeDomain')
 )
 type_domain_constraint_update.triggers = [config.triggers.update]
