@@ -48,18 +48,6 @@ def get_sde_path_for(env=None):
 
 
 def get_rules(sde, rule=None):
-    facility_rules = ArcadeRule(
-        sde, facility.TABLE, [
-            facility.GUID,
-            facility.FIPS_DOMAIN,
-            facility.FIPS,
-            facility.ID,
-            facility.CITY,
-            facility.ZIP,
-            facility.ZIP_DOMAIN,
-        ]
-    )
-
 
     aor_rules = ArcadeRule(
         sde,
@@ -68,7 +56,6 @@ def get_rules(sde, rule=None):
             area_of_review.GUID,
         ],
     )
-
 
     authorization_rules = ArcadeRule(
         sde,
@@ -82,11 +69,12 @@ def get_rules(sde, rule=None):
         ],
     )
 
+    facility_rules = RuleGroup(sde, facility.TABLE, facility.RULES)
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
     art_pen_rules = RuleGroup(sde, art_pen.TABLE, art_pen.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
-    contact_rules = ArcadeRule(
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
+    contact_rules = ArcadeRule(
         sde,
         contact.TABLE,
         [

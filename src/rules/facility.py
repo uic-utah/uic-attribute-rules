@@ -6,168 +6,36 @@ A module that creates attribute rules for the UICFacility table
 '''
 
 from config import config
+from services.loader import load_rule_for
 from models.ruletypes import Calculation, Constant, Constraint
 
 TABLE = 'UICFacility'
+FOLDER = 'facility'
 
-extract_fips = '''var field = 'FIPS';
-var set = FeatureSetByName($datastore, 'Counties', [field], true);
+guid_constant = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
 
-function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat);
-    var counts = count(items);
+fips_calculation = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', load_rule_for(FOLDER, 'fipsCalculation'))
 
-    if (counts == 0) {
-        return { 'errorMessage': 'No intersection found' };
-    }
+id_calculation = Calculation('Facility Id', 'FacilityID', 'Facility.Id', load_rule_for(FOLDER, 'idCalculation'))
+id_calculation.triggers = [config.triggers.insert, config.triggers.update]
+id_calculation.editable = config.editable.no
 
-    if (counts == 1) {
-        var result = first(items);
+city_calculation = Calculation('Facility City', 'FacilityCity', 'Facility.City', load_rule_for(FOLDER, 'cityCalculation'))
 
-        return result[field];
-    }
+zip_calculation = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', load_rule_for(FOLDER, 'zipCalculation'))
 
-    var largest = -1;
-    var result;
+fips_domain_constraint = Constraint('County Fips', 'Facility.FIPS', load_rule_for(FOLDER, 'fipsConstraint'))
+fips_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-    for (var item in items) {
-        var size = area(intersection(item, feat));
+zip_domain_calculation = Constraint('Facility Zip', 'Facility.ZipCode', load_rule_for(FOLDER, 'zipConstraint'))
+zip_domain_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
-        if (size > largest) {
-            largest = size;
-            result = item[field];
-        }
-    }
-
-    return result;
-}
-
-var result = getAttributeFromLargestArea($feature, set, field);
-result = text(result, '00')
-
-return iif(isnan(number('490' + result)), null, number('490' + result));'''
-
-extract_city = '''var field = 'NAME';
-var set = FeatureSetByName($datastore, 'Municipalities', [field], true);
-
-function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat);
-    var counts = count(items);
-
-    if (counts == 0) {
-        return null;
-    }
-
-    if (counts == 1) {
-        var result = first(items);
-
-        return result[field];
-    }
-
-    var largest = -1;
-    var result;
-
-    for (var item in items) {
-        var size = area(intersection(item, feat));
-
-        if (size > largest) {
-            largest = size;
-            result = item[field];
-        }
-    }
-
-    return result;
-}
-
-return getAttributeFromLargestArea($feature, set, field);'''
-
-extract_zip = '''var field = 'ZIP5';
-var set = FeatureSetByName($datastore, 'ZipCodes', [field], true);
-
-function getAttributeFromLargestArea(feat, set, field) {
-    var items = intersects(set, feat);
-    var counts = count(items);
-
-    if (counts == 0) {
-        return { 'errorMessage': 'No intersection found' };
-    }
-
-    if (counts == 1) {
-        var result = first(items);
-
-        return result[field];
-    }
-
-    var largest = -1;
-    var result;
-
-    for (var item in items) {
-        var size = area(intersection(item, feat));
-
-        if (size > largest) {
-            largest = size;
-            result = item[field];
-        }
-    }
-
-    return result;
-}
-
-return getAttributeFromLargestArea($feature, set, field);'''
-
-constrain_domain = '''if (!haskey($feature, 'countyfips')) {
-    return true;
-}
-
-
-var code = number($feature.countyfips)
-if (isnan(code) || isempty($feature.countyfips)) {
-    return {
-        'errorMessage': 'The fips code is empty.'
-    };
-}
-
-if (code % 2 == 0) {
-    return {
-        'errorMessage': 'The fips code should be odd. Input: ' + code
-    };
-}
-
-if (code >= 49001 && code <= 49057) {
-    return true;
-}
-
-return {
-    'errorMessage': 'The code does not fall within the valid ranges: ' + code
-};'''
-
-create_id = '''var keys = ['countyfips', 'guid'];
-
-for (var key in keys) {
-    if (!haskey($feature, keys[key])) {
-        return null;
-    }
-}
-
-return 'UTU' + right($feature.countyfips, 2) + 'F' + upper(mid($feature.guid, 29, 8))'''
-
-constrain_zip = '''if (!haskey($feature, 'facilityzip') || isempty($feature.facilityzip)) {
-    return true;
-}
-
-return iif (isempty(domainname($feature, 'facilityzip', $feature.facilityzip)), {
-    'errorMessage': 'Zip code is not in the domain. Input: ' + $feature.facilityzip
-}, true);'''
-
-GUID = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
-FIPS = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', extract_fips)
-ID = Calculation('Facility Id', 'FacilityID', 'Facility.Id', create_id)
-ID.triggers = [config.triggers.insert, config.triggers.update]
-CITY = Calculation('Facility City', 'FacilityCity', 'Facility.City', extract_city)
-ZIP = Calculation('Facility Zip', 'FacilityZIP', 'Facility.ZipCode', extract_zip)
-
-ZIP_DOMAIN = Constraint('Facility Zip', 'Facility.ZipCode', constrain_zip)
-ZIP_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
-
-FIPS_DOMAIN = Constraint('County Fips', 'Facility.FIPS', constrain_domain)
-FIPS_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
+RULES = [
+    guid_constant,
+    fips_calculation,
+    id_calculation,
+    city_calculation,
+    zip_calculation,
+    fips_domain_constraint,
+    zip_domain_calculation,
+]
