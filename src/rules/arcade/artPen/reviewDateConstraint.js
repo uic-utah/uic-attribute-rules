@@ -9,4 +9,4 @@ if (isempty($feature.ident4ca)) {
 
 return iif(isempty($feature.artpen_reviewdate), {
     'errorMessage': 'Review date is required when Ident4CA has a value.'
-});
+}, true);
