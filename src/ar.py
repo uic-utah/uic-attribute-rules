@@ -54,19 +54,9 @@ def get_rules(sde, rule=None):
     art_pen_rules = RuleGroup(sde, art_pen.TABLE, art_pen.RULES)
     authorization_rules = RuleGroup(sde, authorization.TABLE, authorization.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
-
-
-    enforcement_rules = RuleGroup(
-        sde,
-        enforcement.TABLE,
-        [
-            enforcement.GUID,
-            enforcement.TYPE,
-            enforcement.COMMENT,
-        ],
-    )
     contact_rules = RuleGroup(sde, contact.TABLE, contact.RULES)
     correction_rules = RuleGroup(sde, correction.TABLE, correction.RULES)
+    enforcement_rules = RuleGroup(sde, enforcement.TABLE, enforcement.RULES)
 
     inspection_rules = RuleGroup(
         sde,

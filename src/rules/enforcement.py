@@ -5,28 +5,33 @@ enforcement.py
 A module that has the UICEnforcement rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
 
-constrain_other_comment = '''if (!haskey($feature, 'EnforcementType') || !haskey($feature, 'comments')) {
-    return true;
-}
-
-if (isempty($feature.EnforcementType) || lower(domaincode($feature, 'EnforcementType', $feature.enforcementtype)) != 'otr') {
-    return true;
-}
-
-return iif (isempty($feature.comments), {
-    'errorMessage': 'When EnforcementType is OTR, enter a description of the other type of enforcement action taken in the Comment field. This is required.'
-}, true);'''
+from . import common
 
 TABLE = 'UICEnforcement'
+FOLDER = 'enforcement'
 
-GUID = Constant('Enforcement Guid', 'GUID', 'Enforcement.Guid', 'GUID()')
+guid_constant = Constant('Enforcement Guid', 'GUID', 'Enforcement.Guid', 'GUID()')
 
-TYPE = Constraint('Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType', 'UICEnforcementTypeDomain'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+type_constraint = Constraint(
+    'Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType', allow_null=True, domain='UICEnforcementTypeDomain')
+)
 
-COMMENT = Constraint('Comment', 'Enforcement.Comment', constrain_other_comment)
-COMMENT.triggers = [config.triggers.insert, config.triggers.update]
+type_constraint_update = Constraint(
+    'Enforcement Type', 'Enforcement.EnforcementType.update',
+    common.constrain_to_domain('EnforcementType', allow_null=False, domain='UICEnforcementTypeDomain')
+)
+type_constraint_update.triggers = [config.triggers.update]
+
+comment_constraint = Constraint('Comment', 'Enforcement.Comment', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+RULES = [
+    guid_constant,
+    type_constraint,
+    type_constraint_update,
+    comment_constraint,
+]
