@@ -5,59 +5,36 @@ art_pen.py
 A module that has the UICArtPen rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
+
+from . import common
 
 TABLE = 'UICArtPen'
 
-constrain_ca_type = '''if (!haskey($feature, 'artpen_catype') || !haskey($feature, 'ident4ca')) {
-    return true;
-}
+guid_constraint = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
 
-if (isempty($feature.ident4ca)) {
-    return true;
-}
+name_constraint = Constraint('Art Pen Well Name', 'ArtPen.ArtPen_WellName', load_rule_for(TABLE, 'wellName'))
+name_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-if ($feature.ident4ca == 2) { // no
-    return iif (!isempty($feature.artpen_catype), {
-        'errorMessage': 'ArtPen_CAType cannot have a value when Ident4CA is no'
-    }, true);
-}
+well_type_constraint = Constraint('Art Pen Well Type', 'ArtPen.WellType', common.constrain_to_domain('welltype', allow_null=False, domain='UICArtPenWellType'))
+well_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-return iif (isempty($feature.artpen_catype), {
-    'errorMessage': 'ArtPen_CAType cannot be empty when Ident4CA has a value'
-}, true);'''
+review_date_constraint = Constraint('Art Pen Review Date', 'ArtPen.Artpen_ReviewDate', load_rule_for(TABLE, 'reviewDateConstraint'))
+review_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-constrain_ca_date = '''if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'ident4ca')) {
-    return true;
-}
+catype_constraint = Constraint('Art Pen Review Date', 'ArtPen.ArtPen_CAType', load_rule_for(TABLE, 'caTypeConstraint'))
+catype_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-if (isempty($feature.ident4ca)) {
-    return true;
-}
+cadate_constraint = Constraint('CA Date', 'ArtPen.ArtPen_CADate', load_rule_for(TABLE, 'caDateConstraint'))
+cadate_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-if ($feature.ident4ca == 2) { // no
-    return iif (!isempty($feature.artpen_cadate), {
-        'errorMessage': 'ArtPen_CADate cannot have a value when Ident4CA is no'
-    }, true);
-}
-
-return iif (isempty($feature.artpen_cadate), {
-    'errorMessage': 'ArtPen_CADate cannot be empty when Ident4CA has a value'
-}, true);'''
-
-GUID = Constant('Art Pen Guid', 'GUID', 'ArtPen.Guid', 'GUID()')
-
-WELL_TYPE = Constraint('Well Type', 'ArtPen.WellType', common.constrain_to_domain('artpen_wellname', 'UICArtPenWellType'))
-WELL_TYPE.triggers = [config.triggers.insert, config.triggers.update]
-
-#: these have been removed, but I suspect they will be back
-# CA_DOMAIN = Constraint('CA', 'ArtPen.Ident4CA', common.constrain_to_domain('ident4ca'))
-# CA_DOMAIN.triggers = [config.triggers.insert, config.triggers.update]
-
-# CA_TYPE = Constraint('CA Type', 'ArtPen.ArtPen_CAType', constrain_ca_type)
-# CA_TYPE.triggers = [config.triggers.insert, config.triggers.update]
-
-CA_DATE = Constraint('CA Date', 'ArtPen.ArtPen_CADate', constrain_ca_date)
-CA_DATE.triggers = [config.triggers.insert, config.triggers.update]
+RULES = [
+    guid_constraint,
+    name_constraint,
+    well_type_constraint,
+    review_date_constraint,
+    catype_constraint,
+    cadate_constraint,
+]

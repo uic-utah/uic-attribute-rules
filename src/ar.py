@@ -69,15 +69,6 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    art_pen_rules = ArcadeRule(
-        sde,
-        art_pen.TABLE,
-        [
-            art_pen.GUID,
-            art_pen.WELL_TYPE,
-            art_pen.CA_DATE,
-        ],
-    )
 
     authorization_rules = ArcadeRule(
         sde,
@@ -92,6 +83,7 @@ def get_rules(sde, rule=None):
     )
 
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
+    art_pen_rules = RuleGroup(sde, art_pen.TABLE, art_pen.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
     contact_rules = ArcadeRule(
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
