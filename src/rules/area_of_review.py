@@ -8,4 +8,7 @@ A module that has the UICAreaOfReview rules
 from models.ruletypes import Constant
 
 TABLE = 'UICAreaOfReview'
-GUID = Constant('Area Of Review Guid', 'GUID', 'AreaOfReview.Guid', 'GUID()')
+
+guid_constant = Constant('Area Of Review Guid', 'GUID', 'AreaOfReview.Guid', 'GUID()')
+
+RULES = [guid_constant]
