@@ -20,9 +20,13 @@ name_constraint = Constraint('Art Pen Well Name', 'ArtPen.ArtPen_WellName', load
 name_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 well_type_constraint = Constraint(
-    'Art Pen Well Type', 'ArtPen.ArtPen_WellType', common.constrain_to_domain('ArtPen_WellType', allow_null=False, domain='UICArtPenWellType')
+    'Art Pen Well Type', 'ArtPen.ArtPen_WellType', common.constrain_to_domain('ArtPen_WellType', allow_null=True, domain='UICArtPenWellType')
 )
-well_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+well_type_constraint_update = Constraint(
+    'Art Pen Well Type', 'ArtPen.ArtPen_WellType.update', common.constrain_to_domain('ArtPen_WellType', allow_null=False, domain='UICArtPenWellType')
+)
+well_type_constraint_update.triggers = [config.triggers.update]
 
 review_date_constraint = Constraint('Art Pen Review Date', 'ArtPen.Artpen_ReviewDate', load_rule_for(FOLDER, 'reviewDateConstraint'))
 review_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
@@ -37,6 +41,7 @@ RULES = [
     guid_constraint,
     name_constraint,
     well_type_constraint,
+    well_type_constraint_update,
     review_date_constraint,
     catype_constraint,
     cadate_constraint,
