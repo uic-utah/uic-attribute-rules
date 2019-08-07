@@ -5,13 +5,19 @@ mit.py
 A module that has the UICMIT rules
 '''
 
-from . import common
 from config import config
 from models.ruletypes import Constant, Constraint
 
+from . import common
+
 TABLE = 'UICMIT'
 
-GUID = Constant('MIT Guid', 'GUID', 'MIT.Guid', 'GUID()')
+guid_constant = Constant('MIT Guid', 'GUID', 'MIT.Guid', 'GUID()')
 
-TYPE = Constraint('MIT Type', 'MIT.Type', common.constrain_to_domain('MITType', 'UICMITTypeDomain'))
-TYPE.triggers = [config.triggers.insert, config.triggers.update]
+type_constraint = Constraint('MIT Type', 'MIT.Type', common.constrain_to_domain('MITType', domain='UICMITTypeDomain'))
+type_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+RULES = [
+    guid_constant,
+    type_constraint,
+]

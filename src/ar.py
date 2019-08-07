@@ -58,15 +58,7 @@ def get_rules(sde, rule=None):
     correction_rules = RuleGroup(sde, correction.TABLE, correction.RULES)
     enforcement_rules = RuleGroup(sde, enforcement.TABLE, enforcement.RULES)
     inspection_rules = RuleGroup(sde, inspection.TABLE, inspection.RULES)
-
-    mit_rules = RuleGroup(
-        sde,
-        mit.TABLE,
-        [
-            mit.GUID,
-            mit.TYPE,
-        ],
-    )
+    mit_rules = RuleGroup(sde, mit.TABLE, mit.RULES)
 
     operating_status_rules = RuleGroup(
         sde,
