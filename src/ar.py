@@ -107,7 +107,7 @@ if __name__ == '__main__':
     print('acting on {}'.format(sde))
 
     if not arcpy.TestSchemaLock(os.path.join(sde, facility.TABLE)):
-        print('Unable to acquire the necessary schema lock to add rules')
+        print('Unable to reach the database or acquire the necessary schema lock to add rules')
         exit(0)
 
     if args['update']:
