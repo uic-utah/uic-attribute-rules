@@ -5,10 +5,11 @@ operating_status.py
 A module that has the UICWellOperatingStatus rules
 '''
 
-from . import common
 from config import config
-from services.loader import load_rule_for
 from models.ruletypes import Constant, Constraint
+from services.loader import load_rule_for
+
+from . import common
 
 TABLE = 'UICWellOperatingStatus'
 FOLDER = 'operatingStatus'
