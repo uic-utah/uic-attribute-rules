@@ -54,7 +54,8 @@ def get_rules(sde, rule=None):
     art_pen_rules = RuleGroup(sde, art_pen.TABLE, art_pen.RULES)
     authorization_rules = RuleGroup(sde, authorization.TABLE, authorization.RULES)
     auth_action_rules = RuleGroup(sde, authorization_action.TABLE, authorization_action.RULES)
-    contact_rules = ArcadeRule(
+
+    contact_rules = RuleGroup(
         sde,
         contact.TABLE,
         [
@@ -65,7 +66,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    correction_rules = ArcadeRule(
+    correction_rules = RuleGroup(
         sde,
         correction.TABLE,
         [
@@ -75,7 +76,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    enforcement_rules = ArcadeRule(
+    enforcement_rules = RuleGroup(
         sde,
         enforcement.TABLE,
         [
@@ -85,7 +86,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    inspection_rules = ArcadeRule(
+    inspection_rules = RuleGroup(
         sde,
         inspection.TABLE,
         [
@@ -100,7 +101,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    mit_rules = ArcadeRule(
+    mit_rules = RuleGroup(
         sde,
         mit.TABLE,
         [
@@ -109,7 +110,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    operating_status_rules = ArcadeRule(
+    operating_status_rules = RuleGroup(
         sde,
         operating_status.TABLE,
         [
@@ -119,7 +120,7 @@ def get_rules(sde, rule=None):
         ],
     )
 
-    violation_rules = ArcadeRule(
+    violation_rules = RuleGroup(
         sde, violation.TABLE, [
             violation.GUID,
             violation.TYPE,
