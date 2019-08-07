@@ -5,6 +5,10 @@ if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'artpen_catype')) {
 
 var catype = domainname($feature, 'artpen_catype', $feature.artpen_catype);
 
-return iif(isempty(catype) || catype == 'waiting', {
+if (isempty(catype) || catype == 'Waiting') {
+    return true;
+}
+
+return iif(isempty($feature.artpen_cadate), {
     'errorMessage': 'ArtPen_CADate cannot be empty when ArtPen_CAType is not <null> or waiting.'
 }, true);
