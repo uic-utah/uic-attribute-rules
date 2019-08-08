@@ -412,6 +412,32 @@ def alter_domains(changes, sde):
             print('  domain probably already added')
 
 
+def create_relationship(sde):
+    origin = 'UDEQ.UICADMIN.UICAreaOfReview'
+    destination = 'UDEQ.UICADMIN.UICArtPen'
+    output = os.path.join(sde, 'UICAreaOfReview_UICArtPen')
+
+    print('creating artpen relationship class')
+    try:
+        arcpy.management.CreateRelationshipClass(
+            origin_table=origin,
+            destination_table=destination,
+            out_relationship_class=output,
+            relationship_type='SIMPLE',
+            forward_label='UDEQ.UICADMIN.UICArtPen',
+            backward_label='UDEQ.UICADMIN.UICAreaOfReview',
+            message_direction='NONE',
+            cardinality='MANY_TO_MANY',
+            attributed='NONE',
+            origin_primary_key='GUID',
+            origin_foreign_key='AOR_FK',
+            destination_primary_key='GUID',
+            destination_foreign_key='ArtPen_FK',
+        )
+    except Exception:
+        print('  class probably already created')
+
+
 def _get_tables(sde):
     tables = arcpy.ListFeatureClasses() + arcpy.ListTables()
 
@@ -444,4 +470,5 @@ if __name__ == '__main__':
         migrate_fields()
         create_contingencies(sde)
         alter_domains(_domains_to_update, sde)
+        create_relationship(sde)
         version_tables(True, tables, _skip_tables, sde)
