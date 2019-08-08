@@ -10,7 +10,7 @@ ALLOW_EMPTY = '''if (!haskey($feature, '{0}') || isempty($feature.{0})) {{
 }}
 
 return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
-    'errorMessage': '{0} may not be <null>; select the appropriate value from the{1} domain (dropdown menu). Input: ' + $feature.{0}
+    'errorMessage': '{0} may not be empty; select the appropriate value from the{1} (dropdown menu). Input: ' + $feature.{0}
 }}, true);'''
 
 NO_EMPTY = '''if (!haskey($feature, '{0}')) {{
@@ -18,7 +18,7 @@ NO_EMPTY = '''if (!haskey($feature, '{0}')) {{
 }}
 
 return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
-    'errorMessage': '{0} may not be <null>; select the appropriate value from the{1} domain (dropdown menu). Input: ' + $feature.{0}
+    'errorMessage': '{0} may not be empty; select the appropriate value from the{1} (dropdown menu). Input: ' + $feature.{0}
 }}, true);'''
 
 REQUIRED = '''if (!haskey($feature, '{0}')) {{
