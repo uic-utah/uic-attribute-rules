@@ -52,7 +52,8 @@ RULES = [
     guid_constant,
     type_constraint,
     state_constraint,
-    contact_type_constraint,
+    #: this doesn't work with m*m
+    # contact_type_constraint,
     type_constraint_update,
     state_constraint_update,
     name_constraint_update,
