@@ -19,7 +19,15 @@ NO_EMPTY = '''if (!haskey($feature, '{0}')) {{
 
 return iif (isempty(domainname($feature, '{0}', $feature.{0})), {{
     'errorMessage': '{0} may not be <null>; select the appropriate value from the{1} domain (dropdown menu). Input: ' + $feature.{0}
-}}, true); '''
+}}, true);'''
+
+REQUIRED = '''if (!haskey($feature, '{0}')) {{
+    return true;
+}}
+
+return iif(isempty($feature.{0}), {{
+    'errorMessage': '{0} must not be empty.'
+}}, true);'''
 
 
 def constrain_to_domain(field, allow_null=True, domain=None):
@@ -32,3 +40,7 @@ def constrain_to_domain(field, allow_null=True, domain=None):
         return ALLOW_EMPTY.format(field, domain)
 
     return NO_EMPTY.format(field, domain)
+
+
+def constrain_to_required(field):
+    return REQUIRED.format(field)

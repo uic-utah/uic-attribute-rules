@@ -6,8 +6,10 @@ A module that creates attribute rules for the UICFacility table
 '''
 
 from config import config
-from services.loader import load_rule_for
 from models.ruletypes import Calculation, Constant, Constraint
+from services.loader import load_rule_for
+
+from . import common
 
 TABLE = 'UICFacility'
 FOLDER = 'facility'
@@ -30,6 +32,12 @@ fips_domain_constraint.triggers = [config.triggers.insert, config.triggers.updat
 zip_domain_calculation = Constraint('Facility Zip', 'Facility.ZipCode', load_rule_for(FOLDER, 'zipConstraint'))
 zip_domain_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
+name_constraint_update = Constraint('Facility name', 'Facility.FacilityName.update', common.constrain_to_required('FacilityName'))
+name_constraint_update.triggers = [config.triggers.update]
+
+address_constraint_update = Constraint('Facility address', 'Facility.FacilityAddress.update', common.constrain_to_required('FacilityAddress'))
+address_constraint_update.triggers = [config.triggers.update]
+
 RULES = [
     guid_constant,
     fips_calculation,
@@ -38,4 +46,5 @@ RULES = [
     zip_calculation,
     fips_domain_constraint,
     zip_domain_calculation,
+    name_constraint_update,
 ]
