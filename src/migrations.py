@@ -124,6 +124,27 @@ _domains_to_update = {
         'value': 'waiting'
     }
 }
+_tables_to_add = {
+    'Version_Information': [
+        {
+            'in_table': 'Version_Information',
+            'field_name': 'Name',
+            'field_type': 'TEXT',
+            'field_length': 255
+        },
+        {
+            'in_table': 'Version_Information',
+            'field_name': 'Version',
+            'field_type': 'TEXT',
+            'field_length': 255
+        },
+        {
+            'in_table': 'Version_Information',
+            'field_name': 'Date',
+            'field_type': 'DATE',
+        },
+    ]
+}
 
 
 def clean_up(sde):
@@ -154,6 +175,17 @@ def delete_tables(tables, sde):
         arcpy.management.Delete(os.path.join(sde, table))
 
     print('done')
+
+
+def create_tables(tables, sde):
+    for table_name in tables:
+        print('creating {}'.format(table_name))
+        arcpy.management.CreateTable(sde, table_name)
+
+        field_metas = tables[table_name]
+
+        for field_meta in field_metas:
+            arcpy.management.AddField(**field_meta)
 
 
 def version_tables(version, tables, skip_tables, sde):
@@ -461,6 +493,7 @@ if __name__ == '__main__':
         clean_up(sde)
 
         delete_tables(_tables_to_delete, sde)
+        create_tables(_tables_to_add, sde)
 
         tables = _get_tables(sde)
 
