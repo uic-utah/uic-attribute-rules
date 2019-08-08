@@ -23,28 +23,11 @@ import os
 from docopt import docopt
 
 import arcpy
+from config.config import get_sde_path_for
 from models.rule import RuleGroup
 from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
-
-
-def get_sde_path_for(env=None):
-    sde = os.path.join(os.path.dirname(__file__), '..', 'pro-project')
-
-    if env is None:
-        return os.path.join(sde, 'localhost.sde')
-
-    if env == 'local':
-        return os.path.join(sde, 'localhost.sde')
-
-    if env == 'dev':
-        return os.path.join(sde, 'stage.sde')
-
-    if env == 'prod':
-        return os.path.join(sde, 'prod.sde')
-
-    raise Exception('{} env not found'.format(env))
 
 
 def get_rules(sde, rule=None):
