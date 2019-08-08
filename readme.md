@@ -49,9 +49,11 @@
 
 #### python migrations
 
-1. update `config.py` to set correct source
+1. add `localhost.sde`, `stage.sde`, and `prod.sde` to the pro-project
 1. run migration code
-   - `python migrations.py`
+   - `python migrations.py migrate --env=local, dev, prod`
+
+This is a doc opt cli, so check the help for the tool
 
 ##### What happens
 
@@ -67,6 +69,8 @@
 
 ### Attribute Rules
 
-1. update `config.py` to set correct source
+1. add `localhost.sde`, `stage.sde`, and `prod.sde` to the pro-project
 1. Install attribute rules
-   - `python ar.py`
+   - `python ar.py update --env=local, dev, prod`
+
+This is a doc opt cli, so check the help for the tool
