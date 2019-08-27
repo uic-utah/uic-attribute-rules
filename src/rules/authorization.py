@@ -24,11 +24,11 @@ start_date_constraint_update = Constraint('Start Date', 'StartDate.update', load
 start_date_constraint_update.triggers = [config.triggers.update]
 
 type_domain_constraint = Constraint(
-    'Authorization Type', 'AuthorizationType', common.constrain_to_domain('AuthorizationType', allow_null=True, domain='UICAuthorizeActionTypeDomain')
+    'Authorization Type', 'AuthorizationType', common.constrain_to_domain('AuthorizationType', allow_null=True, domain='UICAuthorizeTypeDomain')
 )
 
 type_domain_constraint_update = Constraint(
-    'Authorization Type', 'AuthorizationType.update', common.constrain_to_domain('AuthorizationType', allow_null=False, domain='UICAuthorizeActionTypeDomain')
+    'Authorization Type', 'AuthorizationType.update', common.constrain_to_domain('AuthorizationType', allow_null=False, domain='UICAuthorizeTypeDomain')
 )
 type_domain_constraint_update.triggers = [config.triggers.update]
 
