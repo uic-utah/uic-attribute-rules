@@ -7,5 +7,5 @@ if (isempty($feature.EnforcementType) || lower(domaincode($feature, 'Enforcement
 }
 
 return iif(isempty($feature.comments), {
-    'errorMessage': 'When EnforcementType is OTR, enter a description of the other type of enforcement action taken in the Comment field. This is required.'
+    'errorMessage': 'When EnforcementType is `Other`, enter a description of the other type of enforcement action taken in the Comment field. This is required.'
 }, true);
