@@ -5,14 +5,14 @@ ar
 
 Usage:
     ar update [--rule=<rule> --env=<env>]
-    ar delete [--env=<env>]
+    ar delete [--rule=<rule> --env=<env>]
     ar --version
     ar (-h | --help)
 
 Options:
     --rule=<rule>   The allowable rules.
                         area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit,
-                        operating_status, violation, well
+                        operating_status, violation, well, ALL
     --env=<env>     local, dev, prod
     -h --help       Shows this screen
     -v --version    Shows the version
@@ -20,6 +20,7 @@ Options:
 
 import os
 
+from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
 from docopt import docopt
 
 import arcpy
@@ -31,6 +32,65 @@ from rules import (
 
 
 def get_rules(sde, rule=None):
+    if rule == 'ALL':
+        tables = [
+            facility.TABLE,
+            well.TABLE,
+            area_of_review.TABLE,
+            art_pen.TABLE,
+            authorization.TABLE,
+            authorization_action.TABLE,
+            contact.TABLE,
+            correction.TABLE,
+            enforcement.TABLE,
+            inspection.TABLE,
+            mit.TABLE,
+            operating_status.TABLE,
+            violation.TABLE,
+        ]
+
+        for table in tables:
+            attribute_rules = arcpy.Describe(os.path.join(sde, table)).attributeRules
+
+            calculation_rules = ';'.join([ar.name for ar in attribute_rules if 'Calculation' in ar.type])
+            constraint_rules = ';'.join([ar.name for ar in attribute_rules if 'Constraint' in ar.type])
+
+            if calculation_rules:
+                print('  deleting calculation rules: {}'.format(calculation_rules))
+                try:
+                    arcpy.management.DeleteAttributeRule(
+                        in_table=os.path.join(sde, table),
+                        names=calculation_rules,
+                        type='CALCULATION',
+                    )
+                    print('    deleted')
+                except ExecuteError as e:
+                    message, = e.args
+
+                    if message.startswith('ERROR 002556'):
+                        print('    rule already deleted, skipping...')
+                    else:
+                        raise e
+
+            if constraint_rules:
+                print('  deleting constraint rules {}'.format(constraint_rules))
+                try:
+                    arcpy.management.DeleteAttributeRule(
+                        in_table=os.path.join(sde, table),
+                        names=constraint_rules,
+                        type='CONSTRAINT',
+                    )
+                    print('    deleted')
+                except ExecuteError as e:
+                    message, = e.args
+
+                    if message.startswith('ERROR 002556'):
+                        print('    rule already deleted, skipping...')
+                    else:
+                        raise e
+
+        return []
+
     facility_rules = RuleGroup(sde, facility.TABLE, facility.RULES)
     well_rules = RuleGroup(sde, well.TABLE, well.RULES)
     aor_rules = RuleGroup(sde, area_of_review.TABLE, area_of_review.RULES)
