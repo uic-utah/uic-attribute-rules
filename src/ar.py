@@ -30,6 +30,8 @@ from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
 
+VERSION = '1.0.0'
+
 
 def get_rules(sde, rule=None):
     if rule == 'ALL':
@@ -144,7 +146,7 @@ def get_rules(sde, rule=None):
 if __name__ == '__main__':
     '''Main entry point for program. Parse arguments and pass to engine module
     '''
-    args = docopt(__doc__, version='1.0.0')
+    args = docopt(__doc__, version=VERSION)
 
     sde = get_sde_path_for(args['--env'])
     print('acting on {}'.format(sde))
