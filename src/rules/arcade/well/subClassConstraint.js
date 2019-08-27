@@ -8,7 +8,7 @@ if (isempty($feature.wellclass)) {
 
 if (isempty($feature.wellsubclass)) {
     return {
-        'errorMessage': 'WellSubClass may not be <null>; select the appropriate value from the UICWellSubClassDomain (dropdown menu).'
+        'errorMessage': 'WellSubClass may not be empty; select the appropriate value from the UICWellSubClassDomain (dropdown menu).'
     }
 }
 
