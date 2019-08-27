@@ -10,5 +10,5 @@ if (isempty($feature.ident4ca) || $feature.ident4ca == no) {
 }
 
 return iif(isempty($feature.artpen_catype), {
-    'errorMessage': 'ArtPen_CAType cannot be empty when Ident4CA is yes.'
+    'errorMessage': 'ArtPen_CAType may not be empty if Ident4CA has a value other than `no`. If waiting for corrective action to be performed, select `waiting` from the UICArtPenCAType domain (dropdown menu).'
 }, true);
