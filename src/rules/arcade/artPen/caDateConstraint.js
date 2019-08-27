@@ -10,5 +10,5 @@ if (isempty(catype) || catype == 'Waiting') {
 }
 
 return iif(isempty($feature.artpen_cadate), {
-    'errorMessage': 'ArtPen_CADate cannot be empty when ArtPen_CAType is not <null> or waiting.'
+    'errorMessage': 'ArtPen_CADate may not be empty if ArtPen_CAType has a value other than `waiting`.'
 }, true);
