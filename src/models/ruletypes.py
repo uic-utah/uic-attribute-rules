@@ -23,13 +23,13 @@ class BaseType(object):
 
 class Constant(BaseType):
 
-    def __init__(self, name, field, rule_name, value):
+    def __init__(self, name, field, value):
         super(Constant, self).__init__()
 
         self.name = name
         self.field = field
-        self.rule_name = 'Constant.' + rule_name
-        self.description = 'Calculation Rule. {}'.format(rule_name)
+        self.rule_name = field
+        self.description = name
         self.editable = config.editable.no
 
         self.arcade = 'return {};'.format(value)

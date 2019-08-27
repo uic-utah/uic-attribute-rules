@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICViolation'
 FOLDER = 'violation'
 
-guid_constant = Constant('Violation Guid', 'GUID', 'Violation.Guid', 'GUID()')
+guid_constant = Constant('Violation Guid', 'GUID', 'GUID()')
 
 type_domain_constraint = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType', domain='UICViolationTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]

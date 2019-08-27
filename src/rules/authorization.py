@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICAuthorization'
 FOLDER = 'authorization'
 
-guid_constant = Constant('Authorization Guid', 'GUID', 'Authorization.Guid', 'GUID()')
+guid_constant = Constant('Authorization Guid', 'GUID', 'GUID()')
 
 id_calculation = Calculation('Authorization Id', 'AuthorizationID', 'Authorization.Id', load_rule_for(FOLDER, 'idCalculation'))
 id_calculation.triggers = [config.triggers.insert, config.triggers.update]

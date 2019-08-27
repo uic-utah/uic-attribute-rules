@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICContact'
 FOLDER = 'contact'
 
-guid_constant = Constant('Contact Guid', 'GUID', 'Contact.Guid', 'GUID()')
+guid_constant = Constant('Contact Guid', 'GUID', 'GUID()')
 
 name_constraint_update = Constraint('Contact Name', 'Contact.ContactName.update', common.constrain_to_required('ContactName'))
 name_constraint_update.triggers = [config.triggers.update]

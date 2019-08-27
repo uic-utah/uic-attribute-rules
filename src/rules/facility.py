@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICFacility'
 FOLDER = 'facility'
 
-guid_constant = Constant('Facility Guid', 'GUID', 'Facility.Guid', 'Guid()')
+guid_constant = Constant('Facility Guid', 'GUID', 'Guid()')
 
 fips_calculation = Calculation('County Fips', 'CountyFIPS', 'Facility.FIPS', load_rule_for(FOLDER, 'fipsCalculation'))
 

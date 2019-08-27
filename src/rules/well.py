@@ -13,7 +13,7 @@ from models.ruletypes import Calculation, Constant, Constraint
 TABLE = 'UICWell'
 FOLDER = 'well'
 
-guid_constant = Constant('Well Guid', 'GUID', 'Well.Guid', 'Guid()')
+guid_constant = Constant('Well Guid', 'GUID', 'Guid()')
 
 id_calculation = Calculation('Well Id', 'WellId', 'Well.Id', load_rule_for(FOLDER, 'idCalculation'))
 id_calculation.triggers = [config.triggers.insert, config.triggers.update]

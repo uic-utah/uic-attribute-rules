@@ -9,6 +9,6 @@ from models.ruletypes import Constant
 
 TABLE = 'UICAreaOfReview'
 
-guid_constant = Constant('Area Of Review Guid', 'GUID', 'AreaOfReview.Guid', 'GUID()')
+guid_constant = Constant('Area Of Review Guid', 'GUID', 'GUID()')
 
 RULES = [guid_constant]

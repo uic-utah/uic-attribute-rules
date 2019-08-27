@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICEnforcement'
 FOLDER = 'enforcement'
 
-guid_constant = Constant('Enforcement Guid', 'GUID', 'Enforcement.Guid', 'GUID()')
+guid_constant = Constant('Enforcement Guid', 'GUID', 'GUID()')
 
 type_constraint = Constraint(
     'Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType', allow_null=True, domain='UICEnforcementTypeDomain')

@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICMIT'
 FOLDER = 'mit'
 
-guid_constant = Constant('MIT Guid', 'GUID', 'MIT.Guid', 'GUID()')
+guid_constant = Constant('MIT Guid', 'GUID', 'GUID()')
 
 type_domain_constraint = Constraint('MIT type', 'MIT.Type', common.constrain_to_domain('MITType', allow_null=False, domain='UICMITTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.update]

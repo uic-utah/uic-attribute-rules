@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICCorrection'
 FOLDER = 'correction'
 
-guid_constant = Constant('Correction Guid', 'GUID', 'Correction.Guid', 'GUID()')
+guid_constant = Constant('Correction Guid', 'GUID', 'GUID()')
 
 type_constraint = Constraint(
     'Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction', allow_null=True, domain='UICCorrectiveActionDomain')

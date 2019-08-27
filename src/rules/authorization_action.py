@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICAuthorizationAction'
 FOLDER = 'authorizationAction'
 
-guid_constant = Constant('Authorization Action Guid', 'GUID', 'AuthorizationAction.Guid', 'GUID()')
+guid_constant = Constant('Authorization Action Guid', 'GUID', 'GUID()')
 
 action_type_domain_constraint = Constraint(
     'Authorization Action Type', 'AuthorizationAction.AuthorizationActionType',

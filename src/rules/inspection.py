@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICInspection'
 FOLDER = 'inspection'
 
-guid_constant = Constant('Inspection Guid', 'GUID', 'Inspection.Guid', 'GUID()')
+guid_constant = Constant('Inspection Guid', 'GUID', 'GUID()')
 
 type_domain_constraint = Constraint('Inspection Type', 'Inspection.Type', common.constrain_to_domain('InspectionType', domain='UICInspectionTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]

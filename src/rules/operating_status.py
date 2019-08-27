@@ -14,7 +14,7 @@ from . import common
 TABLE = 'UICWellOperatingStatus'
 FOLDER = 'operatingStatus'
 
-guid_constant = Constant('Well operating status Guid', 'GUID', 'WellOperatingStatus.Guid', 'GUID()')
+guid_constant = Constant('Well operating status Guid', 'GUID', 'GUID()')
 
 type_domain_constraint = Constraint(
     'Operating Status Type', 'OperatingStatus.Type', common.constrain_to_domain('OperatingStatusType', allow_null=False, domain='UICOperatingStatusTypeDomain')
