@@ -16,33 +16,30 @@ FOLDER = 'violation'
 
 guid_constant = Constant('Violation Guid', 'GUID', 'GUID()')
 
-type_domain_constraint = Constraint('Violation Type', 'Violation.Type', common.constrain_to_domain('ViolationType', domain='UICViolationTypeDomain'))
+type_domain_constraint = Constraint('Violation Type', 'ViolationType', common.constrain_to_domain('ViolationType', domain='UICViolationTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 contamination_domain_constraint = Constraint(
-    'Contamination', 'Violation.Contamination', common.constrain_to_domain('USDWContamination', domain='UICYesNoUnknownDomain')
+    'Contamination', 'USDWContamination', common.constrain_to_domain('USDWContamination', domain='UICYesNoUnknownDomain')
 )
 contamination_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-contamination_calculation = Calculation(
-    'Significant Non Compliance', 'SignificantNonCompliance', 'Violation.SignificantNonCompliance',
-    load_rule_for(FOLDER, 'significantNonComplianceCalculation')
-)
+contamination_calculation = Calculation('Significant Non Compliance', 'SignificantNonCompliance', load_rule_for(FOLDER, 'significantNonComplianceCalculation'))
 contamination_calculation.editable = config.editable.no
 contamination_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
-endanger_domain_constraint = Constraint('Endanger', 'Violation.Endanger', common.constrain_to_domain('Endanger', domain='UICYesNoUnknownDomain'))
+endanger_domain_constraint = Constraint('Endanger', 'Endanger', common.constrain_to_domain('Endanger', domain='UICYesNoUnknownDomain'))
 endanger_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 noncompliance_domain_constraint = Constraint(
-    'SignificantNonCompliance', 'Violation.SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance', domain='UICYesNoUnknownDomain')
+    'SignificantNonCompliance', 'SignificantNonCompliance', common.constrain_to_domain('SignificantNonCompliance', domain='UICYesNoUnknownDomain')
 )
 noncompliance_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-comment_constraint = Constraint('Comments', 'Violation.Comments', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint = Constraint('Comments required for other', 'Comments', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-violation_constraint = Constraint('Violation Type For Facility vs Well', 'Violation.FacilityWellTypes', load_rule_for(FOLDER, 'facilityWellTypesConstraint'))
+violation_constraint = Constraint('Violation Type For Facility vs Well', 'FacilityWellTypes', load_rule_for(FOLDER, 'facilityWellTypesConstraint'))
 violation_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

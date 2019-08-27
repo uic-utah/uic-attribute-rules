@@ -39,13 +39,13 @@ class Constant(BaseType):
 
 class Calculation(BaseType):
 
-    def __init__(self, name, field, rule_name, arcade):
+    def __init__(self, name, field, arcade):
         super(Calculation, self).__init__()
 
         self.name = name
         self.field = field
-        self.rule_name = 'Calculation.' + rule_name
-        self.description = 'Calculation Rule. {}'.format(rule_name)
+        self.rule_name = field
+        self.description = name
 
         self.arcade = arcade
 
@@ -59,8 +59,8 @@ class Constraint(BaseType):
 
         self.name = name
         self.field = None
-        self.rule_name = 'Constraint.' + rule_name
-        self.description = 'Constraint Rule. {}'.format(rule_name)
+        self.rule_name = rule_name
+        self.description = name
 
         self.arcade = arcade
 

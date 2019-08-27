@@ -17,16 +17,15 @@ FOLDER = 'correction'
 guid_constant = Constant('Correction Guid', 'GUID', 'GUID()')
 
 type_constraint = Constraint(
-    'Corrective Action', 'Correction.CorrectiveAction', common.constrain_to_domain('CorrectiveAction', allow_null=True, domain='UICCorrectiveActionDomain')
+    'Corrective Action', 'CorrectiveAction', common.constrain_to_domain('CorrectiveAction', allow_null=True, domain='UICCorrectiveActionDomain')
 )
 
 type_constraint_update = Constraint(
-    'Corrective Action', 'Correction.CorrectiveAction.update',
-    common.constrain_to_domain('CorrectiveAction', allow_null=False, domain='UICCorrectiveActionDomain')
+    'Corrective Action', 'CorrectiveAction.update', common.constrain_to_domain('CorrectiveAction', allow_null=False, domain='UICCorrectiveActionDomain')
 )
 type_constraint_update.triggers = [config.triggers.update]
 
-comment_constraint = Constraint('Comment', 'Correction.Comment', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint = Constraint('Comment', 'Comment', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

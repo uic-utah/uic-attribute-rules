@@ -17,20 +17,20 @@ FOLDER = 'authorizationAction'
 guid_constant = Constant('Authorization Action Guid', 'GUID', 'GUID()')
 
 action_type_domain_constraint = Constraint(
-    'Authorization Action Type', 'AuthorizationAction.AuthorizationActionType',
+    'Authorization Action Type', 'AuthorizationActionType',
     common.constrain_to_domain('AuthorizationActionType', allow_null=True, domain='UICAuthorizeActionTypeDomain')
 )
 
 action_type_domain_constraint_update = Constraint(
-    'Authorization Action Type', 'AuthorizationAction.AuthorizationActionType.update',
+    'Authorization Action Type', 'AuthorizationActionType.update',
     common.constrain_to_domain('AuthorizationActionType', allow_null=False, domain='UICAuthorizeActionTypeDomain')
 )
 action_type_domain_constraint_update.triggers = [config.triggers.update]
 
-action_date_constraint = Constraint('Authorization Action Date', 'AuthorizationAction.AuthorizationActionDate', load_rule_for(FOLDER, 'dateConstraint'))
+action_date_constraint = Constraint('Authorization Action Date', 'AuthorizationActionDate and AuthorizationActionType', load_rule_for(FOLDER, 'dateConstraint'))
 action_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-action_type_constraint = Constraint('Authorization Action Type', 'AuthorizationAction.AuthorizationActionType', load_rule_for(FOLDER, 'typeConstraint'))
+action_type_constraint = Constraint('Authorization Action Type', 'AuthorizationActionType and AuthorizationActionDate', load_rule_for(FOLDER, 'typeConstraint'))
 action_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

@@ -17,14 +17,14 @@ FOLDER = 'operatingStatus'
 guid_constant = Constant('Well operating status Guid', 'GUID', 'GUID()')
 
 type_domain_constraint = Constraint(
-    'Operating Status Type', 'OperatingStatus.Type', common.constrain_to_domain('OperatingStatusType', allow_null=False, domain='UICOperatingStatusTypeDomain')
+    'Operating Status Type', 'OperatingStatusType', common.constrain_to_domain('OperatingStatusType', allow_null=False, domain='UICOperatingStatusTypeDomain')
 )
 type_domain_constraint.triggers = [config.triggers.update]
 
-date_constraint = Constraint('Operating Status Date', 'OperatingStatus.Date', load_rule_for(FOLDER, 'dateConstraint'))
+date_constraint = Constraint('Operating Status Date', 'OperatingStatusDate', load_rule_for(FOLDER, 'dateConstraint'))
 date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-type_constraint = Constraint('Operating status type needs a date', 'OperatingStatusType', load_rule_for(FOLDER, 'typeConstraint'))
+type_constraint = Constraint('Operating status type needs a date', 'OperatingStatusType date requirement', load_rule_for(FOLDER, 'typeConstraint'))
 type_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

@@ -16,29 +16,29 @@ FOLDER = 'inspection'
 
 guid_constant = Constant('Inspection Guid', 'GUID', 'GUID()')
 
-type_domain_constraint = Constraint('Inspection Type', 'Inspection.Type', common.constrain_to_domain('InspectionType', domain='UICInspectionTypeDomain'))
+type_domain_constraint = Constraint('Inspection Type', 'Type', common.constrain_to_domain('InspectionType', domain='UICInspectionTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 assistance_domain_constraint = Constraint(
-    'Inspection Assistance', 'Inspection.Assistance', common.constrain_to_domain('InspectionAssistance', domain='UICComplianceAssistanceDomain')
+    'Inspection Assistance', 'Assistance', common.constrain_to_domain('InspectionAssistance', domain='UICComplianceAssistanceDomain')
 )
 assistance_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 deficiency_domain_constraint = Constraint(
-    'Inspection Deficiency', 'Inspection.Deficiency', common.constrain_to_domain('InspectionDeficiency', domain='UICDeficiencyDomain')
+    'Inspection Deficiency', 'Deficiency', common.constrain_to_domain('InspectionDeficiency', domain='UICDeficiencyDomain')
 )
 deficiency_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-foreign_key_constraint = Constraint('One parent relation', 'FacilityFk.WellFk', load_rule_for(FOLDER, 'oneFKConstraint'))
+foreign_key_constraint = Constraint('One parent relation', 'Single Parent', load_rule_for(FOLDER, 'oneFKConstraint'))
 foreign_key_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-facility_only_constraint = Constraint('NW for facility only', 'FacilityOnly.InspectionType', load_rule_for(FOLDER, 'typeConstraint'))
+facility_only_constraint = Constraint('NW for facility only', 'InspectionType', load_rule_for(FOLDER, 'typeConstraint'))
 facility_only_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-inspection_date_constraint = Constraint('Well operating status date', 'Inspection.InspectionDate', load_rule_for(FOLDER, 'dateConstraint'))
+inspection_date_constraint = Constraint('Well operating status date', 'InspectionDate', load_rule_for(FOLDER, 'dateConstraint'))
 inspection_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-deficiency_constraint = Constraint('No Deficiency', 'Inspection.InspectionDeficiency', load_rule_for(FOLDER, 'deficiencyConstraint'))
+deficiency_constraint = Constraint('No Deficiency', 'InspectionDeficiency', load_rule_for(FOLDER, 'deficiencyConstraint'))
 deficiency_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

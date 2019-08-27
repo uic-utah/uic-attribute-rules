@@ -16,25 +16,25 @@ FOLDER = 'artPen'
 
 guid_constraint = Constant('Art Pen Guid', 'GUID', 'GUID()')
 
-name_constraint = Constraint('Art Pen Well Name', 'ArtPen.ArtPen_WellName', load_rule_for(FOLDER, 'wellNameConstraint'))
+name_constraint = Constraint('Art Pen Well Name', 'ArtPen_WellName', load_rule_for(FOLDER, 'wellNameConstraint'))
 name_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 well_type_constraint = Constraint(
-    'Art Pen Well Type', 'ArtPen.ArtPen_WellType', common.constrain_to_domain('ArtPen_WellType', allow_null=True, domain='UICArtPenWellType')
+    'Art Pen Well Type', 'ArtPen_WellType', common.constrain_to_domain('ArtPen_WellType', allow_null=True, domain='UICArtPenWellType')
 )
 
 well_type_constraint_update = Constraint(
-    'Art Pen Well Type', 'ArtPen.ArtPen_WellType.update', common.constrain_to_domain('ArtPen_WellType', allow_null=False, domain='UICArtPenWellType')
+    'Art Pen Well Type', 'ArtPen_WellType.update', common.constrain_to_domain('ArtPen_WellType', allow_null=False, domain='UICArtPenWellType')
 )
 well_type_constraint_update.triggers = [config.triggers.update]
 
-review_date_constraint = Constraint('Art Pen Review Date', 'ArtPen.Artpen_ReviewDate', load_rule_for(FOLDER, 'reviewDateConstraint'))
+review_date_constraint = Constraint('Art Pen Review Date', 'Artpen_ReviewDate', load_rule_for(FOLDER, 'reviewDateConstraint'))
 review_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-catype_constraint = Constraint('Art Pen Review Date', 'ArtPen.ArtPen_CAType', load_rule_for(FOLDER, 'caTypeConstraint'))
+catype_constraint = Constraint('Art Pen Review Date', 'ArtPen_CAType', load_rule_for(FOLDER, 'caTypeConstraint'))
 catype_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-cadate_constraint = Constraint('CA Date', 'ArtPen.ArtPen_CADate', load_rule_for(FOLDER, 'caDateConstraint'))
+cadate_constraint = Constraint('CA Date', 'ArtPen_CADate', load_rule_for(FOLDER, 'caDateConstraint'))
 cadate_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [

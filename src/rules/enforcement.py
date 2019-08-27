@@ -17,19 +17,18 @@ FOLDER = 'enforcement'
 guid_constant = Constant('Enforcement Guid', 'GUID', 'GUID()')
 
 type_constraint = Constraint(
-    'Enforcement Type', 'Enforcement.EnforcementType', common.constrain_to_domain('EnforcementType', allow_null=True, domain='UICEnforcementTypeDomain')
+    'Enforcement Type', 'EnforcementType', common.constrain_to_domain('EnforcementType', allow_null=True, domain='UICEnforcementTypeDomain')
 )
 
 type_constraint_update = Constraint(
-    'Enforcement Type', 'Enforcement.EnforcementType.update',
-    common.constrain_to_domain('EnforcementType', allow_null=False, domain='UICEnforcementTypeDomain')
+    'Enforcement Type', 'EnforcementType.update', common.constrain_to_domain('EnforcementType', allow_null=False, domain='UICEnforcementTypeDomain')
 )
 type_constraint_update.triggers = [config.triggers.update]
 
-date_constraint = Constraint('Enforcement Date', 'Enforcement.EnforcementDate', load_rule_for(FOLDER, 'dateConstraint'))
+date_constraint = Constraint('Enforcement Date', 'EnforcementDate', load_rule_for(FOLDER, 'dateConstraint'))
 date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-comment_constraint = Constraint('Comment', 'Enforcement.Comment', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint = Constraint('Comment', 'Comment', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [
