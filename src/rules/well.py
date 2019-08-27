@@ -22,7 +22,9 @@ id_calculation.editabe = config.editable.no
 facility_calculation = Calculation('Facility Fk', 'Facility_Fk', load_rule_for(FOLDER, 'facilityCalculation'))
 
 class_constraint = Constraint('Well Class', 'Class', load_rule_for(FOLDER, 'classConstraint'))
-class_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+class_constraint_update = Constraint('Well Class', 'Class.update', load_rule_for(FOLDER, 'classConstraint_update'))
+class_constraint_update.triggers = [config.triggers.update]
 
 subclass_constraint = Constraint('Well Subclass', 'Subclass', load_rule_for(FOLDER, 'subClassConstraint'))
 subclass_constraint.triggers = [config.triggers.insert, config.triggers.update]
@@ -60,6 +62,7 @@ RULES = [
     facility_calculation,
     class_constraint,
     subclass_constraint,
+    class_constraint_update,
     highpriority_constraint,
     injection_aquifer_constraint,
     no_migration_pet_status_constraint,
