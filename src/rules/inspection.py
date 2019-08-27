@@ -16,16 +16,16 @@ FOLDER = 'inspection'
 
 guid_constant = Constant('Inspection Guid', 'GUID', 'GUID()')
 
-type_domain_constraint = Constraint('Inspection Type', 'Type', common.constrain_to_domain('InspectionType', domain='UICInspectionTypeDomain'))
+type_domain_constraint = Constraint('Inspection Type', 'InspectionType', common.constrain_to_domain('InspectionType', domain='UICInspectionTypeDomain'))
 type_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 assistance_domain_constraint = Constraint(
-    'Inspection Assistance', 'Assistance', common.constrain_to_domain('InspectionAssistance', domain='UICComplianceAssistanceDomain')
+    'Inspection Assistance', 'InspectionAssistance', common.constrain_to_domain('InspectionAssistance', domain='UICComplianceAssistanceDomain')
 )
 assistance_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 deficiency_domain_constraint = Constraint(
-    'Inspection Deficiency', 'Deficiency', common.constrain_to_domain('InspectionDeficiency', domain='UICDeficiencyDomain')
+    'Inspection Deficiency', 'InspectionDeficiency', common.constrain_to_domain('InspectionDeficiency', domain='UICDeficiencyDomain')
 )
 deficiency_domain_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
