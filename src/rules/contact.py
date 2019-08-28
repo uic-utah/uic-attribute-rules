@@ -19,6 +19,9 @@ guid_constant = Constant('Contact Guid', 'GUID', 'GUID()')
 name_constraint_update = Constraint('Contact Name', 'ContactName.update', common.constrain_to_required('ContactName'))
 name_constraint_update.triggers = [config.triggers.update]
 
+phone_constraint_update = Constraint('Contact phone', 'ContacPhone.update', common.constrain_to_required('ContactPhone'))
+phone_constraint_update.triggers = [config.triggers.update]
+
 organization_constraint_update = Constraint('Contact Organization', 'ContactOrganization.update', common.constrain_to_required('ContactOrganization'))
 organization_constraint_update.triggers = [config.triggers.update]
 
@@ -57,6 +60,7 @@ RULES = [
     name_constraint_update,
     organization_constraint_update,
     address_constraint_update,
+    phone_constraint_update,
     city_constraint_update,
     state_constraint_update,
     state_constraint,
