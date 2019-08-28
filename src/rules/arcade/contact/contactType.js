@@ -2,30 +2,22 @@ if (!haskey($feature, 'guid') || isempty($feature.guid)) {
     return true;
 }
 
-var fields = ['facilityguid', 'contactguid'];
-var xref = FeatureSetByName($datastore, 'UICFacilityToContact', fields, false);
-var contactSet = FeatureSetByName($datastore, 'UICContact', ['guid', 'contacttype'], false);
+var facilitySet = FeatureSetByName($datastore, 'UICFacility', ['guid'], false);
+var contactSet = FeatureSetByName($datastore, 'UICContact', ['Facility_FK', 'ContactType'], false);
 
-var pk = $feature.guid;
+var pk = $feature.facility_fk;
 
 // TODO: One day there will be a relationship traversal operation
-var relations = filter(xref, 'contactguid=@pk');
+var facilities = filter(facilitySet, 'guid=@pk');
 
-if (isempty(relations)) {
+if (isempty(facilities)) {
     return {
         'errorMessage': 'There are no facilities related to this contact.'
     };
 }
 
-var querystring = 'guid in (';
-
-for (var relation in relations) {
-    querystring += "'" + relation.contactguid + "',";
-}
-
-querystring = left(querystring, count(querystring) - 1) + ')';
-
-var contacts = filter(contactSet, querystring);
+var fk = $feature.facility_fk;
+var contacts = filter(contactSet, 'Facility_FK=@fk');
 
 for (var contact in contacts) {
     if (indexof([1, 3], contact.contacttype) > -1) {

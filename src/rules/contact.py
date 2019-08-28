@@ -48,14 +48,13 @@ type_constraint_update = Constraint(
 type_constraint_update.triggers = [config.triggers.update]
 
 contact_type_constraint = Constraint('Owner Operator', 'OwnerType', load_rule_for(FOLDER, 'contactType'))
-contact_type_constraint.triggers = [config.triggers.insert, config.triggers.update]
+contact_type_constraint.triggers = [config.triggers.update]
 
 RULES = [
     guid_constant,
     type_constraint,
     state_constraint,
-    #: this doesn't work with m*m
-    # contact_type_constraint,
+    contact_type_constraint,
     type_constraint_update,
     name_constraint_update,
     organization_constraint_update,
