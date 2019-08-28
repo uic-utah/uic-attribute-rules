@@ -32,6 +32,12 @@
     conda create --clone arcgispro-py3 --name uic
     ```
 
+1. Activate the environment
+
+    ```sh
+    activate uic
+    ```
+
 1. install the development requirements
 
     ```sh
