@@ -54,7 +54,7 @@ noncompliance_domain_constraint_update = Constraint(
     'SignificantNonCompliance', 'SignificantNonCompliance.update',
     common.constrain_to_domain('SignificantNonCompliance', allow_null=False, domain='UICYesNoUnknownDomain')
 )
-noncompliance_domain_constraint_update.triggers = [config.triggers.insert, config.triggers.update]
+noncompliance_domain_constraint_update.triggers = [config.triggers.update]
 
 comment_constraint = Constraint('Comments required for other', 'Comments', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
