@@ -3,10 +3,20 @@ if (!haskey($feature, 'inspectiontype') || !haskey($feature, 'facility_fk') || i
 }
 
 var code = lower(domaincode($feature, 'inspectiontype', $feature.inspectiontype));
-if (code != 'nw' && code != 'fi') {
-    return true;
+
+if (!isempty($feature.facility_fk)) {
+    // Facility Inspection Temporary or Facility Inspection No Wells
+    return iif(code != 'nw' && code != 'fi', {
+        'errorMessage': 'Since this is a facility inspection, InspectionType can only be Facility Inspection, No Wells or Facility Inspection Temporary.'
+    }, true);
 }
 
-return iif(isempty($feature.facility_fk), {
-    'errorMessage': 'If InspectionType coded value is NW, then there must be a Facility_FK but no Well_FK.'
-}, true);
+if (!isempty($feature.well_fk)) {
+    return iif(code == 'nw' || code == 'fi', {
+        'errorMessage': 'Since this is a well inspection, InspectionType can not be Facility Inspection, No Wells or Facility Inspection Temporary.'
+    }, true);
+}
+
+return {
+    'errorMessage': 'Facility_FK or Well_FK is required'
+};
