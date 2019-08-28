@@ -78,5 +78,11 @@ This is a doc opt cli, so check the help for the tool
 1. add `localhost.sde`, `stage.sde`, and `prod.sde` to the pro-project
 1. Install attribute rules
    - `python ar.py update --env=local, dev, prod`
+   - You can specify `--rule=` to only update a tables worth of rules
 
-This is a doc opt cli, so check the help for the tool
+This is a doc opt cli, so check the help for the tool.
+
+## Releasing
+
+1. Bump ar.py `VERSION` string
+1. Bump ruletypes.py `Constraint.error_number` to match in the integer form
