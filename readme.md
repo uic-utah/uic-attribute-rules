@@ -86,3 +86,6 @@ This is a doc opt cli, so check the help for the tool.
 
 1. Bump ar.py `VERSION` string
 1. Bump ruletypes.py `Constraint.error_number` to match in the integer form
+   - Bump before you run since it adds a record to the `Version_Information` table
+1. Bump migration.py if it changed.
+   - Bump before you run since it adds a record to the `Version_Information` table
