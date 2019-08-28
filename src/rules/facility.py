@@ -47,4 +47,5 @@ RULES = [
     fips_domain_constraint,
     zip_domain_calculation,
     name_constraint_update,
+    address_constraint_update,
 ]
