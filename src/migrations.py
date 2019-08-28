@@ -48,16 +48,18 @@ _table_modifications = {
         'delete': ['FRSID', 'FacilityState']
     },
     'UICWell': {
-        'add': [{
-            'in_table': 'UICWell',
-            'field_name': 'WellDepth',
-            'field_type': 'LONG',
-            'field_length': '#',
-            'field_precision': 10,
-            'field_scale': 0,
-            'field_alias': 'Well Depth in Feet',
-            'field_is_nullable': 'NULLABLE'
-        }],
+        'add': [
+            {
+                'in_table': 'UICWell',
+                'field_name': 'WellDepth',
+                'field_type': 'LONG',
+                'field_length': '#',
+                'field_precision': 10,
+                'field_scale': 0,
+                'field_alias': 'Well Depth in Feet',
+                'field_is_nullable': 'NULLABLE'
+            },
+        ],
         'delete': ['ConvertedOGWell', 'LocationMethod', 'LocationAccuracy']
     },
     'UICInspection': {
@@ -65,7 +67,16 @@ _table_modifications = {
         'delete': ['ICISCompMonActReason', 'ICISCompMonType', 'ICISCompActType', 'ICISMOAPriority', 'ICISRegionalPriority']
     },
     'UICContact': {
-        'add': [],
+        'add': [{
+            'in_table': 'UICContact',
+            'field_name': 'Facility_FK',
+            'field_type': 'GUID',
+            'field_length': '#',
+            'field_precision': '#',
+            'field_scale': '#',
+            'field_alias': 'Facility foreign key',
+            'field_is_nullable': 'NULLABLE'
+        }],
         'delete': ['ContactFax']
     },
     'UICArtPen': {
@@ -180,12 +191,15 @@ def delete_tables(tables, sde):
 def create_tables(tables, sde):
     for table_name in tables:
         print('creating {}'.format(table_name))
-        arcpy.management.CreateTable(sde, table_name)
+        try:
+            arcpy.management.CreateTable(sde, table_name)
 
-        field_metas = tables[table_name]
+            field_metas = tables[table_name]
 
-        for field_meta in field_metas:
-            arcpy.management.AddField(**field_meta)
+            for field_meta in field_metas:
+                arcpy.management.AddField(**field_meta)
+        except Exception:
+            print('skipping {}'.format(table_name))
 
 
 def version_tables(version, tables, skip_tables, sde):
@@ -243,6 +257,8 @@ def modify_tables(changes, sde):
                 arcpy.management.DeleteField(os.path.join(sde, table_name), deletes)
 
             for add in adds:
+                import pdb
+                pdb.set_trace()
                 arcpy.management.AddField(
                     in_table=os.path.join(sde, add['in_table']),
                     field_name=add['field_name'],
@@ -444,6 +460,63 @@ def alter_domains(changes, sde):
             print('  domain probably already added')
 
 
+def replace_relationship(sde):
+    print('making contacts 1:many')
+    if not arcpy.Exists(os.path.join(sde, 'UICFacilityToContact')):
+        print('  likely already done')
+        return
+
+    print('querying xref table')
+    cursor = arcpy.ArcSDESQLExecute(sde)
+    many_to_many = cursor.execute("SELECT convert(nvarchar(50),FacilityGUID), convert(nvarchar(50),contactGUID) FROM UICFACILITYTOCONTACT")
+
+    lookup = {contact_guid: facility_guid for facility_guid, contact_guid in many_to_many}
+
+    del cursor  #: removes workspace from in transaction mode
+
+    edit = arcpy.da.Editor(sde)
+    edit.startEditing()
+    edit.startOperation()
+
+    print('updating facility_fk for contacts')
+    with arcpy.da.UpdateCursor(in_table=os.path.join(sde, 'UICContact'), field_names=['Guid', 'Facility_FK']) as update_cursor:
+        for row in update_cursor:
+            guid = row[0][1:-1]  #: strip { } from esri guid
+            if guid in lookup:
+                row[1] = '{{{}}}'.format(lookup[guid])  #: add them back
+                update_cursor.updateRow(row)
+
+    edit.stopOperation()
+    edit.stopEditing(True)
+    print('done')
+
+    origin = 'UICFacility'
+    destination = 'UICContact'
+    output = os.path.join(sde, 'UICFacility_UICContact')
+
+    print('creating artpen relationship class')
+    try:
+        arcpy.management.CreateRelationshipClass(
+            origin_table=origin,
+            destination_table=destination,
+            out_relationship_class=output,
+            relationship_type='SIMPLE',
+            forward_label='UICContact',
+            backward_label='UICFacility',
+            message_direction='NONE',
+            cardinality='ONE_TO_MANY',
+            attributed='NONE',
+            origin_primary_key='GUID',
+            origin_foreign_key='AOR_FK',
+            destination_primary_key='',
+            destination_foreign_key='',
+        )
+
+        arcpy.management.Delete('UICFacilityToContact', 'RelationshipClass')
+    except Exception:
+        print('  class probably already created')
+
+
 def create_relationship(sde):
     origin = 'UDEQ.UICADMIN.UICAreaOfReview'
     destination = 'UDEQ.UICADMIN.UICArtPen'
@@ -503,5 +576,6 @@ if __name__ == '__main__':
         migrate_fields()
         create_contingencies(sde)
         alter_domains(_domains_to_update, sde)
+        replace_relationship(sde)
         create_relationship(sde)
         version_tables(True, tables, _skip_tables, sde)
