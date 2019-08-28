@@ -15,12 +15,15 @@ Options:
 '''
 
 import os
+from datetime import datetime
 
 from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
 from docopt import docopt
 
 import arcpy
 from config import config
+
+VERSION = '1.0.0'
 
 _tables_to_delete = [
     'UICAlternateDisposal',
@@ -553,10 +556,15 @@ def _get_tables(sde):
     return tables
 
 
+def update_version(sde, version):
+    with arcpy.da.InsertCursor(in_table=os.path.join(sde, 'Version_Information'), field_names=['name', 'version', 'date']) as cursor:
+        cursor.insertRow(('migrations', version, str(datetime.now()).split(' ')[0]))
+
+
 if __name__ == '__main__':
     '''Main entry point for program. Parse arguments and pass to engine module
     '''
-    args = docopt(__doc__, version='1.0.0')
+    args = docopt(__doc__, version=VERSION)
 
     arcpy.env.workspace = sde = config.get_sde_path_for(args['--env'])
 
@@ -578,4 +586,5 @@ if __name__ == '__main__':
         alter_domains(_domains_to_update, sde)
         replace_relationship(sde)
         create_relationship(sde)
+        update_version(sde, VERSION)
         version_tables(True, tables, _skip_tables, sde)

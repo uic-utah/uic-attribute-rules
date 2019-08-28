@@ -19,6 +19,7 @@ Options:
 '''
 
 import os
+from datetime import datetime
 
 from arcgisscripting import ExecuteError  # pylint: disable=no-name-in-module
 from docopt import docopt
@@ -143,6 +144,11 @@ def get_rules(sde, rule=None):
     return [rules[rule]]
 
 
+def update_version(sde, version):
+    with arcpy.da.InsertCursor(in_table=os.path.join(sde, 'Version_Information'), field_names=['name', 'version', 'date']) as cursor:
+        cursor.insertRow(('migrations', version, str(datetime.now()).split(' ')[0]))
+
+
 if __name__ == '__main__':
     '''Main entry point for program. Parse arguments and pass to engine module
     '''
@@ -158,6 +164,8 @@ if __name__ == '__main__':
     if args['update']:
         for rule in get_rules(sde, args['--rule']):
             rule.execute()
+
+        update_version('ar', VERSION)
     elif args['delete']:
         for rule in get_rules(sde, args['--rule']):
             rule.delete()
