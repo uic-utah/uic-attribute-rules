@@ -42,7 +42,6 @@ endanger_domain_constraint_update = Constraint(
 endanger_domain_constraint_update.triggers = [config.triggers.update]
 
 contamination_calculation = Calculation('Significant Non Compliance', 'SignificantNonCompliance', load_rule_for(FOLDER, 'significantNonComplianceCalculation'))
-contamination_calculation.editable = config.editable.no
 contamination_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
 noncompliance_domain_constraint = Constraint(
