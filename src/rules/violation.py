@@ -41,7 +41,9 @@ endanger_domain_constraint_update = Constraint(
 )
 endanger_domain_constraint_update.triggers = [config.triggers.update]
 
-contamination_calculation = Calculation('Significant Non Compliance', 'SignificantNonCompliance', load_rule_for(FOLDER, 'significantNonComplianceCalculation'))
+contamination_calculation = Calculation(
+    'Significant Non Compliance', 'SignificantNonCompliance.yes', load_rule_for(FOLDER, 'significantNonComplianceCalculation')
+)
 contamination_calculation.editable = config.editable.no
 contamination_calculation.triggers = [config.triggers.insert, config.triggers.update]
 
@@ -60,12 +62,13 @@ comment_constraint = Constraint('Comments required for other', 'Comments', load_
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 violation_constraint = Constraint('Violation Type For Facility vs Well', 'FacilityWellTypes', load_rule_for(FOLDER, 'facilityWellTypesConstraint'))
-violation_constraint.triggers = [config.triggers.insert, config.triggers.update]
+violation_constraint.triggers = [config.triggers.update]
 
 RULES = [
     guid_constant,
     type_domain_constraint,
     type_domain_constraint_update,
+    violation_constraint,
     contamination_domain_constraint,
     contamination_domain_constraint_update,
     endanger_domain_constraint,
@@ -74,5 +77,4 @@ RULES = [
     noncompliance_domain_constraint_update,
     contamination_calculation,
     comment_constraint,
-    violation_constraint,
 ]
