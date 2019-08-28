@@ -146,7 +146,9 @@ def get_rules(sde, rule=None):
 
 def update_version(sde, version):
     with arcpy.da.InsertCursor(in_table=os.path.join(sde, 'Version_Information'), field_names=['name', 'version', 'date']) as cursor:
-        cursor.insertRow(('migrations', version, str(datetime.now()).split(' ')[0]))
+        date = datetime.datetime.now()
+        date_string = str(date).split(' ')[0]
+        cursor.insertRow(('attribute rules', version, str(datetime.now()).split(' ')[0]))
 
 
 if __name__ == '__main__':

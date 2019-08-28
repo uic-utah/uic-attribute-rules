@@ -4,12 +4,14 @@
 migrations
 
 Usage:
-    migrations migrate [--env=<env>]
+    migrations migrate [--migration=<m> --env=<env>]
     migrations --version
     migrations (-h | --help)
 
 Options:
     --env=<env>     local, dev, prod
+    --migration=<m> The specific migrations
+                        contact,
     -h --help       Shows this screen
     -v --version    Shows the version
 '''
@@ -556,7 +558,9 @@ def _get_tables(sde):
 
 def update_version(sde, version):
     with arcpy.da.InsertCursor(in_table=os.path.join(sde, 'Version_Information'), field_names=['name', 'version', 'date']) as cursor:
-        cursor.insertRow(('migrations', version, str(datetime.now()).split(' ')[0]))
+        date = datetime.datetime.now()
+        date_string = str(date).split(' ')[0]
+        cursor.insertRow(('migrations', version, date_string))
 
 
 if __name__ == '__main__':
@@ -571,18 +575,25 @@ if __name__ == '__main__':
     if args['migrate']:
         clean_up(sde)
 
-        delete_tables(_tables_to_delete, sde)
-        create_tables(_tables_to_add, sde)
+        if not args['--migration']:
+            delete_tables(_tables_to_delete, sde)
+            create_tables(_tables_to_add, sde)
 
         tables = _get_tables(sde)
 
         version_tables(False, tables, _skip_tables, sde)
-        modify_tables(_table_modifications, sde)
-        delete_domains(_domains_to_delete, sde)
-        migrate_fields()
-        create_contingencies(sde)
-        alter_domains(_domains_to_update, sde)
-        replace_relationship(sde)
-        create_relationship(sde)
+
+        if not args['--migration']:
+            modify_tables(_table_modifications, sde)
+            delete_domains(_domains_to_delete, sde)
+            migrate_fields()
+            create_contingencies(sde)
+            alter_domains(_domains_to_update, sde)
+            replace_relationship(sde)
+            create_relationship(sde)
+
+        if args['--migration'] == 'contact':
+            replace_relationship(sde)
+
         update_version(sde, VERSION)
         version_tables(True, tables, _skip_tables, sde)
