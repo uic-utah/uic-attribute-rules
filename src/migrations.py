@@ -260,8 +260,6 @@ def modify_tables(changes, sde):
                 arcpy.management.DeleteField(os.path.join(sde, table_name), deletes)
 
             for add in adds:
-                import pdb
-                pdb.set_trace()
                 arcpy.management.AddField(
                     in_table=os.path.join(sde, add['in_table']),
                     field_name=add['field_name'],
