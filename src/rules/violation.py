@@ -32,7 +32,7 @@ contamination_domain_constraint = Constraint(
 contamination_domain_constraint_update = Constraint(
     'Contamination', 'USDWContamination.update', common.constrain_to_domain('USDWContamination', allow_null=False, domain='UICYesNoUnknownDomain')
 )
-contamination_domain_constraint_update.triggers = [config.triggers.insert, config.triggers.update]
+contamination_domain_constraint_update.triggers = [config.triggers.update]
 
 endanger_domain_constraint = Constraint('Endanger', 'Endanger', common.constrain_to_domain('Endanger', allow_null=True, domain='UICYesNoUnknownDomain'))
 
