@@ -11,7 +11,7 @@ Usage:
 Options:
     --env=<env>     local, dev, prod
     --migration=<m> The specific migrations
-                        contact,
+                        contact, unversion, version
     -h --help       Shows this screen
     -v --version    Shows the version
 '''
@@ -79,7 +79,7 @@ _table_modifications = {
             'field_length': '#',
             'field_precision': '#',
             'field_scale': '#',
-            'field_alias': 'Facility foreign key',
+            'field_alias': 'Facility_FK',
             'field_is_nullable': 'NULLABLE'
         }],
         'delete': ['ContactFax']
@@ -477,9 +477,9 @@ def replace_relationship(sde):
 
     del cursor  #: removes workspace from in transaction mode
 
-    edit = arcpy.da.Editor(sde)
-    edit.startEditing()
-    edit.startOperation()
+    # edit = arcpy.da.Editor(sde)
+    # edit.startEditing()
+    # edit.startOperation()
 
     print('updating facility_fk for contacts')
     with arcpy.da.UpdateCursor(in_table=os.path.join(sde, 'UICContact'), field_names=['Guid', 'Facility_FK']) as update_cursor:
@@ -489,13 +489,13 @@ def replace_relationship(sde):
                 row[1] = '{{{}}}'.format(lookup[guid])  #: add them back
                 update_cursor.updateRow(row)
 
-    edit.stopOperation()
-    edit.stopEditing(True)
+    # edit.stopOperation()
+    # edit.stopEditing(True)
     print('done')
 
     origin = 'UICFacility'
     destination = 'UICContact'
-    output = os.path.join(sde, 'UICFacility_UICContact')
+    output = os.path.join(sde, 'FacilityToContact')
 
     print('creating artpen relationship class')
     try:
@@ -510,14 +510,15 @@ def replace_relationship(sde):
             cardinality='ONE_TO_MANY',
             attributed='NONE',
             origin_primary_key='GUID',
-            origin_foreign_key='AOR_FK',
+            origin_foreign_key='Facility_FK',
             destination_primary_key='',
             destination_foreign_key='',
         )
 
         arcpy.management.Delete('UICFacilityToContact', 'RelationshipClass')
-    except Exception:
+    except Exception as e:
         print('  class probably already created')
+        print(e)
 
 
 def create_relationship(sde):
@@ -574,6 +575,20 @@ if __name__ == '__main__':
 
     if args['migrate']:
         clean_up(sde)
+
+        if args['--migration'] == 'unversion':
+            tables = _get_tables(sde)
+
+            version_tables(False, tables, _skip_tables, sde)
+
+            exit()
+
+        if args['--migration'] == 'version':
+            tables = _get_tables(sde)
+
+            version_tables(True, tables, _skip_tables, sde)
+
+            exit()
 
         if not args['--migration']:
             delete_tables(_tables_to_delete, sde)
