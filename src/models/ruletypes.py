@@ -69,4 +69,4 @@ class Constraint(BaseType):
         self.tag = 'Constraint'
 
         self.error_message = ' '
-        self.error_number = 111
+        self.error_number = 112
