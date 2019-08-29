@@ -20,7 +20,7 @@ id_calculation = Calculation('Authorization Id', 'AuthorizationID', load_rule_fo
 id_calculation.triggers = [config.triggers.insert, config.triggers.update]
 id_calculation.editable = config.editable.no
 
-start_date_constraint_update = Constraint('Start Date', 'StartDate.update', load_rule_for(FOLDER, 'startDateConstraint_update'))
+start_date_constraint_update = Constraint('Start Date', 'StartDate.update', common.constrain_to_required('startdate'))
 start_date_constraint_update.triggers = [config.triggers.update]
 
 type_domain_constraint = Constraint(
