@@ -2,6 +2,12 @@ if (!haskey($feature, 'guid') || isempty($feature.guid)) {
     return true;
 }
 
+var ownerTypes = [1, 2, 3];
+
+if (indexof(ownerTypes, $feature.contacttype) > -1) {
+    return true;
+}
+
 var facilitySet = FeatureSetByName($datastore, 'UICFacility', ['guid'], false);
 var contactSet = FeatureSetByName($datastore, 'UICContact', ['Facility_FK', 'ContactType'], false);
 
@@ -20,7 +26,7 @@ var fk = $feature.facility_fk;
 var contacts = filter(contactSet, 'Facility_FK=@fk');
 
 for (var contact in contacts) {
-    if (indexof([1, 3], contact.contacttype) > -1) {
+    if (indexof(ownerTypes, contact.contacttype) > -1) {
         return true;
     }
 }
