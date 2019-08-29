@@ -3,9 +3,9 @@ if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'artpen_catype')) {
     return true;
 }
 
-var catype = domainname($feature, 'artpen_catype', $feature.artpen_catype);
+var catype = lower(domainname($feature, 'artpen_catype', $feature.artpen_catype));
 
-if (isempty(catype) || catype == 'Waiting') {
+if (isempty(catype) || catype == 'waiting') {
     return true;
 }
 

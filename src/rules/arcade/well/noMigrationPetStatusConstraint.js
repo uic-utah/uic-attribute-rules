@@ -8,6 +8,6 @@ if ($feature.wellsubclass != 1001) {
     return true;
 }
 
-return iif(isempty($feature.nomigrationpetstatus) || domaincode($feature, 'nomigrationpetstatus', $feature.nomigrationpetstatus) == 'NA', {
+return iif(isempty($feature.nomigrationpetstatus) || lower(domaincode($feature, 'nomigrationpetstatus', $feature.nomigrationpetstatus)) == 'na', {
     'errorMessage': 'NoMigrationPetStatus for Class I Hazardous wells may not be empty nor may it be `Not Applicable`. Select the appropriate value from the UICNoMigrationPetStatusDomain (dropdown menu).'
 }, true);
