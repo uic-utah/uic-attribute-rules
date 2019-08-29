@@ -167,7 +167,7 @@ if __name__ == '__main__':
         for rule in get_rules(sde, args['--rule']):
             rule.execute()
 
-        update_version('ar', VERSION)
+        update_version(sde, VERSION)
     elif args['delete']:
         for rule in get_rules(sde, args['--rule']):
             rule.delete()
