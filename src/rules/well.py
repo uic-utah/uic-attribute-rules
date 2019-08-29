@@ -21,9 +21,9 @@ id_calculation.editabe = config.editable.no
 
 facility_calculation = Calculation('Facility Fk', 'Facility_Fk', load_rule_for(FOLDER, 'facilityCalculation'))
 
-class_constraint = Constraint('Well Class', 'Class', load_rule_for(FOLDER, 'classConstraint'))
+class_constraint = Constraint('Well Class', 'Class', common.constrain_to_domain('WellClass', allow_null=True, domain='UICWellClassDomain'))
 
-class_constraint_update = Constraint('Well Class', 'Class.update', load_rule_for(FOLDER, 'classConstraint_update'))
+class_constraint_update = Constraint('Well Class', 'Class.update', common.constrain_to_domain('WellClass', allow_null=False, domain='UICWellClassDomain'))
 class_constraint_update.triggers = [config.triggers.update]
 
 subclass_constraint = Constraint('Well Subclass', 'Subclass', load_rule_for(FOLDER, 'subClassConstraint'))
@@ -51,9 +51,9 @@ remediation_type_constraint_update = Constraint(
 )
 remediation_type_constraint_update.triggers = [config.triggers.update]
 
-swpz_constraint = Constraint('Well SWPZ', 'WellSWPZ', load_rule_for(FOLDER, 'swpzConstraint_insert'))
+swpz_constraint = Constraint('Well SWPZ', 'WellSWPZ', common.constrain_to_domain('WellSWPZ', allow_null=True, domain='UICGWProtectionDomain'))
 
-swpz_constraint_update = Constraint('Well SWPZ', 'WellSWPZ.update', load_rule_for(FOLDER, 'swpzConstraint_update'))
+swpz_constraint_update = Constraint('Well SWPZ', 'WellSWPZ.update', common.constrain_to_domain('WellSWPZ', allow_null=False, domain='UICGWProtectionDomain'))
 swpz_constraint_update.triggers = [config.triggers.update]
 
 RULES = [
