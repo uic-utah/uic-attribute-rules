@@ -25,7 +25,7 @@ REQUIRED = '''if (!haskey($feature, '{0}')) {{
     return true;
 }}
 
-return iif(isempty($feature.{0}), {{
+return iif(isempty($feature.{0}) || lower($feature.{0}) == '<null>', {{
     'errorMessage': '{0} must not be empty.'
 }}, true);'''
 
