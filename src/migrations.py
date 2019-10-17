@@ -493,8 +493,8 @@ def replace_relationship(sde):
     # edit.stopEditing(True)
     print('done')
 
-    origin = 'UICFacility'
-    destination = 'UICContact'
+    origin = os.path.join(sde, 'UICFacility')
+    destination = os.path.join(sde, 'UICContact')
     output = os.path.join(sde, 'FacilityToContact')
 
     print('creating facility to contact relationship class')
