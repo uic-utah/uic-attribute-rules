@@ -25,7 +25,7 @@ from docopt import docopt
 import arcpy
 from config import config
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 
 _tables_to_delete = [
     'UICAlternateDisposal',
