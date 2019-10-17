@@ -497,7 +497,7 @@ def replace_relationship(sde):
     destination = 'UICContact'
     output = os.path.join(sde, 'FacilityToContact')
 
-    print('creating artpen relationship class')
+    print('creating facility to contact relationship class')
     try:
         arcpy.management.CreateRelationshipClass(
             origin_table=origin,
@@ -522,8 +522,8 @@ def replace_relationship(sde):
 
 
 def create_relationship(sde):
-    origin = 'UDEQ.UICADMIN.UICAreaOfReview'
-    destination = 'UDEQ.UICADMIN.UICArtPen'
+    origin = 'UICAreaOfReview'
+    destination = 'UICArtPen'
     output = os.path.join(sde, 'UICAreaOfReview_UICArtPen')
 
     print('creating artpen relationship class')
@@ -533,8 +533,8 @@ def create_relationship(sde):
             destination_table=destination,
             out_relationship_class=output,
             relationship_type='SIMPLE',
-            forward_label='UDEQ.UICADMIN.UICArtPen',
-            backward_label='UDEQ.UICADMIN.UICAreaOfReview',
+            forward_label='UICArtPen',
+            backward_label='UICAreaOfReview',
             message_direction='NONE',
             cardinality='MANY_TO_MANY',
             attributed='NONE',
