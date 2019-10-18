@@ -48,10 +48,20 @@
 
 ### Database Migrations
 
+#### Update Enterprise GDB
+
+1. Update to >= 10.7.1
+
 #### Remove feature dataset
 
 1. Import the individual feature classes contained within the feature datasets
 1. Import everything outside the feature dataset
+
+#### Add reference data
+
+1. County boundaries
+1. Municipal boundaries
+1. Zip code boundaries
 
 #### python migrations
 
