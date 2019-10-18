@@ -161,6 +161,16 @@ _tables_to_add = {
         },
     ]
 }
+view_map = {
+    'UICAuthorization': 'Permit_view',
+    'UICAuthorizationAction': 'Action_view',
+    'UICWell': 'Well_view',
+    'UICEnforcement': 'Enforcement_view',
+    'UICViolation': 'Violation_view',
+    'UICInspection': 'Inspection_view',
+    'UICMIT': 'Mit_view',
+    'UICARTPEN': 'Artificial_view'
+}
 
 
 def clean_up(sde):
@@ -397,6 +407,21 @@ def migrate_fields():
             arcpy.management.DeleteField(from_table, move_field)
 
 
+def create_views(mapping, sde):
+    for table_name, view_name in mapping:
+        view = os.path.join(sde, view_name)
+
+        if arcpy.Exists(view):
+            print(f'{view_name} exists... skipping')
+
+            continue
+
+        print(f'creating versioned view: {view_name}')
+        table = os.path.join(sde, table_name)
+
+        arcpy.management.CreateVersionedView(table, view)
+
+
 def create_contingencies(sde):
     print('creating contingent field group for well class')
 
@@ -602,6 +627,7 @@ if __name__ == '__main__':
             modify_tables(_table_modifications, sde)
             delete_domains(_domains_to_delete, sde)
             migrate_fields()
+            create_views(view_map, sde)
             create_contingencies(sde)
             alter_domains(_domains_to_update, sde)
             replace_relationship(sde)
@@ -609,6 +635,9 @@ if __name__ == '__main__':
 
         if args['--migration'] == 'contact':
             replace_relationship(sde)
+
+        if args['--migration'] == 'views':
+            create_views(view_map, sde)
 
         update_version(sde, VERSION)
         version_tables(True, tables, _skip_tables, sde)
