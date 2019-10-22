@@ -524,7 +524,7 @@ def replace_relationship(sde):
 def create_relationship(sde):
     origin = 'UICAreaOfReview'
     destination = 'UICArtPen'
-    output = os.path.join(sde, 'UICAreaOfReview_UICArtPen')
+    output = os.path.join(sde, 'AreaOfReviewToArtPen')
 
     print('creating artpen relationship class')
     try:
