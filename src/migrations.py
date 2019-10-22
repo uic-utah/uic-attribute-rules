@@ -159,7 +159,7 @@ _tables_to_add = {
             'field_name': 'Date',
             'field_type': 'DATE',
         },
-    ]
+   ]
 }
 
 
@@ -292,7 +292,7 @@ def delete_domains(domains, sde):
             message, = e.args
 
             if 'ERROR 000800' in message:
-                print('  domain already removed')
+                print('  domain already removed: {}'.format(domain))
             else:
                 print(e)
 
