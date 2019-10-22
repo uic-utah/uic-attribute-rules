@@ -82,7 +82,7 @@ _table_modifications = {
             'field_alias': 'Facility_FK',
             'field_is_nullable': 'NULLABLE'
         }],
-        'delete': ['ContactFax']
+        'delete': ['ContactFax', 'ContactMilePost']
     },
     'UICArtPen': {
         'add': [
