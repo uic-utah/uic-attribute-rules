@@ -544,6 +544,7 @@ def create_relationship(sde):
             destination_foreign_key='ArtPen_FK',
         )
 
+        print('deleting old artpen relationship')
         arcpy.management.Delete('AreaOfReviewToArtificialPenetrations', 'RelationshipClass')
     except Exception:
         print('  class probably already created')
