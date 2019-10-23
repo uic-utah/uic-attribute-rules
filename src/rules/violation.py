@@ -61,6 +61,9 @@ comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 violation_constraint = Constraint('Violation Type For Facility vs Well', 'FacilityWellTypes', load_rule_for(FOLDER, 'facilityWellTypesConstraint'))
 violation_constraint.triggers = [config.triggers.update]
 
+violation_date_constraint = Constraint('Violation Date', 'ViolationDate', common.constrain_to_required('ViolationDate'))
+violation_date_constraint.triggers = [config.triggers.update]
+
 RULES = [
     guid_constant,
     type_domain_constraint,
@@ -74,4 +77,5 @@ RULES = [
     noncompliance_domain_constraint_update,
     contamination_calculation,
     comment_constraint,
+    violation_date_constraint,
 ]
