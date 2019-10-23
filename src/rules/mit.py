@@ -34,11 +34,14 @@ result_constraint.triggers = [config.triggers.insert, config.triggers.update]
 remediation_constraint = Constraint('MIT Remediation Action and Result', 'RemediationAction', load_rule_for(FOLDER, 'remedationConstraint'))
 remediation_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
-remeditation_date_constraint = Constraint('Remediation Action Date and Remedation Action', 'RemActDate', load_rule_for(FOLDER, 'remediationDate'))
-remeditation_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
+remediation_date_constraint = Constraint('Remediation Action Date and Remedation Action', 'RemActDate', load_rule_for(FOLDER, 'remediationDate'))
+remediation_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 comment_constraint = Constraint('Comment for Other Action', 'Comment', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
+comment_mittype_constraint = Constraint('Comment for MIT Type', 'Comment.MITType', load_rule_for(FOLDER, 'commentMitTypeConstraint'))
+comment_mittype_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 RULES = [
     guid_constant,
@@ -48,6 +51,7 @@ RULES = [
     type_constraint,
     result_constraint,
     remediation_constraint,
-    remeditation_date_constraint,
+    remediation_date_constraint,
     comment_constraint,
+    comment_mittype_constraint,
 ]
