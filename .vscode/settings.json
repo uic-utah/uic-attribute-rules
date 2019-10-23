@@ -3,7 +3,7 @@
     "python.linting.enabled": true,
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": true,
-    "python.linting.pep8Enabled": true,
+    "python.linting.pycodestyleEnabled": true,
     "python.linting.flake8Enabled": true,
     "python.formatting.provider": "yapf",
     "python.formatting.yapfPath": "yapf",
