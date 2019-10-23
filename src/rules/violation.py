@@ -64,6 +64,9 @@ violation_constraint.triggers = [config.triggers.update]
 violation_date_constraint = Constraint('Violation Date', 'ViolationDate', common.constrain_to_required('ViolationDate'))
 violation_date_constraint.triggers = [config.triggers.update]
 
+foreign_key_constraint = Constraint('One parent relation', 'Single Parent', load_rule_for(FOLDER, 'oneFKConstraint'))
+foreign_key_constraint.triggers = [config.triggers.update]
+
 RULES = [
     guid_constant,
     type_domain_constraint,
@@ -78,4 +81,5 @@ RULES = [
     contamination_calculation,
     comment_constraint,
     violation_date_constraint,
+    foreign_key_constraint,
 ]
