@@ -543,6 +543,8 @@ def create_relationship(sde):
             destination_primary_key='GUID',
             destination_foreign_key='ArtPen_FK',
         )
+
+        arcpy.management.Delete('AreaOfReviewToArtificialPenetrations', 'RelationshipClass')
     except Exception:
         print('  class probably already created')
 
