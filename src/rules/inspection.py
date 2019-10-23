@@ -54,6 +54,9 @@ facility_only_constraint.triggers = [config.triggers.insert, config.triggers.upd
 inspection_date_constraint = Constraint('Well operating status date', 'InspectionDate', load_rule_for(FOLDER, 'dateConstraint'))
 inspection_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
+inspection_date_required_constraint = Constraint('Operating status date', 'InspectionDate.Required', common.constrain_to_required('InspectionDate'))
+inspection_date_required_constraint.triggers = [config.triggers.update]
+
 deficiency_constraint = Constraint('No Deficiency', 'InspectionDeficiency', load_rule_for(FOLDER, 'deficiencyConstraint'))
 deficiency_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
@@ -65,6 +68,7 @@ RULES = [
     type_domain_constraint,
     type_domain_constraint_update,
     inspection_date_constraint,
+    inspection_date_required_constraint,
     assistance_domain_constraint,
     assistance_domain_constraint_update,
     deficiency_domain_constraint,
