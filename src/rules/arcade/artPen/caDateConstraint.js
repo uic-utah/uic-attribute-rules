@@ -5,8 +5,14 @@ if (!haskey($feature, 'artpen_cadate') || !haskey($feature, 'artpen_catype')) {
 
 var catype = lower(domainname($feature, 'artpen_catype', $feature.artpen_catype));
 
-if (isempty(catype) || catype == 'waiting') {
+if (isempty(catype)) {
     return true;
+}
+
+if (catype == 'waiting') {
+    return iif(!isempty($feature.artpen_cadate), {
+        'errorMessage': 'If ArtPen_CADate is populated, ArtPen_CAType should no longer be `waiting`'.
+    }, true);
 }
 
 return iif(isempty($feature.artpen_cadate), {
