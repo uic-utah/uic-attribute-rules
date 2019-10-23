@@ -37,6 +37,9 @@ catype_constraint.triggers = [config.triggers.insert, config.triggers.update]
 cadate_constraint = Constraint('CA Date', 'ArtPen_CADate', load_rule_for(FOLDER, 'caDateConstraint'))
 cadate_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
+comment_constraint = Constraint('Art Pen Other Ca', 'Comments', load_rule_for(FOLDER, 'commentConstraint'))
+comment_constraint.triggers = [config.triggers.update]
+
 RULES = [
     guid_constraint,
     name_constraint,
@@ -45,4 +48,5 @@ RULES = [
     review_date_constraint,
     catype_constraint,
     cadate_constraint,
+    comment_constraint,
 ]
