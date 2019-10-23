@@ -9,5 +9,5 @@ if (isempty(catype)) {
 }
 
 return iif(catype == 'other ca method' && isempty($feature.comments), {
-    'errorMessage': 'If ArtPen_CAType is `other CA method`, then describe the alternate CA method in the comments field.',
+    'errorMessage': 'If ArtPen_CAType is `other CA method`, then describe the alternate CA method in the comments field.'
 }, true);

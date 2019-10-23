@@ -11,7 +11,7 @@ if (isempty(catype)) {
 
 if (catype == 'waiting') {
     return iif(!isempty($feature.artpen_cadate), {
-        'errorMessage': 'If ArtPen_CADate is populated, ArtPen_CAType should no longer be `waiting`'.
+        'errorMessage': 'If ArtPen_CADate is populated, ArtPen_CAType should no longer be `waiting`.'
     }, true);
 }
 
