@@ -19,6 +19,9 @@ id_calculation = Calculation('Well Id', 'WellId', load_rule_for(FOLDER, 'idCalcu
 id_calculation.triggers = [config.triggers.insert, config.triggers.update]
 id_calculation.editabe = config.editable.no
 
+well_name_constraint = Constraint('Well Name', 'WellName', common.constrain_to_required('WellName'))
+well_name_constraint.triggers = [config.triggers.update]
+
 facility_calculation = Calculation('Facility Fk', 'Facility_Fk', load_rule_for(FOLDER, 'facilityCalculation'))
 
 class_constraint = Constraint('Well Class', 'Class', common.constrain_to_domain('WellClass', allow_null=True, domain='UICWellClassDomain'))
@@ -59,6 +62,7 @@ swpz_constraint_update.triggers = [config.triggers.update]
 RULES = [
     guid_constant,
     id_calculation,
+    well_name_constraint,
     facility_calculation,
     class_constraint,
     subclass_constraint,
