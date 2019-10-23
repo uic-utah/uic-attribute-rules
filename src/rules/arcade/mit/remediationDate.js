@@ -2,8 +2,10 @@ if (!haskey($feature, 'mitremactdate') || !haskey($feature, 'mitremediationactio
     return true;
 }
 
-if (isempty($feature.mitremediationaction) || lower(domainname($feature, 'mitremediationaction', $feature.mitremediationaction)) == 'waiting') {
-    return true;
+if (lower(domainname($feature, 'mitremediationaction', $feature.mitremediationaction)) == 'waiting') {
+    return iif(!isempty($feature.MITRemActDate), {
+        'errorMessage': 'If MITRemActDate is populated, MITRemediationAction should no longer be `waiting`'
+    }, true)
 }
 
 return iif(isempty($feature.mitremactdate), {
