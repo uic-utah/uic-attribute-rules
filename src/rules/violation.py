@@ -26,7 +26,7 @@ type_domain_constraint_update = Constraint(
 type_domain_constraint_update.triggers = [config.triggers.update]
 
 contamination_domain_constraint = Constraint(
-    'Contamination', 'USDWContamination', common.constrain_to_domain('USDWContamination', allow_null=True, domain='UICYesNoUnknownDomain')
+    'Contamination', 'USDWContamination.domain', common.constrain_to_domain('USDWContamination', allow_null=True, domain='UICYesNoUnknownDomain')
 )
 
 contamination_domain_constraint_update = Constraint('Contamination', 'USDWContamination.update', load_rule_for(FOLDER, 'wellRequiresContaminationConstraint'))
