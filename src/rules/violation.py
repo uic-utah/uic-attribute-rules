@@ -29,9 +29,7 @@ contamination_domain_constraint = Constraint(
     'Contamination', 'USDWContamination', common.constrain_to_domain('USDWContamination', allow_null=True, domain='UICYesNoUnknownDomain')
 )
 
-contamination_domain_constraint_update = Constraint(
-    'Contamination', 'USDWContamination.update', common.constrain_to_domain('USDWContamination', allow_null=False, domain='UICYesNoUnknownDomain')
-)
+contamination_domain_constraint_update = Constraint('Contamination', 'USDWContamination.update', load_rule_for(FOLDER, 'wellRequiresContaminationConstraint'))
 contamination_domain_constraint_update.triggers = [config.triggers.update]
 
 endanger_domain_constraint = Constraint('Endanger', 'Endanger', common.constrain_to_domain('Endanger', allow_null=True, domain='UICYesNoUnknownDomain'))
@@ -67,6 +65,10 @@ violation_date_constraint.triggers = [config.triggers.update]
 foreign_key_constraint = Constraint('One parent relation', 'Single Parent', load_rule_for(FOLDER, 'oneFKConstraint'))
 foreign_key_constraint.triggers = [config.triggers.update]
 
+facility_no_contamination_calculation = Calculation(
+    'Facilities no contamination', 'USDWContamination', load_rule_for(FOLDER, 'facilityContaminationCalculation')
+)
+
 RULES = [
     guid_constant,
     type_domain_constraint,
@@ -78,6 +80,7 @@ RULES = [
     endanger_domain_constraint_update,
     noncompliance_domain_constraint,
     noncompliance_domain_constraint_update,
+    facility_no_contamination_calculation,
     contamination_calculation,
     comment_constraint,
     violation_date_constraint,
