@@ -43,6 +43,9 @@ comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
 comment_mittype_constraint = Constraint('Comment for MIT Type', 'Comment.MITType', load_rule_for(FOLDER, 'commentMitTypeConstraint'))
 comment_mittype_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
+mit_rem_date_constraint = Constraint('Rem ACT date', 'MITRemActDate', load_rule_for(FOLDER, 'dateConstraint'))
+mit_rem_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
+
 RULES = [
     guid_constant,
     type_domain_constraint,
@@ -54,4 +57,5 @@ RULES = [
     remediation_date_constraint,
     comment_constraint,
     comment_mittype_constraint,
+    mit_rem_date_constraint,
 ]
