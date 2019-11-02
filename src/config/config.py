@@ -28,10 +28,10 @@ def get_sde_path_for(env=None):
     sde = os.path.join(os.path.dirname(__file__), '..', '..', 'pro-project')
 
     if env is None:
-        return os.path.join(sde, 'localhost.sde')
+        return os.path.join(sde, 'localhost.udeq@uicadmin.sde')
 
     if env == 'local':
-        return os.path.join(sde, 'localhost.sde')
+        return os.path.join(sde, 'localhost.udeq@uicadmin.sde')
 
     if env == 'dev':
         return os.path.join(sde, 'stage.sde')

@@ -11,7 +11,7 @@
         "--style",
         "${workspaceRoot}/setup.cfg"
     ],
-    "terminal.integrated.cwd": "c:\\dev\\uic-attribute-rules",
+    "terminal.integrated.cwd": "c:\\dev\\uic\\uic-attribute-rules",
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.formatOnSave": true
