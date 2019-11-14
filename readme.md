@@ -56,8 +56,9 @@
 
 1. Import the individual feature classes contained within the feature datasets
 1. Import everything outside the feature dataset
-1. Need to transfer the UDEQ.UICADMIN.UICSCHEMATRONERRORCODES by hand
+1. Need to transfer the UDEQ.UICADMIN.UICSCHEMATRONERRORCODES by hand (_is this necessary?_)
 1. Set the bridging / intermediate table for UICAOR to UICArtPen permissions for all users to Select, Insert, Update and Delete
+   - I think if we grant `data reader` and `data writer` plus `EXECUTE` to all users the above step is unnecessary
 1. Database users need to be database authentication for versions to be created correctly.
 1. All users besides SDE need to be granted EXECUTE privileges.
 
