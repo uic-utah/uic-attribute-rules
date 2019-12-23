@@ -31,7 +31,7 @@ from rules import (
     area_of_review, art_pen, authorization, authorization_action, contact, correction, enforcement, facility, inspection, mit, operating_status, violation, well
 )
 
-VERSION = '1.2.0'
+VERSION = '1.2.1'
 
 
 def get_rules(sde, rule=None):
