@@ -35,7 +35,7 @@ remediation_constraint = Constraint('MIT Remediation Action and Result', 'Remedi
 remediation_constraint.triggers = [config.triggers.insert, config.triggers.update]
 
 remediation_date_constraint = Constraint('Remediation Action Date and Remedation Action', 'RemActDate', load_rule_for(FOLDER, 'remediationDate'))
-remediation_date_constraint.triggers = [config.triggers.insert, config.triggers.update]
+remediation_date_constraint.triggers = [config.triggers.update]
 
 comment_constraint = Constraint('Comment for Other Action', 'Comment', load_rule_for(FOLDER, 'commentConstraint'))
 comment_constraint.triggers = [config.triggers.insert, config.triggers.update]
