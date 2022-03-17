@@ -2,7 +2,7 @@ if (!haskey($feature, 'guid') || isempty($feature.guid)) {
     return true;
 }
 
-var ownerTypes = [1, 2, 3];
+var ownerTypes = [1, 2, 5];
 
 if (indexof(ownerTypes, $feature.contacttype) > -1) {
     return true;
@@ -32,5 +32,5 @@ for (var contact in contacts) {
 }
 
 return {
-    'errorMessage': 'There is no owner or operator contact type for this facility.'
+    'errorMessage': 'There is no owner, owner/operator, or legal representative contact type for this facility.'
 };
